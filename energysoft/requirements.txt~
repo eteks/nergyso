@@ -1,0 +1,4 @@
+pip install Django==1.11.7
+pip install django-embed-video
+pip install MySQL-python==1.2.3
+
