@@ -11,7 +11,7 @@ class News(AbstractDefault):
 	news_title = models.CharField(verbose_name = 'Title', max_length = 255)
 	news_description = models.TextField(verbose_name = 'Description', max_length = 1000)
 	news_image = models.ImageField(verbose_name = 'Images', upload_to = 'images/news/')
-	news_video = models.FileField(verbose_name = 'Video',upload_to = 'images/news/') 
+	news_video = models.FileField(verbose_name = 'Video',upload_to = 'video/news/') 
 	news_document = models.FileField(verbose_name = 'Document', null = True, upload_to = 'files/news/')
 
 	def __str__(self):

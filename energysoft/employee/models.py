@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.db import models
 
 from django.contrib.auth.models import User
-from master.models import AbstractDefault,Department
+from master.models import AbstractDefault, Department
 
 # Create your models here.
 class Employee(User,AbstractDefault):

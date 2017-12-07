@@ -3,10 +3,10 @@ from __future__ import unicode_literals
 
 from django.contrib import admin
 
-from models import Shoutout
+from models import Livetelecast
 # Register your models here.
 
-class ShoutoutAdmin(admin.ModelAdmin):
+class LivetelecastAdmin(admin.ModelAdmin):
 	pass
 
-admin.site.register(Shoutout, ShoutoutAdmin)
+admin.site.register(Livetelecast, LivetelecastAdmin)
