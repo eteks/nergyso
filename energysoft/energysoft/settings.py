@@ -46,7 +46,10 @@ INSTALLED_APPS = [
     'shoutout',  
     'feedback',
     'livetelecast',  
-    'rest_framework',    
+    'rest_framework',  
+    'oauth2_provider',
+    'corsheaders',
+    'energysoft_api',
 ]
 
 MIDDLEWARE = [
@@ -57,6 +60,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'energysoft.urls'
@@ -141,3 +145,5 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ]
 }
+
+CORS_ORIGIN_ALLOW_ALL = True

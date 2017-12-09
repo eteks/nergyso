@@ -2,4 +2,8 @@ pip install Django==1.11.7
 pip install django-embed-video
 pip install MySQL-python==1.2.3
 pip install Pillow==4.3.0
+pip install djangorestframework==3.7.3
+pip install django-oauth-toolkit
+pip install django-cors-middleware 
+pip install django-oauth2-provider
 
