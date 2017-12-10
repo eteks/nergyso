@@ -3,19 +3,8 @@ import oauth2_provider.views as oauth2_views
 from django.conf import settings
 from .views import ApiEndpoint
 
-from rest_framework import routers, serializers, viewsets
-from employee.models import Employee
-
-# Serializers define the API representation.
-class EmployeeSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Employee
-        fields = ('id', 'employee_name', 'employee_dob', 'employee_email')
-
-# ViewSets define the view behavior.
-class EmployeeSet(viewsets.ModelViewSet):
-    queryset = Employee.objects.all()
-    serializer_class = EmployeeSerializer
+from rest_framework import routers
+from .views import EmployeeSet
 
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
@@ -48,8 +37,8 @@ if settings.DEBUG:
 urlpatterns = [
     url(r'^', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
-    # url(r'^o/', include(oauth2_endpoint_views, namespace='oauth2_provider')),
+    # url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
+    url(r'^o/', include(oauth2_endpoint_views, namespace='oauth2_provider')),
     url(r'^api/hello', ApiEndpoint.as_view()),  # an example resource endpoint
 ]
 	
