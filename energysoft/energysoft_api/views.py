@@ -33,13 +33,13 @@ class EventsSet(HaystackViewSet):
 	# sqs = SearchQuerySet().filter(content_auto=request.GET.get('q', ''))
 	serializer_class = EventsSerializer
 	pagination_class = StandardResultsSetPagination
-	permission_classes = [IsAuthenticated]
+	# permission_classes = [IsAuthenticated]
 
 class NewsSet(viewsets.ModelViewSet):
 	queryset = News.objects.all()
 	serializer_class = NewsSerializer
 	pagination_class = StandardResultsSetPagination
-	# permission_classes = [IsAuthenticated]
+	permission_classes = [IsAuthenticated]
 
 	
 
