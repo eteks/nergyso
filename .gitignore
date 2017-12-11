@@ -42,3 +42,4 @@ test_settings.py
 dev_settings.py
 production_settings.py
 install.tar.gz
+media

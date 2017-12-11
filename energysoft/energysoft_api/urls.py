@@ -4,11 +4,12 @@ from django.conf import settings
 from .views import ApiEndpoint
 
 from rest_framework import routers
-from .views import EmployeeSet
+from .views import EmployeeSet,EventsSet
 
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
 router.register(r'employee', EmployeeSet)
+router.register(r'events', EventsSet, base_name="events-search")
 
 # OAuth2 provider endpoints
 oauth2_endpoint_views = [
@@ -40,5 +41,8 @@ urlpatterns = [
     # url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
     url(r'^o/', include(oauth2_endpoint_views, namespace='oauth2_provider')),
     url(r'^api/hello', ApiEndpoint.as_view()),  # an example resource endpoint
+
+    # Haystack and Elasticsearch
+    # url(r'^events', EventsSet.as_view()),  # an example resource endpoint
 ]
 	

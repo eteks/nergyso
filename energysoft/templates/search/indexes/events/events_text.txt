@@ -1,0 +1,8 @@
+{{ object.events_title }}
+{{ object.events_description }}
+{{ object.events_location_for_map }}
+{{ object.events_date }}
+{{ object.events_image }}
+{{ object.events_video }}
+{{ object.events_document }}
+

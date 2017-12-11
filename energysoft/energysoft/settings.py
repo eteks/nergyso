@@ -38,18 +38,19 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'master',
-    'employee',
-    'events',
-    'news',
-    'gallery', 
-    'shoutout',  
-    'feedback',
-    'livetelecast',  
-    'rest_framework',  
-    'oauth2_provider',
+    'master', #custom app
+    'employee', #custom app
+    'events', #custom app
+    'news', #custom app
+    'gallery', #custom app
+    'shoutout', #custom app
+    'feedback', #custom app
+    'livetelecast', #custom app 
+    'rest_framework', #predefined app  
+    'oauth2_provider', #predefined app
     # 'corsheaders',
     'energysoft_api',
+    'haystack', #predefined app
 ]
 
 MIDDLEWARE = [
@@ -68,7 +69,8 @@ ROOT_URLCONF = 'energysoft.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        # 'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR,'templates/'),],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -81,6 +83,10 @@ TEMPLATES = [
         },
     },
 ]
+# import os.path
+# print "os_path"+os.path.join(BASE_DIR,'templates/')
+# print os.path.exists('/home/deepak/django_projects/nergyso_web/energysoft/energysoft/templates/search/indexes/events/events_text.txt')
+
 
 WSGI_APPLICATION = 'energysoft.wsgi.application'
 
@@ -143,7 +149,31 @@ REST_FRAMEWORK = {
     # or allow read-only access for unauthenticated users.
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ]
+    ],
+    'DEFAULT_PAGINATION_CLASS':[ 
+        'rest_framework.pagination.LimitOffsetPagination'
+    ],
+    # 'PAGE_SIZE': 100
 }
 
-CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ORIGIN_ALLOW_ALL = True
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'URL': 'localhost:9200',
+        'INDEX_NAME': 'haystack',
+    },
+}
+
+MEDIA_ROOT = os.path.join(BASE_DIR,'media/')
+
+IMAGES_ROOT = MEDIA_ROOT + "images"
+
+VIDEOS_ROOT = MEDIA_ROOT + "videos"
+
+DOCUMENT_ROOT = MEDIA_ROOT + "document"
+
+SITE_ID = 1
+
+
