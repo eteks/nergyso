@@ -1,3 +1,4 @@
+{{ object.id }}
 {{ object.events_title }}
 {{ object.events_description }}
 {{ object.events_location_for_map }}

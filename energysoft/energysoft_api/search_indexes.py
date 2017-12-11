@@ -3,6 +3,7 @@ from events.models import Events
 from django.utils import timezone
 
 class EventsIndex(indexes.SearchIndex, indexes.Indexable):
+    id = indexes.CharField(model_attr='pk', indexed=False)
     text = indexes.CharField(document=True, use_template=True)
     events_title = indexes.CharField(model_attr='events_title')
     events_description = indexes.CharField(model_attr='events_description')
@@ -42,11 +43,13 @@ class EventsIndex(indexes.SearchIndex, indexes.Indexable):
 
     def get_model(self):
         return Events
+
+    def autoUpdateRebuild_index(self):
+        update_index.Command().handle()
+        rebuild_index.Command().handle()
     
     def index_queryset(self, **kwargs):
-        # product = Product.objects.filter(status_isactive=1)
-        events = Events.objects.all()
-        return events
+        return self.get_model().objects.all()
 
     # def index_queryset(self, using=None):
     #     # return self.get_model().objects.filter(

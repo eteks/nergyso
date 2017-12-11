@@ -12,7 +12,10 @@ class EmployeeSerializer(serializers.HyperlinkedModelSerializer):
 class EventsSerializer(HaystackSerializer):
     class Meta:
         index_classes = [EventsIndex]
-        exclude = ('page', 'per_page', )
+        # exclude = ('page', 'per_page', )
+        fields = ('id', 'events_title', 'events_description', 'events_location_for_map','events_venue',
+            'events_date','events_image','events_video','events_document')
+
         # fields = ('events_title', 'events_description', 'events_date')
     # def get_queryset(self, *args, **kwargs):
     #     request = self.request
@@ -25,4 +28,4 @@ class EventsSerializer(HaystackSerializer):
 class NewsSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = News
-        fields = ('id', 'news_title', 'news_description', 'news_image','news_video','news_document',)
+        fields = ('id', 'news_title', 'news_description', 'news_image','news_video','news_document')
