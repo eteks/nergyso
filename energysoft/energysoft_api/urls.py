@@ -4,12 +4,13 @@ from django.conf import settings
 from .views import ApiEndpoint
 
 from rest_framework import routers
-from .views import EmployeeSet,EventsSet
+from .views import EmployeeSet,EventsSet,NewsSet
 
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
 router.register(r'employee', EmployeeSet)
 router.register(r'events', EventsSet, base_name="events-search")
+router.register(r'news', NewsSet, base_name="news-search")
 
 # OAuth2 provider endpoints
 oauth2_endpoint_views = [

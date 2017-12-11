@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from employee.models import Employee
+from news.models import News
 from drf_haystack.serializers import HaystackSerializer
 from .search_indexes import EventsIndex
 # Serializers define the API representation.
@@ -20,3 +21,8 @@ class EventsSerializer(HaystackSerializer):
     #         query = request.GET.get('q')
     #         queryset = SearchQuerySet().all()
     #     return [i.object for i in queryset]
+
+class NewsSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = News
+        fields = ('id', 'news_title', 'news_description', 'news_image','news_video','news_document',)

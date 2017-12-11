@@ -34,26 +34,26 @@ from django.utils.timezone import now as timezone_now
 # 					destination.write(chunk)
 # 		process(x)
 # 	return HttpResponse("Files(s) uploded!")
+def update_image(instance, filename):
+	image_path = settings.IMAGES_ROOT
+	# format = instance.userid + instance.transaction_uuid + instance.file_extension
+	# return os.path.join(path, format)
+	image_root=image_path+"news_"+filename
+	# return 'user_{0}/{1}'.format(instance.user.id, filename)
+	return image_root
+
+def update_video(instance, filename):
+	video_path = settings.VIDEOS_ROOT	   
+	video_root=video_path+"news_"+filename
+	return video_root
+
+def update_file(instance, filename):
+	file_path = settings.DOCUMENT_ROOT
+	file_root=file_path+"news_"+filename
+	# print filename.getlist
+	return file_root
+		
 class News(AbstractDefault):
-	def update_image(instance, filename):
-		image_path = settings.IMAGES_ROOT
-		# format = instance.userid + instance.transaction_uuid + instance.file_extension
-		# return os.path.join(path, format)
-		image_root=image_path+"news_"+filename
-		# return 'user_{0}/{1}'.format(instance.user.id, filename)
-		return image_root
-
-	def update_video(instance, filename):
-		video_path = settings.VIDEOS_ROOT	   
-		video_root=video_path+"news_"+filename
-		return video_root
-
-	def update_file(instance, filename):
-		file_path = settings.DOCUMENT_ROOT
-		file_root=file_path+"news_"+filename
-		# print filename.getlist
-		return file_root
-
 	news_title = models.CharField(verbose_name = 'Title', max_length = 255)
 	news_description = models.TextField(verbose_name = 'Description', max_length = 1000)
 	# news_image = models.ImageField(verbose_name = 'Images', upload_to = update_image,validators=[FileExtensionValidator(['png','jpeg','jpg'])])

@@ -5,10 +5,11 @@ from django.shortcuts import render
 from oauth2_provider.views.generic import ProtectedResourceView
 from django.http import HttpResponse
 from rest_framework import viewsets
-from energysoft_api.serializers import EmployeeSerializer, EventsSerializer
+from energysoft_api.serializers import EmployeeSerializer, EventsSerializer,NewsSerializer
 from employee.models import Employee
 from events.models import Events
-
+from employee.models import Employee
+from news.models import News
 from haystack.query import SearchQuerySet,EmptySearchQuerySet
 from drf_haystack.viewsets import HaystackViewSet
 from rest_framework.permissions import IsAuthenticated
@@ -20,7 +21,7 @@ class EmployeeSet(viewsets.ModelViewSet):
 	queryset = Employee.objects.all()
 	serializer_class = EmployeeSerializer
 	pagination_class = StandardResultsSetPagination
-	permission_classes = [IsAuthenticated]
+	# permission_classes = [IsAuthenticated]
 
 class ApiEndpoint(ProtectedResourceView):
 	def get(self, request, *args, **kwargs):
@@ -33,6 +34,13 @@ class EventsSet(HaystackViewSet):
 	serializer_class = EventsSerializer
 	pagination_class = StandardResultsSetPagination
 	permission_classes = [IsAuthenticated]
+
+class NewsSet(viewsets.ModelViewSet):
+	queryset = News.objects.all()
+	serializer_class = NewsSerializer
+	pagination_class = StandardResultsSetPagination
+	# permission_classes = [IsAuthenticated]
+
 	
 
 
