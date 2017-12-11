@@ -50,7 +50,8 @@ INSTALLED_APPS = [
     'oauth2_provider', #predefined app
     # 'corsheaders',
     'energysoft_api',
-    'haystack', #predefined app
+    'haystack', #predefined app,
+    'multiupload'
 ]
 
 MIDDLEWARE = [
