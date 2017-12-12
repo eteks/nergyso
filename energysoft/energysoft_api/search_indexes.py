@@ -8,7 +8,7 @@ class EventsIndex(indexes.SearchIndex, indexes.Indexable):
     events_title = indexes.CharField(model_attr='events_title')
     events_description = indexes.CharField(model_attr='events_description')
     events_location_for_map = indexes.CharField(model_attr='events_location_for_map')
-    events_date = indexes.DateTimeField(model_attr='events_date')
+    events_date = indexes.DateTimeField(model_attr='events_date',null=True)
     events_image = indexes.CharField(model_attr='events_image')
     events_video = indexes.CharField(model_attr='events_video')
     events_document = indexes.CharField(model_attr='events_document')

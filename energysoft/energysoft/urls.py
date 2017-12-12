@@ -18,6 +18,7 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^api/', include('energysoft_api.urls', namespace='energysoft_api')),
-    url(r'^search/', include('haystack.urls')),
+    url(r'^', admin.site.urls),
+    url(r'^api/', include('energysoft_api.urls')),
+    url(r'^search/', include('haystack.urls')),   
 ]

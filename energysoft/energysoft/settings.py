@@ -28,7 +28,7 @@ SECRET_KEY = 'w7+!$ej12yys+=d!ohstg5gggwx3c=a@+)hrw7a^k24p_42iz4'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['10.0.0.15']
+ALLOWED_HOSTS = ['10.0.0.15','127.0.0.1']
 
 
 # Application definition
@@ -50,11 +50,13 @@ INSTALLED_APPS = [
     'feedback', #custom app
     'livetelecast', #custom app 
     'rest_framework', #predefined app  
-    'oauth2_provider', #predefined app
+    'rest_framework.authtoken', #predefined app
+    # 'oauth2_provider', #predefined app
     # 'corsheaders',
-    'energysoft_api',
+    'energysoft_api', #custom app 
     'haystack', #predefined app,
-    'multiupload'
+    'multiupload', #custom app 
+    'rest_auth' #predefined app,
 ]
 
 MIDDLEWARE = [
@@ -154,13 +156,19 @@ REST_FRAMEWORK = {
     # 'DEFAULT_PERMISSION_CLASSES': [
     #     'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     # ],
-    'DEFAULT_PAGINATION_CLASS':[ 
-        'rest_framework.pagination.LimitOffsetPagination'
-    ],
+    # 'DEFAULT_PAGINATION_CLASS':[ 
+    #     'rest_framework.pagination.LimitOffsetPagination'
+    # ],
     # 'DEFAULT_RENDERER_CLASSES': [
     #     # 'rest_framework.renderers.XMLRenderer',
     #     'rest_framework.renderers.JSONRenderer',
     #     'rest_framework.renderers.BrowsableAPIRenderer',
+    # ],
+    # 'DEFAULT_AUTHENTICATION_CLASSES': [
+    #     'rest_framework.authentication.TokenAuthentication',
+    # ],
+    # 'DEFAULT_PERMISSION_CLASSES': [
+    #     'rest_framework.permissions.IsAuthenticated',
     # ],
     # 'PAGE_SIZE': 100
 }
@@ -185,4 +193,21 @@ HAYSTACK_CONNECTIONS = {
 
 SITE_ID = 1
 
+ACCOUNT_LOGOUT_ON_GET = True
 
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_REQUIRED = True   
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'kalaimca.gs@gmail.com'
+EMAIL_HOST_PASSWORD = 'kalai123'
+
+#to use old_password
+OLD_PASSWORD_FIELD_ENABLED = True
+
+#to keep the user logged in after password change
+LOGOUT_ON_PASSWORD_CHANGE = False

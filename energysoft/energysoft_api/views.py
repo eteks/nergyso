@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render
-from oauth2_provider.views.generic import ProtectedResourceView
+# from oauth2_provider.views.generic import ProtectedResourceView
 from django.http import HttpResponse
 from rest_framework import viewsets
 from energysoft_api.serializers import EmployeeSerializer, EventsSerializer,NewsSerializer
@@ -25,9 +25,9 @@ class EmployeeSet(viewsets.ModelViewSet):
 	pagination_class = StandardResultsSetPagination
 	# permission_classes = [IsAuthenticated]
 
-class ApiEndpoint(ProtectedResourceView):
-	def get(self, request, *args, **kwargs):
-		return HttpResponse('Hello, OAuth2!')
+# class ApiEndpoint(ProtectedResourceView):
+# 	def get(self, request, *args, **kwargs):
+# 		return HttpResponse('Hello, OAuth2!')
 
 # ViewSets define the view behavior.
 # class EventsSet(HaystackViewSet,APIView):
