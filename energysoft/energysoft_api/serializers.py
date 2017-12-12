@@ -56,7 +56,8 @@ class NewsSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id', 'news_title', 'news_description', 'news_image','news_video','news_document')
 
 class TokenSerializer(serializers.ModelSerializer):
-
+    username = serializers.CharField(source='user.username')
+    email = serializers.CharField(source='user.email')
     class Meta:
         model = Token
-        fields = ('key', 'user')
+        fields = ('key', 'user','username','email')
