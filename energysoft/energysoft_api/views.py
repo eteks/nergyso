@@ -23,6 +23,7 @@ class EmployeeSet(viewsets.ModelViewSet):
 	queryset = Employee.objects.all()
 	serializer_class = EmployeeSerializer
 	pagination_class = StandardResultsSetPagination
+	# lookup_field = 'department_name'
 	# permission_classes = [IsAuthenticated]
 
 # class ApiEndpoint(ProtectedResourceView):

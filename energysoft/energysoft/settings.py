@@ -191,6 +191,20 @@ HAYSTACK_CONNECTIONS = {
 
 # DOCUMENT_ROOT = MEDIA_ROOT + "document"
 
+# MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+# MEDIA_URL = '/media/'
+
+# STATIC_ROOT = os.path.join(BASE_DIR,'static')
+# STATIC_URL = '/static/'
+
+# STATICFILES_DIRS = (
+#     os.path.join(BASE_DIR,'staticfiles'),
+#     # Put strings here, like "/home/html/static" or "C:/www/django/static".
+#     # Always use forward slashes, even on Windows.
+#     # Don't forget to use absolute paths, not relative paths.
+# )
+
+
 SITE_ID = 1
 
 ACCOUNT_LOGOUT_ON_GET = True
