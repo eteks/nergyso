@@ -6,12 +6,15 @@ from django.conf import settings
 from rest_framework import routers
 from .views import EmployeeSet,EventsSet,NewsSet
 from rest_framework.authtoken.views import obtain_auth_token
+from fcm_django.api.rest_framework import FCMDeviceAuthorizedViewSet
+
 
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
 router.register(r'employee', EmployeeSet)
 router.register(r'events', EventsSet, base_name="events-search")
 router.register(r'news', NewsSet, base_name="news-search")
+router.register(r'notification', FCMDeviceAuthorizedViewSet)
 # router.register(r'events/recent-events', NewsSet, name="recent_events")
 
 # OAuth2 provider endpoints

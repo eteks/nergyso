@@ -11,4 +11,8 @@ pip install elasticsearch==6.0.0
 pip install drf-haystack==1.6.1
 pip install admin-multiupload==1.10
 pip install django-rest-auth
+pip install fcm-django
+
+
+
 

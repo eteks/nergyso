@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'haystack', #predefined app
     'multiupload', #custom app 
     'rest_auth' , #predefined app
+    'fcm_django',
 ]
 
 MIDDLEWARE = [
@@ -231,4 +232,15 @@ LOGOUT_ON_PASSWORD_CHANGE = False
 REST_AUTH_SERIALIZERS = {
     # 'LOGIN_SERIALIZER': 'path.to.custom.LoginSerializer',
     'TOKEN_SERIALIZER': 'energysoft_api.serializers.TokenSerializer',
+}
+
+FCM_DJANGO_SETTINGS = {
+        "FCM_SERVER_KEY": "AIzaSyCgwNfe-kisOtP0Xd0CLAl4rLS-ciAAEXQ",
+         # true if you want to have only one active device per registered user at a time
+         # default: False
+        "ONE_DEVICE_PER_USER": True,
+         # devices to which notifications cannot be sent,
+         # are deleted upon receiving error response from FCM
+         # default: False
+        "DELETE_INACTIVE_DEVICES": True,
 }
