@@ -33,11 +33,32 @@ class EmployeeSet(viewsets.ModelViewSet):
 
 # ViewSets define the view behavior.
 # class EventsSet(HaystackViewSet,APIView):
-class EventsSet(HaystackViewSet):
-	index_models = [Events]
-	# sqs = SearchQuerySet().filter(content_auto=request.GET.get('q', ''))
+# class EventsSet(HaystackViewSet):
+# 	index_models = [Events]
+# 	# sqs = SearchQuerySet().filter(content_auto=request.GET.get('q', ''))
+# 	serializer_class = EventsSerializer
+# 	pagination_class = StandardResultsSetPagination
+
+# 	# permission_classes = [IsAuthenticated]
+# 	# renderers = renderers.JSONRenderer
+# 	# parsers = parsers.JSONParser
+# 	# renderer_classes = (XMLRenderer, JSONRenderer, )
+# 	# @list_route(methods=['post'])
+# 	@list_route()
+# 	def recent_events(self, request):
+# 		print "recent-events"
+# 		queryset = SearchQuerySet()[:10]
+# 		print queryset
+# 		# events = get_object_or_404(queryset, pk=pk)
+# 		# events = get_object_or_404(queryset)
+# 		serializer = EventsSerializer(queryset)
+# 		return Response(serializer.data)
+
+class EventsSet(viewsets.ModelViewSet):
+	queryset = Events.objects.all()
 	serializer_class = EventsSerializer
 	pagination_class = StandardResultsSetPagination
+	# permission_classes = [IsAuthenticated]
 
 	# permission_classes = [IsAuthenticated]
 	# renderers = renderers.JSONRenderer
@@ -47,7 +68,7 @@ class EventsSet(HaystackViewSet):
 	@list_route()
 	def recent_events(self, request):
 		print "recent-events"
-		queryset = SearchQuerySet()[:10]
+		queryset = Events.objects.all().order_by('-id')[:10]
 		print queryset
 		# events = get_object_or_404(queryset, pk=pk)
 		# events = get_object_or_404(queryset)

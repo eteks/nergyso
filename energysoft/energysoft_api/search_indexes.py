@@ -49,7 +49,7 @@ class EventsIndex(indexes.SearchIndex, indexes.Indexable):
         rebuild_index.Command().handle()
     
     def index_queryset(self, **kwargs):
-        return self.get_model().objects.all()
+        return self.get_model().objects.all().order_by('-id')
 
     # def index_queryset(self, using=None):
     #     # return self.get_model().objects.filter(
