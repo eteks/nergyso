@@ -12,6 +12,7 @@ router = routers.DefaultRouter()
 router.register(r'employee', EmployeeSet)
 router.register(r'events', EventsSet, base_name="events-search")
 router.register(r'news', NewsSet, base_name="news-search")
+# router.register(r'events/recent-events', NewsSet, name="recent_events")
 
 # OAuth2 provider endpoints
 # oauth2_endpoint_views = [
@@ -46,6 +47,7 @@ urlpatterns = [
     # url(r'^api/hello', ApiEndpoint.as_view()),  # an example resource endpoint
     url(r'^api-token-auth/', obtain_auth_token),
     url(r'^rest-auth/', include('rest_auth.urls')),
+    url(r'^events/recent_events/', EventsSet.as_view({"get": "retrieve"}), name="recent_events"),
     
 
     # Haystack and Elasticsearch

@@ -25,6 +25,14 @@ class EmployeeSerializer(serializers.HyperlinkedModelSerializer):
                   'employee_device_id','employee_department_name')
 
 class EventsSerializer(HaystackSerializer):
+    # id = serializers.CharField(allow_blank=False, write_only=True)
+    # events_title = serializers.CharField(allow_blank=False, write_only=True)
+    # events_description = serializers.CharField(allow_blank=False, write_only=True)
+    # events_location_for_map = serializers.CharField(allow_blank=False, write_only=True)
+    # events_date = serializers.CharField(allow_blank=False, write_only=True)
+    # events_video = serializers.CharField(allow_blank=False, write_only=True)
+    # events_image = serializers.CharField(allow_blank=False, write_only=True)
+    # events_document = serializers.CharField(allow_blank=False, write_only=True)
     class Meta:
         index_classes = [EventsIndex]
         # exclude = ('page', 'per_page', )
