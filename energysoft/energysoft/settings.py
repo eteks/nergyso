@@ -54,9 +54,9 @@ INSTALLED_APPS = [
     # 'oauth2_provider', #predefined app
     # 'corsheaders',
     'energysoft_api', #custom app 
-    'haystack', #predefined app,
+    'haystack', #predefined app
     'multiupload', #custom app 
-    'rest_auth' #predefined app,
+    'rest_auth' , #predefined app
 ]
 
 MIDDLEWARE = [
@@ -225,3 +225,10 @@ OLD_PASSWORD_FIELD_ENABLED = True
 
 #to keep the user logged in after password change
 LOGOUT_ON_PASSWORD_CHANGE = False
+
+# DEFAULT_APP_CONFIG = 'energysoft_api.apps.EnergysoftApiConfig'
+
+REST_AUTH_SERIALIZERS = {
+    # 'LOGIN_SERIALIZER': 'path.to.custom.LoginSerializer',
+    'TOKEN_SERIALIZER': 'energysoft_api.serializers.TokenSerializer',
+}

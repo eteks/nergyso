@@ -3,6 +3,8 @@ from employee.models import Employee
 from news.models import News
 from drf_haystack.serializers import HaystackSerializer
 from .search_indexes import EventsIndex
+from rest_framework.authtoken.models import Token
+
 # Serializers define the API representation.
 class EmployeeSerializer(serializers.HyperlinkedModelSerializer):
     employee_department_name = serializers.CharField(source='employee_department.department_name')
@@ -52,3 +54,9 @@ class NewsSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = News
         fields = ('id', 'news_title', 'news_description', 'news_image','news_video','news_document')
+
+class TokenSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Token
+        fields = ('key', 'user')
