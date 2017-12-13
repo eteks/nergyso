@@ -51,7 +51,8 @@ urlpatterns = [
     url(r'^api-token-auth/', obtain_auth_token),
     url(r'^rest-auth/', include('rest_auth.urls')),
     url(r'^events/recent_events/', EventsSet.as_view({"get": "list"}), name="recent_events"),
-    
+    url(r'^events/similar_events/(?P<pk>\d+)/', EventsSet.as_view({"get": "list"}), name="similar_events"),
+    url(r'^news/recent_news/', NewsSet.as_view({"get": "list"}), name="recent_news"),
 
     # Haystack and Elasticsearch
     # url(r'^events', EventsSet.as_view()),  # an example resource endpoint

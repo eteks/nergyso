@@ -67,21 +67,37 @@ class EventsSet(viewsets.ModelViewSet):
 	# @list_route(methods=['post'])
 	@list_route()
 	def recent_events(self, request):
-		print "recent-events"
 		queryset = Events.objects.all().order_by('-id')[:10]
-		for querysets in queryset:
-			print querysets.events_title
+		# for querysets in queryset:
+		# 	print querysets.events_title
 		# events = get_object_or_404(queryset, pk=pk)
 		# events = get_object_or_404(queryset)
 		# serializer = EventsSerializer(queryset)
 		# return Response(serializer.data)
 		return Response(EventsSerializer(queryset,many=True).data)
 
+	# @list_route()
+	# def similar_events(self, request):
+	# 	print "recent-events"
+	# 	queryset = Events.objects.get(pk=pk)
+	# 	for querysets in queryset:
+	# 		print querysets.events_title
+	# 	# events = get_object_or_404(queryset, pk=pk)
+	# 	# events = get_object_or_404(queryset)
+	# 	# serializer = EventsSerializer(queryset)
+	# 	# return Response(serializer.data)
+	# 	return Response(EventsSerializer(queryset,many=True).data)
+
 class NewsSet(viewsets.ModelViewSet):
 	queryset = News.objects.all()
 	serializer_class = NewsSerializer
 	pagination_class = StandardResultsSetPagination
 	# permission_classes = [IsAuthenticated]
+
+	@list_route()
+	def recent_news(self, request):
+		queryset = News.objects.all().order_by('-id')[:10]
+		return Response(NewsSerializer(queryset,many=True).data)
 
 	
 
