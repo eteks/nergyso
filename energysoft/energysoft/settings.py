@@ -28,7 +28,7 @@ SECRET_KEY = 'w7+!$ej12yys+=d!ohstg5gggwx3c=a@+)hrw7a^k24p_42iz4'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['10.0.0.15','127.0.0.1','localhost']
+ALLOWED_HOSTS = ['10.0.0.15','127.0.0.1','localhost','192.168.1.9']
 
 
 # Application definition
@@ -192,7 +192,7 @@ HAYSTACK_CONNECTIONS = {
 
 # DOCUMENT_ROOT = MEDIA_ROOT + "document"
 
-MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+MEDIA_ROOT = os.path.join(BASE_DIR)
 # MEDIA_URL = '/media/'
 
 # STATIC_ROOT = os.path.join(BASE_DIR,'static')
