@@ -1,10 +1,11 @@
 from __future__ import unicode_literals
 from django import forms
 import os
+from django.db import models
 from django.conf import settings
 from django.core.exceptions import ValidationError
-from django.contrib.auth.models import User
-# from models import Employee
+from models import Employee
+
 
 def validate_image(employee_photo):    
     file_size = employee_photo._size
@@ -17,11 +18,12 @@ def validate_image(employee_photo):
 
 class EmpFileForm(forms.ModelForm):
     # events_document = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}))
-    password = forms.CharField(widget=forms.PasswordInput)
+    # password = forms.CharField(widget=forms.PasswordInput)
+    
     employee_photo = forms.ImageField(validators=[validate_image])
 
     # def __init__(self, *args, **kwargs):
-    #     super(EmployeeForm, self).__init__(*args, **kwargs)
+    #     super(EmpFileForm, self).__init__(*args, **kwargs)
     #     self.fields['username'] = forms.ChoiceField(
     #     choices=[(o.id, str(o)) for o in User.objects.all()]
     #     )

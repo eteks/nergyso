@@ -2,7 +2,6 @@
 from __future__ import unicode_literals
 
 from django.db import models
-from forms import EmpFileForm
 from django.conf import settings
 from django.contrib.auth.models import User
 from master.models import AbstractDefault, Department
@@ -19,7 +18,8 @@ class EmployeeManager(models.Manager):
 
 # Create your models here.
 class Employee(User,AbstractDefault):
-	employee_id = models.CharField(verbose_name = 'Employee ID',max_length=15)
+	# username = models.OneToOneField(User, on_delete=models.CASCADE)
+	employee_id = models.CharField(verbose_name = 'Employee ID',max_length=15,unique=True)
 	employee_name = models.CharField(verbose_name = 'Employee Name', max_length = 255)
 	employee_dob = models.DateField(verbose_name = 'Date of Birth')
 	employee_email = models.EmailField(verbose_name = 'Email ID', max_length = 255)
@@ -39,16 +39,20 @@ class Employee(User,AbstractDefault):
 	def __str__(self):
 		return self.user_ptr_id
 
+	def save(self):
+		user=User.objects.get(username=self.username)
+		user.email=self.employee_email
+		user.save()
 	# def set_password(self, password):
 	# 	self.password = make_password(raw_password)
 	# 	self.save()
 	# 	return self
-	def make_password(password):
-		from random import random
-		algo = 'sha1'
-		salt = get_hexdigest(algo, str(random()), str(random()))[:5]
-		hash = get_hexdigest(algo, salt, password)
-		return '%s$%s$%s' % (algo, salt, hash)
+	# def make_password(password):
+	# 	from random import random
+	# 	algo = 'sha1'
+	# 	salt = get_hexdigest(algo, str(random()), str(random()))[:5]
+	# 	hash = get_hexdigest(algo, salt, password)
+	# 	return '%s$%s$%s' % (algo, salt, hash)
 
 	class Meta:
 		verbose_name = "Employee"
