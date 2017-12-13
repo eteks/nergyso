@@ -11,6 +11,11 @@ def update_image(instance, filename):
 	image_path = settings.IMAGES_ROOT
 	image_root=image_path+"emp_"+filename
 	return image_root
+	
+class EmployeeManager(models.Manager):
+    def get_queryset(self):
+        # return super(NewsManager, self).get_queryset().annotate(total_points=Sum('points__value'))
+		return super(EmployeeManager, self).get_queryset().order_by('-user_ptr_id')
 
 # Create your models here.
 class Employee(User,AbstractDefault):
@@ -28,6 +33,8 @@ class Employee(User,AbstractDefault):
 	employee_aadhar_id = models.PositiveIntegerField(verbose_name = 'Aadhar ID')	
 	employee_experience_in_years = models.PositiveIntegerField(verbose_name = 'No. of Years experienced')
 	employee_device_id = models.CharField(verbose_name = 'Device Id',max_length = 255)
+
+	objects = EmployeeManager()
 
 	def __str__(self):
 		return self.user_ptr_id

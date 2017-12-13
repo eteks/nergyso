@@ -36,3 +36,4 @@ class FileFieldForm(forms.ModelForm):
     news_image = forms.ImageField(validators=[validate_image])
     news_video = forms.FileField(validators=[validate_video],required=False)    
     news_document = forms.FileField(validators=[validate_document],required=False)
+    # news_document = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}))

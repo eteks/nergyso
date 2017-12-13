@@ -23,12 +23,19 @@ def update_file(instance, filename):
 	file_root=file_path+"news_"+filename
 	return file_root
 
+class NewsManager(models.Manager):
+    def get_queryset(self):
+        # return super(NewsManager, self).get_queryset().annotate(total_points=Sum('points__value'))
+		return super(NewsManager, self).get_queryset().order_by('-id')
+
 class News(AbstractDefault):
 	news_title = models.CharField(verbose_name = 'Title', max_length = 255)
 	news_description = models.TextField(verbose_name = 'Description', max_length = 1000)
 	news_image = models.ImageField(verbose_name = 'Images',upload_to = update_image)
 	news_video = models.FileField(verbose_name = 'Video',upload_to = update_video) 
 	news_document = models.FileField(verbose_name = 'Document',upload_to = update_file)
+
+	objects = NewsManager()
 
 	def __str__(self):
 		return self.news_title
