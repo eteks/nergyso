@@ -69,11 +69,13 @@ class EventsSet(viewsets.ModelViewSet):
 	def recent_events(self, request):
 		print "recent-events"
 		queryset = Events.objects.all().order_by('-id')[:10]
-		print queryset
+		for querysets in queryset:
+			print querysets.events_title
 		# events = get_object_or_404(queryset, pk=pk)
 		# events = get_object_or_404(queryset)
-		serializer = EventsSerializer(queryset)
-		return Response(serializer.data)
+		# serializer = EventsSerializer(queryset)
+		# return Response(serializer.data)
+		return Response(EventsSerializer(queryset,many=True).data)
 
 class NewsSet(viewsets.ModelViewSet):
 	queryset = News.objects.all()
