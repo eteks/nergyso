@@ -4,9 +4,10 @@ from django.contrib import admin
 from models import Employee
 # from django.contrib.auth.models import User
 from django.contrib.auth.models import Group
+from forms import EmployeeForm
 
 class EmployeeAdmin(admin.ModelAdmin):
-	pass
+	form = EmployeeForm
 
 admin.site.register(Employee, EmployeeAdmin)
 
