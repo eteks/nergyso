@@ -25,12 +25,9 @@ urlpatterns = [
     url(r'^search/', include('haystack.urls')),   
 ]
 
-# if settings.DEBUG is True:
-#     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
 if settings.DEBUG:
     urlpatterns += [
-        url(r'^media/(?P<path>.*)$', serve, {
+        url(r'^(?P<path>.*)$', serve, {
             'document_root': settings.MEDIA_ROOT,
         }),
     ]

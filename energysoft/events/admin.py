@@ -5,6 +5,7 @@ from django.contrib import admin
 from embed_video.admin import AdminVideoMixin
 from .models import Events
 from multiupload.admin import MultiUploadAdmin
+from forms import EventFileForm
 
 # Register your models here.
 # class EventsAdmin(AdminVideoMixin, admin.ModelAdmin):
@@ -12,6 +13,10 @@ from multiupload.admin import MultiUploadAdmin
 
 class EventsAdmin(MultiUploadAdmin):
     # default value of all parameters:
+    model = Events
+    form= EventFileForm
+    list_display = ('events_title','events_venue','events_date')
+    list_filter = ('events_title','events_date',)
     change_form_template = 'multiupload/change_form.html'
     change_list_template = 'multiupload/change_list.html'
     multiupload_template = 'multiupload/upload.html'

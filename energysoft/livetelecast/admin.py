@@ -7,6 +7,8 @@ from models import Livetelecast
 # Register your models here.
 
 class LivetelecastAdmin(admin.ModelAdmin):
-	pass
+	model = Livetelecast
+	list_display = ('livetelecast_url','created_date')
+	list_filter = ('livetelecast_url','created_date',)
 
 admin.site.register(Livetelecast, LivetelecastAdmin)

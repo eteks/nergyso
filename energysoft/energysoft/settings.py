@@ -28,7 +28,7 @@ SECRET_KEY = 'w7+!$ej12yys+=d!ohstg5gggwx3c=a@+)hrw7a^k24p_42iz4'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['10.0.0.15','127.0.0.1','localhost','92.168.1.9','132.148.68.181']
+ALLOWED_HOSTS = ['10.0.0.15','127.0.0.1','localhost','192.168.1.9','132.148.68.181']
 
 
 # Application definition
@@ -88,12 +88,17 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
             ],
         },
+        # 'LOADERS': {'django.template.loaders.filesystem.Loader',}
     },
 ]
 # import os.path
 # print "os_path"+os.path.join(BASE_DIR,'templates/')
 # print os.path.exists('/home/deepak/django_projects/nergyso_web/energysoft/energysoft/templates/search/indexes/events/events_text.txt')
-
+TEMPLATE_LOADERS = (
+  'django.template.loaders.filesystem.Loader',
+  'django.template.loaders.app_directories.Loader',
+#   'django.template.loaders.eggs.Loader',
+)
 
 WSGI_APPLICATION = 'energysoft.wsgi.application'
 
@@ -106,7 +111,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'energysoft', 
         'USER': 'root',
-        'PASSWORD': 'root',
+        'PASSWORD': '',
         'HOST': '127.0.0.1',
         'PORT': '3306',
     }
@@ -184,7 +189,7 @@ HAYSTACK_CONNECTIONS = {
     },
 }
 
-# MEDIA_ROOT = os.path.join(BASE_DIR,'media/')
+# MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
 # IMAGES_ROOT = MEDIA_ROOT + "images"
 
@@ -192,7 +197,7 @@ HAYSTACK_CONNECTIONS = {
 
 # DOCUMENT_ROOT = MEDIA_ROOT + "document"
 
-MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+MEDIA_ROOT = os.path.join(BASE_DIR)
 # MEDIA_URL = '/media/'
 
 # STATIC_ROOT = os.path.join(BASE_DIR,'static')
@@ -207,6 +212,22 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
 
 SITE_ID = 1
+SITE_URL='http://127.0.0.1:8000/'
+# -*- coding: utf-8 -*-
+IMAGE_TYPES = ['.jpg','.png','.jpeg']
+DOCUMENT_TYPES=['.doc', '.docx', '.pdf']
+VIDEO_TYPES=['.mp4']
+
+# 2.5MB - 2621440
+# 5MB - 5242880
+# 10MB - 10485760
+# 20MB - 20971520
+# 50MB - 5242880
+# 100MB 104857600
+# 250MB - 214958080
+# 500MB - 429916160
+MAX_VIDEO_SIZE = 5242880
+MAX_UPLOAD_SIZE = 2621440
 
 ACCOUNT_LOGOUT_ON_GET = True
 
