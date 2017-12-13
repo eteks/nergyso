@@ -7,6 +7,10 @@ from models import Feedback
 # Register your models here.
 
 class FeedbackAdmin(admin.ModelAdmin):
-	pass
+	model = Feedback
+	list_display = ('feedback_description','feedback_category','created_date','feedback_approval_status')
+	list_filter = ('feedback_category','feedback_approval_status','created_date',)
 
+	def has_add_permission(self, request):
+		return False
 admin.site.register(Feedback, FeedbackAdmin)
