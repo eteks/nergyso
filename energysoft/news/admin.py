@@ -8,27 +8,11 @@ from embed_video.admin import AdminVideoMixin
 from .models import News
 from forms import FileFieldForm
 
-# Register your models here.
-
-# def add_attachment(request):
-# 	if request.method == "POST":
-# 		parent_id = request.POST['parent_id']
-# 		files = request.FILES.getlist('myfiles')
-# 		for a_file in files:
-# 			instance = Attachment(
-# 				parent_id=parent_id,
-# 				file_name=a_file.name,
-# 				attachment=a_file
-# 			)
-# 			instance.save()
-# 		return redirect("add_attachment_done")
-# 	return render(request, "add_attachment.html")
-
-# def add_attachment_done(request):
-# 	return render_to_response('add_attachment_done.html')
-
 class NewsAdmin(AdminVideoMixin, admin.ModelAdmin):
 	# pass
+	model = News
 	form= FileFieldForm
+	list_display = ('news_title','created_date','modified_date')
+	list_filter = ('news_title',)
 
 admin.site.register(News, NewsAdmin)

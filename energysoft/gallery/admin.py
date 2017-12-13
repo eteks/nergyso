@@ -4,8 +4,12 @@ from __future__ import unicode_literals
 from django.contrib import admin
 
 from models import Gallery
+from forms import GalleryFileForm
 # Register your models here.
 class GalleryAdmin(admin.ModelAdmin):
-	pass
+	model = Gallery
+	form= GalleryFileForm
+	list_display = ('gallery_title','created_date','gallery_category','gal_image')
+	list_filter = ('gallery_title','created_date','gallery_category',)
 
 admin.site.register(Gallery, GalleryAdmin)

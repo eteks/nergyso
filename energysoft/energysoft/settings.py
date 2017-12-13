@@ -184,7 +184,7 @@ HAYSTACK_CONNECTIONS = {
     },
 }
 
-# MEDIA_ROOT = os.path.join(BASE_DIR,'media/')
+# MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
 # IMAGES_ROOT = MEDIA_ROOT + "images"
 
@@ -207,6 +207,22 @@ MEDIA_ROOT = os.path.join(BASE_DIR)
 
 
 SITE_ID = 1
+SITE_URL='http://127.0.0.1:8000/'
+# -*- coding: utf-8 -*-
+IMAGE_TYPES = ['.jpg','.png','.jpeg']
+DOCUMENT_TYPES=['.doc', '.docx', '.pdf']
+VIDEO_TYPES=['.mp4']
+
+# 2.5MB - 2621440
+# 5MB - 5242880
+# 10MB - 10485760
+# 20MB - 20971520
+# 50MB - 5242880
+# 100MB 104857600
+# 250MB - 214958080
+# 500MB - 429916160
+MAX_VIDEO_SIZE = 5242880
+MAX_UPLOAD_SIZE = 2621440
 
 ACCOUNT_LOGOUT_ON_GET = True
 
