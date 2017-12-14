@@ -5,6 +5,8 @@ from events.models import Events
 from drf_haystack.serializers import HaystackSerializer
 from .search_indexes import EventsIndex
 from rest_framework.authtoken.models import Token
+from feedback.models import Feedback
+from shoutout.models import Shoutout
 
 # Serializers define the API representation.
 class EmployeeSerializer(serializers.HyperlinkedModelSerializer):
@@ -91,3 +93,13 @@ class TokenSerializer(serializers.ModelSerializer):
     class Meta:
         model = Token
         fields = ('key', 'user','username','email')
+
+class FeedbackSerializer(serializers.HyperlinkedModelSerializer):    
+    class Meta:
+        model = Feedback
+        fields = ('id','feedback_description','feedback_employee', 'feedback_category', 'feedback_rating_count')
+
+class ShoutoutSerializer(serializers.HyperlinkedModelSerializer):    
+    class Meta:
+        model = Shoutout
+        fields = ('id','shoutout_description','shoutout_employee')

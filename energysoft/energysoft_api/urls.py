@@ -4,7 +4,7 @@ from django.conf import settings
 # from .views import ApiEndpoint
 
 from rest_framework import routers
-from .views import EmployeeSet,EventsSet,NewsSet
+from .views import EmployeeSet,EventsSet,NewsSet,FeedbackSet,ShoutoutSet
 from rest_framework.authtoken.views import obtain_auth_token
 from fcm_django.api.rest_framework import FCMDeviceAuthorizedViewSet
 
@@ -53,7 +53,8 @@ urlpatterns = [
     url(r'^events/recent_events/', EventsSet.as_view({"get": "list"}), name="recent_events"),
     url(r'^events/similar_events/(?P<pk>\d+)/', EventsSet.as_view({"get": "list"}), name="similar_events"),
     url(r'^news/recent_news/', NewsSet.as_view({"get": "list"}), name="recent_news"),
-
+    url(r'^feedback/', FeedbackSet.as_view({"post": "create"})),
+    url(r'^shoutout/', ShoutoutSet.as_view({"post": "create"})),
     # Haystack and Elasticsearch
     # url(r'^events', EventsSet.as_view()),  # an example resource endpoint
 ]

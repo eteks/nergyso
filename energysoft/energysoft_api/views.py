@@ -5,7 +5,7 @@ from django.shortcuts import render,get_object_or_404
 # from oauth2_provider.views.generic import ProtectedResourceView
 from django.http import HttpResponse
 from rest_framework import viewsets
-from energysoft_api.serializers import EmployeeSerializer, EventsSerializer,NewsSerializer
+from energysoft_api.serializers import EmployeeSerializer, EventsSerializer,NewsSerializer, FeedbackSerializer,ShoutoutSerializer
 from employee.models import Employee
 from events.models import Events
 from employee.models import Employee
@@ -18,6 +18,9 @@ from energysoft_api.pagination import StandardResultsSetPagination
 # from rest_framework.views import APIView
 from rest_framework.decorators import detail_route, list_route
 from rest_framework.response import Response
+from feedback.models import Feedback
+from rest_framework import status
+from shoutout.models import Shoutout
 
 # ViewSets define the view behavior.
 class EmployeeSet(viewsets.ModelViewSet):
@@ -98,6 +101,27 @@ class NewsSet(viewsets.ModelViewSet):
 	def recent_news(self, request):
 		queryset = News.objects.all().order_by('-id')[:10]
 		return Response(NewsSerializer(queryset,many=True).data)
+
+class FeedbackSet(viewsets.ModelViewSet):
+	queryset = Feedback.objects.all()
+	serializer_class = FeedbackSerializer
+	def create(self, request, *args, **kwargs):
+		serializer = self.get_serializer(data=request.data)
+		serializer.is_valid(raise_exception=True)
+		self.perform_create(serializer)
+		headers = self.get_success_headers(serializer.data)
+		return Response({"success": "Feedback posted successfully"}, status=status.HTTP_201_CREATED, headers=headers)
+
+class ShoutoutSet(viewsets.ModelViewSet):
+	queryset = Shoutout.objects.all()
+	serializer_class = ShoutoutSerializer
+	def create(self, request, *args, **kwargs):
+		serializer = self.get_serializer(data=request.data)
+		serializer.is_valid(raise_exception=True)
+		self.perform_create(serializer)
+		headers = self.get_success_headers(serializer.data)
+		return Response({"success": "Shoutout posted successfully"}, status=status.HTTP_201_CREATED, headers=headers)
+
 
 	
 

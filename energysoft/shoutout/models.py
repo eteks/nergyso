@@ -12,7 +12,7 @@ class Shoutout(AbstractDefault):
 	shoutout_approval_status = models.BooleanField(verbose_name = 'Shoutout Approve By Admin', default = False)
 
 	def __str__(self):
-		return self.gallery_title
+		return self.shoutout_description #updated by kalai
 
 	class Meta:
 		verbose_name = "Shoutout"
