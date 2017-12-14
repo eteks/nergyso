@@ -1,0 +1,36 @@
+https://docs.microsoft.com/en-us/azure/notification-hubs/notification-hubs-android-push-notification-google-gcm-get-started
+
+Currently, Google is migrating from the Google Cloud Messaging (GCM) platform to Firebase Cloud Messaging (FCM).
+    So, first of all, you need to create a new project from Google's Firebase Console.
+    Then add Firebase to your Android app, you can follow the steps in this guide.
+    Then configure a new notification hub.
+    Finally, connect your app to the notification hub.
+At this point, you can send push notifications to Android app with the Azure portal.
+
+
+
+
+From the Google Play services version 6.5, you can selectively compile Google Play service APIs into your app.
+To include GCM part only, use:
+com.google.android.gms:play-services-gcm:7.8.0
+
+
+To generate APK File:
+According to Build Unsigned APK with Gradle you can simply build your application with gradle. In order to do that:
+    click on the drop down menu on the toolbar at the top (usually with android icon and name of your application)
+    select Edit configurations
+    click plus sign at top left corner or press alt+insert
+    select Gradle
+    choose your module as Gradle project
+    in Tasks: enter assemble
+    press OK
+    press play
+After that you should find your unsigned 'apk' in directory ProjectName\app\build\outputs\apk
+
+
+APA91bEBXwp9gXXUlQK9UrfgMWrUviXq8Qk4vuWLEgqwOyqrE_kiYNdEAASrg8tlOKOE-8NjcmdZvaVILesx0JUklUeMaAhDdgl180JZhVKYXbslrRWYt9PlPtJhURWOpsvdHIbHL38I
+
+
+apply plugin: 'com.google.gms.google-services'
+
+

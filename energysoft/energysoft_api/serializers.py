@@ -22,7 +22,7 @@ class EmployeeSerializer(serializers.HyperlinkedModelSerializer):
         # extra_kwargs = {
         #     'department_name': {'lookup_field': 'department_name'}
         # }
-        fields = ('id', 'employee_name', 'employee_dob', 'employee_email','employee_mobile',
+        fields = ('id','employee_id','employee_name', 'employee_dob', 'employee_email','employee_mobile',
                   'employee_doj','employee_designation','employee_photo','employee_bloodgroup',
                   'employee_address','employee_aadhar_id','employee_experience_in_years',
                   'employee_device_id','employee_department_name','created_date')
