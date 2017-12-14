@@ -97,7 +97,7 @@ class TokenSerializer(serializers.ModelSerializer):
 class FeedbackSerializer(serializers.HyperlinkedModelSerializer):    
     class Meta:
         model = Feedback
-        fields = ('id','feedback_description','feedback_employee', 'feedback_category', 'feedback_rating_count')
+        fields = ('id','feedback_description','feedback_queries','feedback_employee', 'feedback_category', 'feedback_rating_count')
 
 class ShoutoutSerializer(serializers.HyperlinkedModelSerializer):    
     class Meta:
