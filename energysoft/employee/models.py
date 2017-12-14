@@ -40,11 +40,12 @@ class Employee(User,AbstractDefault):
 	def __str__(self):
 		return self.user_ptr_id
 
-	def save(self):
-		user=User.objects.get(username=self.username)
-		user.email=self.employee_email
-		user.save()
 
+	# def save(self):
+	# 	user=User.objects.get(username=self.username)
+	# 	user.email=self.employee_email
+	# 	user.save()
+	
 	# def set_password(self, password):
 	# 	self.password = make_password(raw_password)
 	# 	self.save()

@@ -9,7 +9,7 @@ pip install django-oauth2-provider
 pip install django-haystack==2.6.1
 pip install elasticsearch==6.0.0
 pip install drf-haystack==1.6.1
-pip install admin-multiupload==1.10
+pip install git+git://github.com/gkuhn1/django-admin-multiupload.git
 pip install django-rest-auth
 pip install fcm-django
 

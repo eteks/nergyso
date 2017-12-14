@@ -1,0 +1,44 @@
+APA91bEBXwp9gXXUlQK9UrfgMWrUviXq8Qk4vuWLEgqwOyqrE_kiYNdEAASrg8tlOKOE-8NjcmdZvaVILesx0JUklUeMaAhDdgl180JZhVKYXbslrRWYt9PlPtJhURWOpsvdHIbHL38I
+
+
+10-29 18:34:41.253 12466-12594/com.example.user.mahindra I/System.out: GCMIDAPA91bEBXwp9gXXUlQK9UrfgMWrUviXq8Qk4vuWLEgqwOyqrE_kiYNdEAASrg8tlOKOE-8NjcmdZvaVILesx0JUklUeMaAhDdgl180JZhVKYXbslrRWYt9PlPtJhURWOpsvdHIbHL38I
+
+ALTER TABLE user_auth ADD gcm_registered TEXT NULL, gcm_token TEXT NULL ;  
+
+insert into user_auth (user_password,username,usertype,gcm_registered,gcm_token) values ('manager','manager','manager','APA91bEBXwp9gXXUlQK9UrfgMWrUviXq8Qk4vuWLEgqwOyqrE_kiYNdEAASrg8tlOKOE-8NjcmdZvaVILesx0JUklUeMaAhDdgl180JZhVKYXbslrRWYt9PlPtJhURWOpsvdHIbHL38I','');
+
+update user_auth set usertype='Service Manager' where usertype='manager';
+update user_auth set user_password='quality',username='quality' where usertype='Quality Agent';
+update user_auth set user_password='service',username='service' where usertype='Service Agent';
+
+if(Objects.equals(gcmRegistrationId, "dfdfd")) {
+                        MainActivity.mClient.getPush().register(gcmRegistrationId);
+                        System.out.println("after register");
+                    }
+
+
+                    PLATFORM
+REGISTRATION
+OUTCOME
+gcm
+1031217707862772963-1971896941148129539-2
+The Notification was successfully sent to the Push Notification System
+gcm
+2842108003758310823-8639054517163329542-3
+The Notification was successfully sent to the Push Notification System
+gcm
+7919024495273777914-8737741366306709592-1
+The Notification was successfully sent to the Push Notification System
+gcm
+9211098266113196209-2058562404710109205-3
+
+
+cyx2Z78FzNs:APA91bHxbo1yr4v8pAdPiNhRyX3iuBbkiYjTmSZMeoHjR9TrL1YLALYiFLAKRTpo7qdA9Rma_fQYfab_ekZJCWV8ZRJdzpk-9rkDAr511KaV6uWa3SRDy_vN2q5Gr8zp64lwYdN-YqLN
+
+cyx2Z78FzNs:APA91bHxbo1yr4v8pAdPiNhRyX3iuBbkiYjTmSZMeoHjR9TrL1YLALYiFLAKRTpo7qdA9Rma_fQYfab_ekZJCWV8ZRJdzpk-9rkDAr511KaV6uWa3SRDy_vN2q5Gr8zp64lwYdN-YqLN
+
+PY01CJ3439
+
+
+
+
