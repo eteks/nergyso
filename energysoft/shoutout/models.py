@@ -8,7 +8,8 @@ from master.models import AbstractDefault
 # Create your models here.
 class Shoutout(AbstractDefault):
 	shoutout_description = models.TextField(verbose_name = 'Description', max_length = 1000)
-	shoutout_employee = models.ForeignKey(Employee,verbose_name = 'Employee')
+	shoutout_employee_from = models.ForeignKey(Employee,verbose_name = 'Employee From')
+	shoutout_employee_to = models.ForeignKey(Employee,verbose_name = 'Employee To')
 	shoutout_approval_status = models.BooleanField(verbose_name = 'Shoutout Approve By Admin', default = False)
 
 	def __str__(self):
