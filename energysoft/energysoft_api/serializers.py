@@ -7,6 +7,7 @@ from .search_indexes import EventsIndex
 from rest_framework.authtoken.models import Token
 from feedback.models import Feedback
 from shoutout.models import Shoutout
+from push_notifications.models import APNSDevice, GCMDevice
 
 # Serializers define the API representation.
 class EmployeeSerializer(serializers.HyperlinkedModelSerializer):
@@ -103,3 +104,9 @@ class ShoutoutSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Shoutout
         fields = ('id','shoutout_description','shoutout_employee')
+
+class NotificationSerializer(serializers.HyperlinkedModelSerializer):    
+    class Meta:
+        model = GCMDevice
+        # fields = '__all__'
+        fields = ('id','registration_id','cloud_message_type')

@@ -5,7 +5,7 @@ from django.shortcuts import render,get_object_or_404
 # from oauth2_provider.views.generic import ProtectedResourceView
 from django.http import HttpResponse
 from rest_framework import viewsets
-from energysoft_api.serializers import EmployeeSerializer, EventsSerializer,NewsSerializer, FeedbackSerializer,ShoutoutSerializer
+from energysoft_api.serializers import EmployeeSerializer, EventsSerializer,NewsSerializer, FeedbackSerializer,ShoutoutSerializer,NotificationSerializer
 from employee.models import Employee
 from events.models import Events
 from employee.models import Employee
@@ -21,6 +21,7 @@ from rest_framework.response import Response
 from feedback.models import Feedback
 from rest_framework import status
 from shoutout.models import Shoutout
+from push_notifications.models import APNSDevice, GCMDevice
 
 # ViewSets define the view behavior.
 class EmployeeSet(viewsets.ModelViewSet):
@@ -122,8 +123,19 @@ class ShoutoutSet(viewsets.ModelViewSet):
 		headers = self.get_success_headers(serializer.data)
 		return Response({"success": "Shoutout posted successfully"}, status=status.HTTP_201_CREATED, headers=headers)
 
-
-	
+class NotificationSet(viewsets.ModelViewSet):	
+	serializer_class = NotificationSerializer	
+	@list_route()
+	def get_queryset(self, *args, **kwargs):
+		queryset = GCMDevice.objects.all()
+		queryset.send_message("This is a test message", title="Test Notification")
+		# serializer = self.get_serializer()
+		# serializer.is_valid(raise_exception=True)
+		# self.perform_create(serializer)
+		# headers = self.get_success_headers(serializer.data)
+		# return Response({"success": "Message sent successfully"}, status=status.HTTP_201_CREATED, headers=headers)
+		return Response({"success": "Message sent successfully"})
+		# return Response(NotificationSerializer(queryset,many=True).data)
 
 
 
