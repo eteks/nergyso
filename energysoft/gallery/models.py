@@ -17,7 +17,7 @@ def update_image(instance, filename):
 class Gallery(AbstractDefault):
 	gallery_title = models.CharField(verbose_name = 'Title', max_length = 255)
 	gallery_image = models.ImageField(verbose_name = 'Images',upload_to = update_image)
-	gallery_category = models.CharField(verbose_name = 'Gallery Category', choices=GALLERY_CATEGORY,max_length=50)
+	# gallery_category = models.CharField(verbose_name = 'Gallery Category', choices=GALLERY_CATEGORY,max_length=50)
 
 	def __str__(self):
 		return self.gallery_title

@@ -28,7 +28,7 @@ SECRET_KEY = 'w7+!$ej12yys+=d!ohstg5gggwx3c=a@+)hrw7a^k24p_42iz4'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['10.0.0.15','127.0.0.1','localhost','192.168.1.9','132.148.68.181']
+ALLOWED_HOSTS = ['10.0.0.15','127.0.0.1','localhost','192.168.1.9','132.148.68.181','10.0.0.2']
 
 
 # Application definition
@@ -59,17 +59,20 @@ INSTALLED_APPS = [
     'rest_auth' , #predefined app
     'fcm_django',
     'push_notifications',
+    'polls',
+    'banner'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # 'corsheaders.middleware.CorsMiddleware',
+    'energysoft.middleware.DisableCSRF',
 ]
 
 ROOT_URLCONF = 'energysoft.urls'
@@ -176,9 +179,10 @@ REST_FRAMEWORK = {
     # 'DEFAULT_AUTHENTICATION_CLASSES': [
     #     'rest_framework.authentication.TokenAuthentication',
     # ],
-    # 'DEFAULT_PERMISSION_CLASSES': [
-    #     'rest_framework.permissions.IsAuthenticated',
-    # ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        # 'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.AllowAny',
+    ],
     # 'PAGE_SIZE': 100
 }
 
@@ -277,3 +281,7 @@ PUSH_NOTIFICATIONS_SETTINGS = {
         # "WNS_PACKAGE_SECURITY_ID": "[your package security id, e.g: 'ms-app://e-3-4-6234...']",
         # "WNS_SECRET_KEY": "[your app secret key, e.g.: 'KDiejnLKDUWodsjmewuSZkk']",
 }
+
+# REST_SESSION_LOGIN = False
+
+CSRF_COOKIE_SECURE = True
