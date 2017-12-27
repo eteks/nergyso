@@ -9,7 +9,7 @@ from forms import GalleryFileForm
 class GalleryAdmin(admin.ModelAdmin):
 	model = Gallery
 	form= GalleryFileForm
-	list_display = ('gallery_title','created_date','gallery_category','gal_image')
-	list_filter = ('gallery_title','created_date','gallery_category',)
+	list_display = ('gallery_title','created_date','gal_image')
+	list_filter = ('gallery_title','created_date')
 
 admin.site.register(Gallery, GalleryAdmin)

@@ -23,7 +23,7 @@ class Employee(User,AbstractDefault):
 	employee_id = models.CharField(verbose_name = 'Employee ID',max_length=15,unique=True)
 	employee_name = models.CharField(verbose_name = 'Employee Name', max_length = 255)
 	employee_dob = models.DateField(verbose_name = 'Date of Birth')
-	employee_email = models.EmailField(verbose_name = 'Email ID', max_length = 255)
+	# employee_email = models.EmailField(verbose_name = 'Email ID', max_length = 255)
 	employee_mobile = models.CharField(verbose_name = 'Mobile Number', max_length = 10)
 	employee_doj = models.DateField(verbose_name = 'Date of Joining')
 	employee_department = models.ForeignKey(Department,verbose_name = 'Department')
@@ -31,7 +31,7 @@ class Employee(User,AbstractDefault):
 	employee_photo = models.ImageField(verbose_name = 'Profile Image', upload_to = update_image)
 	employee_bloodgroup = models.CharField(verbose_name = 'Blood Group',max_length = 255)
 	employee_address = models.TextField(verbose_name = 'Address',max_length = 1000)
-	employee_aadhar_id = models.IntegerField(verbose_name = 'Aadhar ID',)	
+	# employee_aadhar_id = models.IntegerField(verbose_name = 'Aadhar ID',)	
 	employee_experience_in_years = models.IntegerField(verbose_name = 'No. of Years experienced')
 	employee_device_id = models.CharField(verbose_name = 'Device Id',max_length = 255)
 

@@ -28,7 +28,7 @@ SECRET_KEY = 'w7+!$ej12yys+=d!ohstg5gggwx3c=a@+)hrw7a^k24p_42iz4'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['10.0.0.15','127.0.0.1','localhost','192.168.1.9','132.148.68.181']
+ALLOWED_HOSTS = ['10.0.0.15','127.0.0.1','localhost','192.168.1.9','132.148.68.181','10.0.0.2']
 
 
 # Application definition
@@ -58,17 +58,20 @@ INSTALLED_APPS = [
     'multiupload', #custom app 
     'rest_auth' , #predefined app
     'fcm_django',
+    'polls',
+    'banner'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # 'corsheaders.middleware.CorsMiddleware',
+    'energysoft.middleware.DisableCSRF',
 ]
 
 ROOT_URLCONF = 'energysoft.urls'
@@ -175,9 +178,10 @@ REST_FRAMEWORK = {
     # 'DEFAULT_AUTHENTICATION_CLASSES': [
     #     'rest_framework.authentication.TokenAuthentication',
     # ],
-    # 'DEFAULT_PERMISSION_CLASSES': [
-    #     'rest_framework.permissions.IsAuthenticated',
-    # ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        # 'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.AllowAny',
+    ],
     # 'PAGE_SIZE': 100
 }
 
@@ -267,3 +271,7 @@ FCM_DJANGO_SETTINGS = {
          # default: False
         "DELETE_INACTIVE_DEVICES": True,
 }
+
+# REST_SESSION_LOGIN = False
+
+CSRF_COOKIE_SECURE = True

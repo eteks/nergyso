@@ -8,5 +8,5 @@ from master.models import AbstractDefault
 class Banner(AbstractDefault):
 	banner_image = models.FileField(verbose_name = 'Banner Image')
 
-	def __str__(self):
-		return self.banner_id
+	# def __str__(self):
+	# 	return self.id
