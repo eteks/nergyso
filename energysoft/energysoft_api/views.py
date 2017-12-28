@@ -5,7 +5,7 @@ from django.shortcuts import render,get_object_or_404
 # from oauth2_provider.views.generic import ProtectedResourceView
 from django.http import HttpResponse
 from rest_framework import viewsets
-from energysoft_api.serializers import EmployeeSerializer, EventsSerializer,NewsSerializer, FeedbackSerializer,ShoutoutSerializer
+from energysoft_api.serializers import EmployeeSerializer, EventsSerializer,NewsSerializer, FeedbackSerializer,ShoutoutSerializer,PasswordChangeSerializer
 from employee.models import Employee
 from events.models import Events
 from employee.models import Employee
@@ -21,6 +21,16 @@ from rest_framework.response import Response
 from feedback.models import Feedback
 from rest_framework import status
 from shoutout.models import Shoutout
+from rest_framework.generics import GenericAPIView, RetrieveUpdateAPIView
+from django.utils.decorators import method_decorator
+from django.views.decorators.debug import sensitive_post_parameters
+from django.utils.translation import ugettext_lazy as _
+
+sensitive_post_parameters_m = method_decorator(
+    sensitive_post_parameters(
+        'password', 'old_password', 'new_password1', 'new_password2'
+    )
+)
 
 # ViewSets define the view behavior.
 class EmployeeSet(viewsets.ModelViewSet):
@@ -122,8 +132,25 @@ class ShoutoutSet(viewsets.ModelViewSet):
 		headers = self.get_success_headers(serializer.data)
 		return Response({"success": "Shoutout posted successfully"}, status=status.HTTP_201_CREATED, headers=headers)
 
+class PasswordChangeView(GenericAPIView):
+    """
+    Calls Django Auth SetPasswordForm save method.
 
-	
+    Accepts the following POST parameters: new_password1, new_password2
+    Returns the success/fail message.
+    """
+    serializer_class = PasswordChangeSerializer
+    permission_classes = (IsAuthenticated,)
+
+    @sensitive_post_parameters_m
+    def dispatch(self, *args, **kwargs):
+        return super(PasswordChangeView, self).dispatch(*args, **kwargs)
+
+    def post(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({"detail": _("New password has been saved.")})
 
 
 

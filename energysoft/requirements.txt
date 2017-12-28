@@ -12,6 +12,7 @@ pip install drf-haystack==1.6.1
 pip install git+git://github.com/gkuhn1/django-admin-multiupload.git
 pip install django-rest-auth
 pip install fcm-django
+pip install django-push-notifications
 
 
 

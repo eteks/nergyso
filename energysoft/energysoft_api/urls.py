@@ -4,7 +4,7 @@ from django.conf import settings
 # from .views import ApiEndpoint
 
 from rest_framework import routers
-from .views import EmployeeSet,EventsSet,NewsSet,FeedbackSet,ShoutoutSet
+from .views import EmployeeSet,EventsSet,NewsSet,FeedbackSet,ShoutoutSet,PasswordChangeView
 from rest_framework.authtoken.views import obtain_auth_token
 from fcm_django.api.rest_framework import FCMDeviceAuthorizedViewSet
 
@@ -49,6 +49,7 @@ urlpatterns = [
     # url(r'^o/', include(oauth2_endpoint_views, namespace='oauth2_provider')),
     # url(r'^api/hello', ApiEndpoint.as_view()),  # an example resource endpoint
     url(r'^api-token-auth/', obtain_auth_token),
+    url(r'^rest-auth/password/change/$', PasswordChangeView.as_view(),name='rest_password_change'),
     url(r'^rest-auth/', include('rest_auth.urls')),
     url(r'^events/recent_events/', EventsSet.as_view({"get": "list"}), name="recent_events"),
     url(r'^events/similar_events/(?P<pk>\d+)/', EventsSet.as_view({"get": "list"}), name="similar_events"),
