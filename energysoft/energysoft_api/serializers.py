@@ -9,6 +9,7 @@ from feedback.models import Feedback
 from shoutout.models import Shoutout
 from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm
 from django.conf import settings
+from push_notifications.models import APNSDevice, GCMDevice
 
 # Serializers define the API representation.
 class EmployeeSerializer(serializers.HyperlinkedModelSerializer):
@@ -155,3 +156,9 @@ class PasswordChangeSerializer(serializers.Serializer):
         if not self.logout_on_password_change:
             from django.contrib.auth import update_session_auth_hash
             update_session_auth_hash(self.request, self.user)
+
+class NotificationSerializer(serializers.HyperlinkedModelSerializer):    
+    class Meta:
+        model = GCMDevice
+        # fields = '__all__'
+        fields = ('id','registration_id','cloud_message_type')

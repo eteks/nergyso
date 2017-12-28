@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'multiupload', #custom app 
     'rest_auth' , #predefined app
     'fcm_django',
+    'push_notifications',
     'polls',
     'banner'
 ]
@@ -261,15 +262,24 @@ REST_AUTH_SERIALIZERS = {
     'TOKEN_SERIALIZER': 'energysoft_api.serializers.TokenSerializer',
 }
 
-FCM_DJANGO_SETTINGS = {
-        "FCM_SERVER_KEY": "AIzaSyCgwNfe-kisOtP0Xd0CLAl4rLS-ciAAEXQ",
-         # true if you want to have only one active device per registered user at a time
-         # default: False
-        "ONE_DEVICE_PER_USER": True,
-         # devices to which notifications cannot be sent,
-         # are deleted upon receiving error response from FCM
-         # default: False
-        "DELETE_INACTIVE_DEVICES": True,
+# FCM_DJANGO_SETTINGS = {
+#         "FCM_SERVER_KEY": "AIzaSyCgwNfe-kisOtP0Xd0CLAl4rLS-ciAAEXQ",
+#          # true if you want to have only one active device per registered user at a time
+#          # default: False
+#         "ONE_DEVICE_PER_USER": True,
+#          # devices to which notifications cannot be sent,
+#          # are deleted upon receiving error response from FCM
+#          # default: False
+#         "DELETE_INACTIVE_DEVICES": True,
+# }
+
+PUSH_NOTIFICATIONS_SETTINGS = {
+        "FCM_API_KEY": "AIzaSyCgwNfe-kisOtP0Xd0CLAl4rLS-ciAAEXQ",
+        # "GCM_API_KEY": "[your api key]",
+        # "APNS_CERTIFICATE": "/path/to/your/certificate.pem",
+        # "APNS_TOPIC": "com.example.push_test",
+        # "WNS_PACKAGE_SECURITY_ID": "[your package security id, e.g: 'ms-app://e-3-4-6234...']",
+        # "WNS_SECRET_KEY": "[your app secret key, e.g.: 'KDiejnLKDUWodsjmewuSZkk']",
 }
 
 # REST_SESSION_LOGIN = False

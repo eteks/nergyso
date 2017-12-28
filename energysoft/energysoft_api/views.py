@@ -5,7 +5,7 @@ from django.shortcuts import render,get_object_or_404
 # from oauth2_provider.views.generic import ProtectedResourceView
 from django.http import HttpResponse
 from rest_framework import viewsets
-from energysoft_api.serializers import EmployeeSerializer, EventsSerializer,NewsSerializer, FeedbackSerializer,ShoutoutSerializer,PasswordChangeSerializer
+from energysoft_api.serializers import EmployeeSerializer, EventsSerializer,NewsSerializer, FeedbackSerializer,ShoutoutSerializer,PasswordChangeSerializer,NotificationSerializer
 from employee.models import Employee
 from events.models import Events
 from employee.models import Employee
@@ -25,7 +25,7 @@ from rest_framework.generics import GenericAPIView, RetrieveUpdateAPIView
 from django.utils.decorators import method_decorator
 from django.views.decorators.debug import sensitive_post_parameters
 from django.utils.translation import ugettext_lazy as _
-
+from push_notifications.models import APNSDevice, GCMDevice
 sensitive_post_parameters_m = method_decorator(
     sensitive_post_parameters(
         'password', 'old_password', 'new_password1', 'new_password2'
@@ -151,6 +151,20 @@ class PasswordChangeView(GenericAPIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response({"detail": _("New password has been saved.")})
+
+class NotificationSet(viewsets.ModelViewSet):	
+	serializer_class = NotificationSerializer	
+	@list_route()
+	def get_queryset(self, *args, **kwargs):
+		queryset = GCMDevice.objects.all()
+		queryset.send_message("This is a test message", title="Test Notification")
+		# serializer = self.get_serializer()
+		# serializer.is_valid(raise_exception=True)
+		# self.perform_create(serializer)
+		# headers = self.get_success_headers(serializer.data)
+		# return Response({"success": "Message sent successfully"}, status=status.HTTP_201_CREATED, headers=headers)
+		return Response({"success": "Message sent successfully"})
+		# return Response(NotificationSerializer(queryset,many=True).data)
 
 
 
