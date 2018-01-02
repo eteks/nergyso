@@ -136,15 +136,9 @@ class ShoutoutPostSet(viewsets.ModelViewSet):
 		return Response({"success": "Shoutout posted successfully"}, status=status.HTTP_201_CREATED, headers=headers)
 
 class ShoutoutListSet(viewsets.ModelViewSet):
-	queryset = Shoutout.objects.all()
+	queryset = Shoutout.objects.all().order_by('-id')
 	serializer_class = ShoutoutSerializer
 	pagination_class = StandardResultsSetPagination
-	# permission_classes = [IsAuthenticated]
-
-	@list_route()
-	def shoutout_list(self, request):
-		queryset = Shoutout.objects.all().order_by('-id')[:10]
-		return Response(ShoutoutSerializer(queryset,many=True).data)
 
 class PasswordChangeView(GenericAPIView):
     """

@@ -58,7 +58,7 @@ urlpatterns = [
     url(r'^news/recent_news/', NewsSet.as_view({"get": "list"}), name="recent_news"),
     url(r'^feedback/', FeedbackSet.as_view({"post": "create"})),
     url(r'^shoutout_post/', ShoutoutPostSet.as_view({"post": "create"})),
-    url(r'^shoutout_list/', ShoutoutListSet.as_view({"get": "list"}), name="shoutout_list"),
+    url(r'^shoutout_list/', ShoutoutListSet.as_view({"get": "list"})),
     url(r'^send_notification/', NotificationSet.as_view({"get": "list"}), name="send_notification"),
 
     url(r'^banner/', BannerSet.as_view({"get": "list"}), name="banners"),
