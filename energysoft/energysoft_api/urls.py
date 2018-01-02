@@ -4,7 +4,7 @@ from django.conf import settings
 # from .views import ApiEndpoint
 
 from rest_framework import routers
-from .views import EmployeeSet,EventsSet,NewsSet,FeedbackSet,ShoutoutPostSet,PasswordChangeView,NotificationSet,BannerSet,ShoutoutListSet
+from .views import EmployeeSet,EventsSet,NewsSet,FeedbackSet,ShoutoutPostSet,PasswordChangeView,NotificationSet,BannerSet,ShoutoutListSet,GalleryListSet
 from rest_framework.authtoken.views import obtain_auth_token
 from fcm_django.api.rest_framework import FCMDeviceAuthorizedViewSet
 from push_notifications.api.rest_framework import APNSDeviceAuthorizedViewSet, GCMDeviceAuthorizedViewSet
@@ -18,6 +18,7 @@ router.register(r'news', NewsSet, base_name="news-search")
 router.register(r'notification', FCMDeviceAuthorizedViewSet)
 # router.register(r'events/recent-events', NewsSet, name="recent_events")
 router.register(r'device/gcm', GCMDeviceAuthorizedViewSet)
+router.register(r'gallery', GalleryListSet, base_name="gallery")
 
 # OAuth2 provider endpoints
 # oauth2_endpoint_views = [
@@ -60,7 +61,7 @@ urlpatterns = [
     url(r'^shoutout_post/', ShoutoutPostSet.as_view({"post": "create"})),
     url(r'^shoutout_list/', ShoutoutListSet.as_view({"get": "list"})),
     url(r'^send_notification/', NotificationSet.as_view({"get": "list"}), name="send_notification"),
-
+    url(r'^gallery_list/', GalleryListSet.as_view({"get": "list"})),
     url(r'^banner/', BannerSet.as_view({"get": "list"}), name="banners"),
     # Haystack and Elasticsearch
     # url(r'^events', EventsSet.as_view()),  # an example resource endpoint

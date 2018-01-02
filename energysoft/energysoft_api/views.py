@@ -5,7 +5,7 @@ from django.shortcuts import render,get_object_or_404
 # from oauth2_provider.views.generic import ProtectedResourceView
 from django.http import HttpResponse
 from rest_framework import viewsets
-from energysoft_api.serializers import EmployeeSerializer, EventsSerializer,NewsSerializer, FeedbackSerializer,ShoutoutSerializer,PasswordChangeSerializer,NotificationSerializer,BannerSerializer
+from energysoft_api.serializers import EmployeeSerializer, EventsSerializer,NewsSerializer, FeedbackSerializer,ShoutoutSerializer,PasswordChangeSerializer,NotificationSerializer,BannerSerializer,GallerySerializer
 from employee.models import Employee
 from events.models import Events
 from employee.models import Employee
@@ -27,6 +27,7 @@ from django.views.decorators.debug import sensitive_post_parameters
 from django.utils.translation import ugettext_lazy as _
 from push_notifications.models import APNSDevice, GCMDevice
 from banner.models import Banner
+from gallery.models import Gallery
 
 sensitive_post_parameters_m = method_decorator(
     sensitive_post_parameters(
@@ -138,6 +139,11 @@ class ShoutoutPostSet(viewsets.ModelViewSet):
 class ShoutoutListSet(viewsets.ModelViewSet):
 	queryset = Shoutout.objects.all().order_by('-id')
 	serializer_class = ShoutoutSerializer
+	pagination_class = StandardResultsSetPagination
+
+class GalleryListSet(viewsets.ModelViewSet):
+	queryset = Gallery.objects.filter(active_status=1).order_by('-id')
+	serializer_class = GallerySerializer
 	pagination_class = StandardResultsSetPagination
 
 class PasswordChangeView(GenericAPIView):

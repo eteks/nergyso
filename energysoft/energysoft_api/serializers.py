@@ -11,6 +11,7 @@ from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm
 from django.conf import settings
 from push_notifications.models import APNSDevice, GCMDevice
 from banner.models import Banner
+from gallery.models import Gallery
 
 # Serializers define the API representation.
 class EmployeeSerializer(serializers.HyperlinkedModelSerializer):
@@ -116,6 +117,12 @@ class ShoutoutSerializer(serializers.ModelSerializer):
     class Meta:
         model = Shoutout
         fields = ('id','shoutout_description','shoutout_employee_from','shoutout_employee_to','employee_from_name','employee_to_name','employee_from_profile','employee_to_profile')
+
+class GallerySerializer(serializers.HyperlinkedModelSerializer):  
+    gallery_image = serializers.CharField()  
+    class Meta:
+        model = Gallery
+        fields = ('id','gallery_title','gallery_image')
 
 #Override the inbuild password change serializer to add our custom fields(id) in serialization
 class PasswordChangeSerializer(serializers.Serializer):
