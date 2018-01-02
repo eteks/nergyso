@@ -10,6 +10,7 @@ from shoutout.models import Shoutout
 from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm
 from django.conf import settings
 from push_notifications.models import APNSDevice, GCMDevice
+from banner.models import Banner
 
 # Serializers define the API representation.
 class EmployeeSerializer(serializers.HyperlinkedModelSerializer):
@@ -102,10 +103,19 @@ class FeedbackSerializer(serializers.HyperlinkedModelSerializer):
         model = Feedback
         fields = ('id','feedback_description','feedback_queries','feedback_employee', 'feedback_category', 'feedback_rating_count')
 
-class ShoutoutSerializer(serializers.HyperlinkedModelSerializer):    
+# class ShoutoutPostSerializer(serializers.ModelSerializer): 
+#     class Meta:
+#         model = Shoutout
+#         fields = ('id','shoutout_description','shoutout_employee_from','shoutout_employee_to')
+
+class ShoutoutSerializer(serializers.ModelSerializer): 
+    employee_from_name = serializers.ReadOnlyField(source='shoutout_employee_from.employee_name')
+    employee_to_name = serializers.ReadOnlyField(source='shoutout_employee_to.employee_name')
+    employee_from_profile = serializers.CharField(source='shoutout_employee_from.employee_photo',read_only=True)
+    employee_to_profile = serializers.CharField(source='shoutout_employee_to.employee_photo',read_only=True)
     class Meta:
         model = Shoutout
-        fields = ('id','shoutout_description','shoutout_employee')
+        fields = ('id','shoutout_description','shoutout_employee_from','shoutout_employee_to','employee_from_name','employee_to_name','employee_from_profile','employee_to_profile')
 
 #Override the inbuild password change serializer to add our custom fields(id) in serialization
 class PasswordChangeSerializer(serializers.Serializer):
@@ -162,3 +172,13 @@ class NotificationSerializer(serializers.HyperlinkedModelSerializer):
         model = GCMDevice
         # fields = '__all__'
         fields = ('id','registration_id','cloud_message_type')
+
+class BannerSerializer(serializers.HyperlinkedModelSerializer):    
+    banner_image = serializers.SerializerMethodField()
+    def get_banner_image(self, instance):
+        # returning image url if there is an image else blank string
+        return instance.banner_image.url if instance.banner_image else ''
+    class Meta:
+        model = Banner
+        # fields = '__all__'
+        fields = ('id','banner_image')

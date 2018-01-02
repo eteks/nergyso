@@ -4,7 +4,7 @@ from django.conf import settings
 # from .views import ApiEndpoint
 
 from rest_framework import routers
-from .views import EmployeeSet,EventsSet,NewsSet,FeedbackSet,ShoutoutSet,PasswordChangeView,NotificationSet
+from .views import EmployeeSet,EventsSet,NewsSet,FeedbackSet,ShoutoutPostSet,PasswordChangeView,NotificationSet,BannerSet,ShoutoutListSet
 from rest_framework.authtoken.views import obtain_auth_token
 from fcm_django.api.rest_framework import FCMDeviceAuthorizedViewSet
 from push_notifications.api.rest_framework import APNSDeviceAuthorizedViewSet, GCMDeviceAuthorizedViewSet
@@ -57,8 +57,11 @@ urlpatterns = [
     url(r'^events/similar_events/(?P<pk>\d+)/', EventsSet.as_view({"get": "list"}), name="similar_events"),
     url(r'^news/recent_news/', NewsSet.as_view({"get": "list"}), name="recent_news"),
     url(r'^feedback/', FeedbackSet.as_view({"post": "create"})),
-    url(r'^shoutout/', ShoutoutSet.as_view({"post": "create"})),
+    url(r'^shoutout_post/', ShoutoutPostSet.as_view({"post": "create"})),
+    url(r'^shoutout_list/', ShoutoutListSet.as_view({"get": "list"}), name="shoutout_list"),
     url(r'^send_notification/', NotificationSet.as_view({"get": "list"}), name="send_notification"),
+
+    url(r'^banner/', BannerSet.as_view({"get": "list"}), name="banners"),
     # Haystack and Elasticsearch
     # url(r'^events', EventsSet.as_view()),  # an example resource endpoint
 ]

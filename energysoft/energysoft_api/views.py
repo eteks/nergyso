@@ -5,7 +5,7 @@ from django.shortcuts import render,get_object_or_404
 # from oauth2_provider.views.generic import ProtectedResourceView
 from django.http import HttpResponse
 from rest_framework import viewsets
-from energysoft_api.serializers import EmployeeSerializer, EventsSerializer,NewsSerializer, FeedbackSerializer,ShoutoutSerializer,PasswordChangeSerializer,NotificationSerializer
+from energysoft_api.serializers import EmployeeSerializer, EventsSerializer,NewsSerializer, FeedbackSerializer,ShoutoutSerializer,PasswordChangeSerializer,NotificationSerializer,BannerSerializer
 from employee.models import Employee
 from events.models import Events
 from employee.models import Employee
@@ -26,6 +26,8 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.debug import sensitive_post_parameters
 from django.utils.translation import ugettext_lazy as _
 from push_notifications.models import APNSDevice, GCMDevice
+from banner.models import Banner
+
 sensitive_post_parameters_m = method_decorator(
     sensitive_post_parameters(
         'password', 'old_password', 'new_password1', 'new_password2'
@@ -122,15 +124,27 @@ class FeedbackSet(viewsets.ModelViewSet):
 		headers = self.get_success_headers(serializer.data)
 		return Response({"success": "Feedback posted successfully"}, status=status.HTTP_201_CREATED, headers=headers)
 
-class ShoutoutSet(viewsets.ModelViewSet):
+class ShoutoutPostSet(viewsets.ModelViewSet):
 	queryset = Shoutout.objects.all()
 	serializer_class = ShoutoutSerializer
+
 	def create(self, request, *args, **kwargs):
 		serializer = self.get_serializer(data=request.data)
 		serializer.is_valid(raise_exception=True)
 		self.perform_create(serializer)
 		headers = self.get_success_headers(serializer.data)
 		return Response({"success": "Shoutout posted successfully"}, status=status.HTTP_201_CREATED, headers=headers)
+
+class ShoutoutListSet(viewsets.ModelViewSet):
+	queryset = Shoutout.objects.all()
+	serializer_class = ShoutoutSerializer
+	pagination_class = StandardResultsSetPagination
+	# permission_classes = [IsAuthenticated]
+
+	@list_route()
+	def shoutout_list(self, request):
+		queryset = Shoutout.objects.all().order_by('-id')[:10]
+		return Response(ShoutoutSerializer(queryset,many=True).data)
 
 class PasswordChangeView(GenericAPIView):
     """
@@ -166,5 +180,8 @@ class NotificationSet(viewsets.ModelViewSet):
 		return Response({"success": "Message sent successfully"})
 		# return Response(NotificationSerializer(queryset,many=True).data)
 
-
+class BannerSet(viewsets.ModelViewSet):
+	queryset = Banner.objects.filter(active_status=1).order_by('-id')
+	serializer_class = BannerSerializer
+	# pagination_class = StandardResultsSetPagination
 
