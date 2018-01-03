@@ -5,7 +5,7 @@ from django.shortcuts import render,get_object_or_404
 # from oauth2_provider.views.generic import ProtectedResourceView
 from django.http import HttpResponse
 from rest_framework import viewsets
-from energysoft_api.serializers import EmployeeSerializer, EventsSerializer,NewsSerializer, FeedbackSerializer,ShoutoutSerializer,PasswordChangeSerializer,NotificationSerializer,BannerSerializer,GallerySerializer
+from energysoft_api.serializers import EmployeeSerializer, EventsSerializer,NewsSerializer, FeedbackSerializer,ShoutoutSerializer,PasswordChangeSerializer,NotificationSerializer,BannerSerializer,GallerySerializer,EmployeeParticularSerializer
 from employee.models import Employee
 from events.models import Events
 from employee.models import Employee
@@ -37,11 +37,22 @@ sensitive_post_parameters_m = method_decorator(
 
 # ViewSets define the view behavior.
 class EmployeeSet(viewsets.ModelViewSet):
-	queryset = Employee.objects.all()
+	queryset = Employee.objects.filter(active_status=1)
 	serializer_class = EmployeeSerializer
 	pagination_class = StandardResultsSetPagination
 	# lookup_field = 'department_name'
 	# permission_classes = [IsAuthenticated]
+
+	@list_route()
+	def employee_tag_details(self, request):
+		queryset = Employee.objects.filter(active_status=1).order_by('-id')
+		# for querysets in queryset:
+		# 	print querysets.events_title
+		# events = get_object_or_404(queryset, pk=pk)
+		# events = get_object_or_404(queryset)
+		# serializer = EventsSerializer(queryset)
+		# return Response(serializer.data)
+		return Response(EmployeeParticularSerializer(queryset,many=True).data)
 
 # class ApiEndpoint(ProtectedResourceView):
 # 	def get(self, request, *args, **kwargs):
@@ -71,7 +82,7 @@ class EmployeeSet(viewsets.ModelViewSet):
 # 		return Response(serializer.data)
 
 class EventsSet(viewsets.ModelViewSet):
-	queryset = Events.objects.all()
+	queryset = Events.objects.filter(active_status=1)
 	serializer_class = EventsSerializer
 	pagination_class = StandardResultsSetPagination
 	# permission_classes = [IsAuthenticated]
@@ -83,7 +94,7 @@ class EventsSet(viewsets.ModelViewSet):
 	# @list_route(methods=['post'])
 	@list_route()
 	def recent_events(self, request):
-		queryset = Events.objects.all().order_by('-id')[:10]
+		queryset = Events.objects.filter(active_status=1).order_by('-id')[:10]
 		# for querysets in queryset:
 		# 	print querysets.events_title
 		# events = get_object_or_404(queryset, pk=pk)
@@ -105,18 +116,18 @@ class EventsSet(viewsets.ModelViewSet):
 	# 	return Response(EventsSerializer(queryset,many=True).data)
 
 class NewsSet(viewsets.ModelViewSet):
-	queryset = News.objects.all()
+	queryset = News.objects.filter(active_status=1)
 	serializer_class = NewsSerializer
 	pagination_class = StandardResultsSetPagination
 	# permission_classes = [IsAuthenticated]
 
 	@list_route()
 	def recent_news(self, request):
-		queryset = News.objects.all().order_by('-id')[:10]
+		queryset = News.objects.filter(active_status=1).order_by('-id')[:10]
 		return Response(NewsSerializer(queryset,many=True).data)
 
 class FeedbackSet(viewsets.ModelViewSet):
-	queryset = Feedback.objects.all()
+	queryset = Feedback.objects.filter(active_status=1)
 	serializer_class = FeedbackSerializer
 	def create(self, request, *args, **kwargs):
 		serializer = self.get_serializer(data=request.data)
@@ -126,7 +137,7 @@ class FeedbackSet(viewsets.ModelViewSet):
 		return Response({"success": "Feedback posted successfully"}, status=status.HTTP_201_CREATED, headers=headers)
 
 class ShoutoutPostSet(viewsets.ModelViewSet):
-	queryset = Shoutout.objects.all()
+	queryset = Shoutout.objects.filter(active_status=1)
 	serializer_class = ShoutoutSerializer
 
 	def create(self, request, *args, **kwargs):
@@ -137,7 +148,7 @@ class ShoutoutPostSet(viewsets.ModelViewSet):
 		return Response({"success": "Shoutout posted successfully"}, status=status.HTTP_201_CREATED, headers=headers)
 
 class ShoutoutListSet(viewsets.ModelViewSet):
-	queryset = Shoutout.objects.all().order_by('-id')
+	queryset = Shoutout.objects.filter(active_status=1).order_by('-id')
 	serializer_class = ShoutoutSerializer
 	pagination_class = StandardResultsSetPagination
 

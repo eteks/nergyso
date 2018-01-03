@@ -33,6 +33,12 @@ class EmployeeSerializer(serializers.HyperlinkedModelSerializer):
                   'employee_doj','employee_designation','employee_photo','employee_bloodgroup',
                   'employee_address','employee_experience_in_years',
                   'employee_device_id','employee_department_name','created_date')
+
+class EmployeeParticularSerializer(serializers.HyperlinkedModelSerializer):   
+    class Meta:
+        model = Employee
+        fields = ('id','employee_name','employee_photo')
+
 #Commented because of haystack not working properly while indexing
 # class EventsSerializer(HaystackSerializer):
 #     # id = serializers.CharField(allow_blank=False, write_only=True)
@@ -99,10 +105,10 @@ class TokenSerializer(serializers.ModelSerializer):
         model = Token
         fields = ('key', 'user','username','email')
 
-class FeedbackSerializer(serializers.HyperlinkedModelSerializer):    
+class FeedbackSerializer(serializers.ModelSerializer):   
     class Meta:
         model = Feedback
-        fields = ('id','feedback_description','feedback_queries','feedback_employee', 'feedback_category', 'feedback_rating_count')
+        fields = ('id','feedback_description','feedback_queries','feedback_employee', 'feedback_rating_count')
 
 # class ShoutoutPostSerializer(serializers.ModelSerializer): 
 #     class Meta:

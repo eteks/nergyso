@@ -63,6 +63,7 @@ urlpatterns = [
     url(r'^send_notification/', NotificationSet.as_view({"get": "list"}), name="send_notification"),
     url(r'^gallery_list/', GalleryListSet.as_view({"get": "list"})),
     url(r'^banner/', BannerSet.as_view({"get": "list"}), name="banners"),
+    url(r'^employee/employee_tag_details/', EmployeeSet.as_view({"get": "list"}), name="employee_tag_details"),
     # Haystack and Elasticsearch
     # url(r'^events', EventsSet.as_view()),  # an example resource endpoint
 ]
