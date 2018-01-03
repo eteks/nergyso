@@ -4,7 +4,7 @@ from django.conf import settings
 # from .views import ApiEndpoint
 
 from rest_framework import routers
-from .views import EmployeeSet,EventsSet,NewsSet,FeedbackSet,ShoutoutPostSet,PasswordChangeView,NotificationSet,BannerSet,ShoutoutListSet,GalleryListSet
+from .views import EmployeeSet,EventsSet,NewsSet,FeedbackSet,ShoutoutPostSet,PasswordChangeView,NotificationSet,BannerSet,ShoutoutListSet,GalleryListSet,LiveTelecastSet
 from rest_framework.authtoken.views import obtain_auth_token
 from fcm_django.api.rest_framework import FCMDeviceAuthorizedViewSet
 from push_notifications.api.rest_framework import APNSDeviceAuthorizedViewSet, GCMDeviceAuthorizedViewSet
@@ -19,6 +19,7 @@ router.register(r'notification', FCMDeviceAuthorizedViewSet)
 # router.register(r'events/recent-events', NewsSet, name="recent_events")
 router.register(r'device/gcm', GCMDeviceAuthorizedViewSet)
 router.register(r'gallery', GalleryListSet, base_name="gallery")
+router.register(r'livetelecast', LiveTelecastSet, base_name="livetelecast")
 
 # OAuth2 provider endpoints
 # oauth2_endpoint_views = [
@@ -64,6 +65,7 @@ urlpatterns = [
     url(r'^gallery_list/', GalleryListSet.as_view({"get": "list"})),
     url(r'^banner/', BannerSet.as_view({"get": "list"}), name="banners"),
     url(r'^employee/employee_tag_details/', EmployeeSet.as_view({"get": "list"}), name="employee_tag_details"),
+    url(r'^employee/employee_today_birthday/', EmployeeSet.as_view({"get": "list"}), name="employee_today_birthday"),
     # Haystack and Elasticsearch
     # url(r'^events', EventsSet.as_view()),  # an example resource endpoint
 ]

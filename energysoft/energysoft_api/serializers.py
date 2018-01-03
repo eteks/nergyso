@@ -12,6 +12,7 @@ from django.conf import settings
 from push_notifications.models import APNSDevice, GCMDevice
 from banner.models import Banner
 from gallery.models import Gallery
+from livetelecast.models import Livetelecast
 
 # Serializers define the API representation.
 class EmployeeSerializer(serializers.HyperlinkedModelSerializer):
@@ -37,7 +38,7 @@ class EmployeeSerializer(serializers.HyperlinkedModelSerializer):
 class EmployeeParticularSerializer(serializers.HyperlinkedModelSerializer):   
     class Meta:
         model = Employee
-        fields = ('id','employee_name','employee_photo')
+        fields = ('id','employee_name','employee_photo','employee_dob')
 
 #Commented because of haystack not working properly while indexing
 # class EventsSerializer(HaystackSerializer):
@@ -195,3 +196,8 @@ class BannerSerializer(serializers.HyperlinkedModelSerializer):
         model = Banner
         # fields = '__all__'
         fields = ('id','banner_image')
+
+class LiveTelecastSerializer(serializers.ModelSerializer):   
+    class Meta:
+        model = Livetelecast
+        fields = ('id', 'livetelecast_url')

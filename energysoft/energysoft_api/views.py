@@ -5,7 +5,7 @@ from django.shortcuts import render,get_object_or_404
 # from oauth2_provider.views.generic import ProtectedResourceView
 from django.http import HttpResponse
 from rest_framework import viewsets
-from energysoft_api.serializers import EmployeeSerializer, EventsSerializer,NewsSerializer, FeedbackSerializer,ShoutoutSerializer,PasswordChangeSerializer,NotificationSerializer,BannerSerializer,GallerySerializer,EmployeeParticularSerializer
+from energysoft_api.serializers import EmployeeSerializer, EventsSerializer,NewsSerializer, FeedbackSerializer,ShoutoutSerializer,PasswordChangeSerializer,NotificationSerializer,BannerSerializer,GallerySerializer,EmployeeParticularSerializer,LiveTelecastSerializer
 from employee.models import Employee
 from events.models import Events
 from employee.models import Employee
@@ -28,6 +28,8 @@ from django.utils.translation import ugettext_lazy as _
 from push_notifications.models import APNSDevice, GCMDevice
 from banner.models import Banner
 from gallery.models import Gallery
+from livetelecast.models import Livetelecast
+import datetime
 
 sensitive_post_parameters_m = method_decorator(
     sensitive_post_parameters(
@@ -52,6 +54,16 @@ class EmployeeSet(viewsets.ModelViewSet):
 		# events = get_object_or_404(queryset)
 		# serializer = EventsSerializer(queryset)
 		# return Response(serializer.data)
+		return Response(EmployeeParticularSerializer(queryset,many=True).data)
+
+	@list_route()
+	def employee_today_birthday(self, request):
+		today = datetime.date.today()
+		print today
+		queryset = Employee.objects.filter(employee_dob__year=today.year,employee_dob__month=today.month,
+			employee_dob__day=today.day).order_by('-id')
+		# queryset = Employee.objects.filter(employee_dob=today).order_by('-id')
+		print queryset
 		return Response(EmployeeParticularSerializer(queryset,many=True).data)
 
 # class ApiEndpoint(ProtectedResourceView):
@@ -196,3 +208,7 @@ class BannerSet(viewsets.ModelViewSet):
 	serializer_class = BannerSerializer
 	# pagination_class = StandardResultsSetPagination
 
+class LiveTelecastSet(viewsets.ModelViewSet):
+	queryset = Livetelecast.objects.filter(active_status=1)
+	serializer_class = LiveTelecastSerializer
+	pagination_class = StandardResultsSetPagination
