@@ -13,6 +13,7 @@ from push_notifications.models import APNSDevice, GCMDevice
 from banner.models import Banner
 from gallery.models import Gallery
 from livetelecast.models import Livetelecast
+from polls.models import PollsAnswer
 
 # Serializers define the API representation.
 class EmployeeSerializer(serializers.HyperlinkedModelSerializer):
@@ -202,3 +203,8 @@ class LiveTelecastSerializer(serializers.ModelSerializer):
     class Meta:
         model = Livetelecast
         fields = ('id', 'livetelecast_url')
+
+class PollsSerializer(serializers.ModelSerializer):   
+    class Meta:
+        model = PollsAnswer
+        fields = ('id', 'answer','answer_questions')

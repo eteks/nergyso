@@ -5,7 +5,7 @@ from django.shortcuts import render,get_object_or_404
 # from oauth2_provider.views.generic import ProtectedResourceView
 from django.http import HttpResponse
 from rest_framework import viewsets
-from energysoft_api.serializers import EmployeeSerializer, EventsSerializer,NewsSerializer, FeedbackSerializer,ShoutoutSerializer,PasswordChangeSerializer,NotificationSerializer,BannerSerializer,GallerySerializer,EmployeeParticularSerializer,LiveTelecastSerializer
+from energysoft_api.serializers import EmployeeSerializer, EventsSerializer,NewsSerializer, FeedbackSerializer,ShoutoutSerializer,PasswordChangeSerializer,NotificationSerializer,BannerSerializer,GallerySerializer,EmployeeParticularSerializer,LiveTelecastSerializer,PollsSerializer
 from employee.models import Employee
 from events.models import Events
 from employee.models import Employee
@@ -30,6 +30,7 @@ from banner.models import Banner
 from gallery.models import Gallery
 from livetelecast.models import Livetelecast
 import datetime
+from polls.models import PollsAnswer
 
 sensitive_post_parameters_m = method_decorator(
     sensitive_post_parameters(
@@ -242,3 +243,8 @@ class LiveTelecastSet(viewsets.ModelViewSet):
 	queryset = Livetelecast.objects.filter(active_status=1)
 	serializer_class = LiveTelecastSerializer
 	pagination_class = StandardResultsSetPagination
+
+class PollsSet(viewsets.ModelViewSet):
+	queryset = PollsAnswer.objects.all()
+	serializer_class = PollsSerializer
+	# pagination_class = StandardResultsSetPagination

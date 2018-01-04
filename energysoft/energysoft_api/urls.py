@@ -4,7 +4,7 @@ from django.conf import settings
 # from .views import ApiEndpoint
 
 from rest_framework import routers
-from .views import EmployeeSet,EventsSet,NewsSet,FeedbackSet,ShoutoutPostSet,PasswordChangeView,NotificationSet,BannerSet,ShoutoutListSet,GalleryListSet,LiveTelecastSet
+from .views import EmployeeSet,EventsSet,NewsSet,FeedbackSet,ShoutoutPostSet,PasswordChangeView,NotificationSet,BannerSet,ShoutoutListSet,GalleryListSet,LiveTelecastSet,PollsSet
 from rest_framework.authtoken.views import obtain_auth_token
 from fcm_django.api.rest_framework import FCMDeviceAuthorizedViewSet
 from push_notifications.api.rest_framework import APNSDeviceAuthorizedViewSet, GCMDeviceAuthorizedViewSet
@@ -20,6 +20,7 @@ router.register(r'notification', FCMDeviceAuthorizedViewSet)
 router.register(r'device/gcm', GCMDeviceAuthorizedViewSet)
 router.register(r'gallery', GalleryListSet, base_name="gallery")
 router.register(r'livetelecast', LiveTelecastSet, base_name="livetelecast")
+router.register(r'polls', PollsSet, base_name="polls")
 
 # OAuth2 provider endpoints
 # oauth2_endpoint_views = [
