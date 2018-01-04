@@ -66,6 +66,36 @@ class EmployeeSet(viewsets.ModelViewSet):
 		print queryset
 		return Response(EmployeeParticularSerializer(queryset,many=True).data)
 
+	@list_route()
+	def employee_upcoming_birthday(self, request):
+		today = datetime.date.today()
+		print today
+		queryset = Employee.objects.filter(employee_dob__year__gte=today.year,employee_dob__month__gte=today.month,
+			employee_dob__day__gte=today.day).order_by('employee_dob','id')[:30]
+		# queryset = Employee.objects.filter(employee_dob=today).order_by('-id')
+		print queryset
+		return Response(EmployeeParticularSerializer(queryset,many=True).data)
+
+	@list_route()
+	def employee_today_anniversary(self, request):
+		today = datetime.date.today()
+		print today
+		queryset = Employee.objects.filter(employee_doj__year=today.year,employee_doj__month=today.month,
+			employee_doj__day=today.day).order_by('-id')
+		# queryset = Employee.objects.filter(employee_dob=today).order_by('-id')
+		print queryset
+		return Response(EmployeeParticularSerializer(queryset,many=True).data)
+
+	@list_route()
+	def employee_upcoming_anniversary(self, request):
+		today = datetime.date.today()
+		print today
+		queryset = Employee.objects.filter(employee_doj__year__gte=today.year,employee_doj__month__gte=today.month,
+			employee_doj__day__gte=today.day).order_by('employee_dob','id')[:30]
+		# queryset = Employee.objects.filter(employee_dob=today).order_by('-id')
+		print queryset
+		return Response(EmployeeParticularSerializer(queryset,many=True).data)
+
 # class ApiEndpoint(ProtectedResourceView):
 # 	def get(self, request, *args, **kwargs):
 # 		return HttpResponse('Hello, OAuth2!')

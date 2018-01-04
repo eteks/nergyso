@@ -66,6 +66,9 @@ urlpatterns = [
     url(r'^banner/', BannerSet.as_view({"get": "list"}), name="banners"),
     url(r'^employee/employee_tag_details/', EmployeeSet.as_view({"get": "list"}), name="employee_tag_details"),
     url(r'^employee/employee_today_birthday/', EmployeeSet.as_view({"get": "list"}), name="employee_today_birthday"),
+    url(r'^employee/employee_upcoming_birthday/', EmployeeSet.as_view({"get": "list"}), name="employee_upcoming_birthday"),
+    url(r'^employee/employee_today_anniversary/', EmployeeSet.as_view({"get": "list"}), name="employee_today_anniversary"),
+    url(r'^employee/employee_upcoming_anniversary/', EmployeeSet.as_view({"get": "list"}), name="employee_upcoming_anniversary"),
     # Haystack and Elasticsearch
     # url(r'^events', EventsSet.as_view()),  # an example resource endpoint
 ]

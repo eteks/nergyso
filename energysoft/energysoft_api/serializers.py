@@ -18,6 +18,7 @@ from livetelecast.models import Livetelecast
 class EmployeeSerializer(serializers.HyperlinkedModelSerializer):
     employee_department_name = serializers.CharField(source='employee_department.department_name')
     employee_photo = serializers.SerializerMethodField()
+    employee_email = serializers.CharField(source='user_ptr.email')
 
     def get_employee_photo(self, instance):
         # returning image url if there is an image else blank string
@@ -30,7 +31,7 @@ class EmployeeSerializer(serializers.HyperlinkedModelSerializer):
         # extra_kwargs = {
         #     'department_name': {'lookup_field': 'department_name'}
         # }
-        fields = ('id','employee_id','employee_name', 'employee_dob','employee_mobile',
+        fields = ('id','employee_id','employee_name', 'employee_dob','employee_mobile','employee_email',
                   'employee_doj','employee_designation','employee_photo','employee_bloodgroup',
                   'employee_address','employee_experience_in_years',
                   'employee_device_id','employee_department_name','created_date')
