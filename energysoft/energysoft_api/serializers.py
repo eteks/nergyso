@@ -13,7 +13,7 @@ from push_notifications.models import APNSDevice, GCMDevice
 from banner.models import Banner
 from gallery.models import Gallery
 from livetelecast.models import Livetelecast
-from polls.models import PollsAnswer
+from polls.models import PollsAnswer,PollsQuestion
 
 # Serializers define the API representation.
 class EmployeeSerializer(serializers.HyperlinkedModelSerializer):
@@ -205,6 +205,39 @@ class LiveTelecastSerializer(serializers.ModelSerializer):
         fields = ('id', 'livetelecast_url')
 
 class PollsSerializer(serializers.ModelSerializer):   
+    answer = serializers.SerializerMethodField('get_field_detail')
+
+    def get_field_detail(self,obj):
+        import json
+        # from django.core import serializers
+        queryset_data = PollsQuestion.objects.filter(active_status=1)
+        # print queryset
+        # return queryset
+        # test = serializers.serialize("json", {'data': queryset})
+        # return HttpResponse(test, content_type='application/json')
+        test_json = {}
+        for q in queryset_data:
+            # print q.id
+            # print q.question
+            # print "loop"
+            test = PollsAnswer.objects.filter(answer_questions=q.id)
+            print test
+            data = {}
+            for tests in test:
+                data['ans_id'] = tests.id
+                data['ans'] = tests.answer
+                # print 'data'+json.dumps(data)
+                test_json['data'] =  data
+            # print test
+            # print q.id
+            # return {
+            # "id":q.id
+            # }
+            print test_json
+            return test_json
+            # test = PollsAnswer.objects.filter(answer_questions=q.id)
+            # print test
+
     class Meta:
-        model = PollsAnswer
-        fields = ('id', 'answer','answer_questions')
+        model = PollsQuestion
+        fields = ('id', 'question','answer')

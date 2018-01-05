@@ -30,7 +30,7 @@ from banner.models import Banner
 from gallery.models import Gallery
 from livetelecast.models import Livetelecast
 import datetime
-from polls.models import PollsAnswer
+from polls.models import PollsAnswer,PollsQuestion
 
 sensitive_post_parameters_m = method_decorator(
     sensitive_post_parameters(
@@ -245,6 +245,10 @@ class LiveTelecastSet(viewsets.ModelViewSet):
 	pagination_class = StandardResultsSetPagination
 
 class PollsSet(viewsets.ModelViewSet):
-	queryset = PollsAnswer.objects.all()
+	queryset = PollsQuestion.objects.filter(active_status=1)
 	serializer_class = PollsSerializer
 	# pagination_class = StandardResultsSetPagination
+
+	# @list_route()
+	# def get_queryset(self, *args, **kwargs):
+	# 	return Response(PollsSerializer(many=True).data)
