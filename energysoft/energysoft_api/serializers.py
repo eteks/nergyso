@@ -14,6 +14,7 @@ from banner.models import Banner
 from gallery.models import Gallery
 from livetelecast.models import Livetelecast
 from polls.models import PollsAnswer,PollsQuestion,PollsResult
+from master.models import Notification
 
 # Serializers define the API representation.
 class EmployeeSerializer(serializers.HyperlinkedModelSerializer):
@@ -253,8 +254,17 @@ class PollsSerializer(serializers.ModelSerializer):
         fields = ('id', 'question','answers')
 
 class PollsPostResultSerializer(serializers.ModelSerializer): 
-    from rest_framework.validators import UniqueTogetherValidator
-
     class Meta:
         model = PollsResult
         fields = ('id','pollsresult_question','pollsresult_answer','pollsresult_employee')
+
+class NotificationListSerializer(serializers.ModelSerializer):
+    notification_cateogry = serializers.ReadOnlyField()
+    notification_cateogry_id = serializers.ReadOnlyField()
+    notification_message = serializers.ReadOnlyField()
+    notification_read_status = serializers.ReadOnlyField()
+    notification_created_date = serializers.ReadOnlyField()
+    
+    class Meta:
+        model = Notification
+        fields = ('id', 'notification_cateogry','notification_cateogry_id','notification_message','notification_employee','notification_read_status','notification_created_date')
