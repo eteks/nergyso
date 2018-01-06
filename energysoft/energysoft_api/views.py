@@ -5,7 +5,7 @@ from django.shortcuts import render,get_object_or_404
 # from oauth2_provider.views.generic import ProtectedResourceView
 from django.http import HttpResponse
 from rest_framework import viewsets
-from energysoft_api.serializers import EmployeeSerializer, EventsSerializer,NewsSerializer, FeedbackSerializer,ShoutoutSerializer,PasswordChangeSerializer,NotificationSerializer,BannerSerializer,GallerySerializer,EmployeeParticularSerializer,LiveTelecastSerializer,PollsSerializer
+from energysoft_api.serializers import EmployeeSerializer, EventsSerializer,NewsSerializer, FeedbackSerializer,ShoutoutSerializer,PasswordChangeSerializer,NotificationSerializer,BannerSerializer,GallerySerializer,EmployeeParticularSerializer,LiveTelecastSerializer,PollsSerializer,PollsPostResultSerializer
 from employee.models import Employee
 from events.models import Events
 from employee.models import Employee
@@ -30,7 +30,7 @@ from banner.models import Banner
 from gallery.models import Gallery
 from livetelecast.models import Livetelecast
 import datetime
-from polls.models import PollsAnswer,PollsQuestion
+from polls.models import PollsAnswer,PollsQuestion,PollsResult
 
 sensitive_post_parameters_m = method_decorator(
     sensitive_post_parameters(
@@ -252,3 +252,25 @@ class PollsSet(viewsets.ModelViewSet):
 	# @list_route()
 	# def get_queryset(self, *args, **kwargs):
 	# 	return Response(PollsSerializer(many=True).data)
+
+class PollsResultPostSet(viewsets.ModelViewSet):
+	queryset = PollsResult.objects.all()
+	serializer_class = PollsPostResultSerializer
+
+	def create(self, validated_data):
+		pollsresult,created = PollsResult.objects.get_or_create( 
+			pollsresult_question=PollsQuestion.objects.get(id=1), 
+			pollsresult_employee=Employee.objects.get(user_ptr_id=2), 
+			defaults={
+			'pollsresult_answer': PollsAnswer.objects.get(id=2), 
+			}
+		)
+		if created:
+			return Response({"success": "Polls Result posted successfully"})
+		else:
+			pollsresult.pollsresult_question = PollsQuestion.objects.get(id=1)
+			pollsresult.pollsresult_employee = Employee.objects.get(user_ptr_id=2)
+			pollsresult.pollsresult_answer = PollsAnswer.objects.get(id=2)
+			pollsresult.save()
+			return Response({"success": "Polls Result Updated successfully"})
+

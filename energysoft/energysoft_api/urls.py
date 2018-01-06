@@ -4,7 +4,7 @@ from django.conf import settings
 # from .views import ApiEndpoint
 
 from rest_framework import routers
-from .views import EmployeeSet,EventsSet,NewsSet,FeedbackSet,ShoutoutPostSet,PasswordChangeView,NotificationSet,BannerSet,ShoutoutListSet,GalleryListSet,LiveTelecastSet,PollsSet
+from .views import EmployeeSet,EventsSet,NewsSet,FeedbackSet,ShoutoutPostSet,PasswordChangeView,NotificationSet,BannerSet,ShoutoutListSet,GalleryListSet,LiveTelecastSet,PollsSet,PollsResultPostSet
 from rest_framework.authtoken.views import obtain_auth_token
 from fcm_django.api.rest_framework import FCMDeviceAuthorizedViewSet
 from push_notifications.api.rest_framework import APNSDeviceAuthorizedViewSet, GCMDeviceAuthorizedViewSet
@@ -70,6 +70,8 @@ urlpatterns = [
     url(r'^employee/employee_upcoming_birthday/', EmployeeSet.as_view({"get": "list"}), name="employee_upcoming_birthday"),
     url(r'^employee/employee_today_anniversary/', EmployeeSet.as_view({"get": "list"}), name="employee_today_anniversary"),
     url(r'^employee/employee_upcoming_anniversary/', EmployeeSet.as_view({"get": "list"}), name="employee_upcoming_anniversary"),
+    url(r'^pollsresult_post/', PollsResultPostSet.as_view({"post": "create"})),
+    url(r'^polls_employee_result_exists/', PollsResultPostSet.as_view({"get": "list"}), name="employee_result_exists"),
     # Haystack and Elasticsearch
     # url(r'^events', EventsSet.as_view()),  # an example resource endpoint
 ]
