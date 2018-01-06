@@ -8,8 +8,6 @@ from forms import BannerFileForm
 class BannerAdmin(admin.ModelAdmin):
 	model = Banner
 	list_display = ('created_date','ban_image',)
-	fields = ( 'ban_image', )
-	readonly_fields = ('ban_image',)
 	list_filter = ('created_date',)
 
 admin.site.register(Banner,BannerAdmin)
