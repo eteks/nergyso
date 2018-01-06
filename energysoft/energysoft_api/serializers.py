@@ -13,7 +13,8 @@ from push_notifications.models import APNSDevice, GCMDevice
 from banner.models import Banner
 from gallery.models import Gallery
 from livetelecast.models import Livetelecast
-from polls.models import PollsAnswer,PollsQuestion
+from polls.models import PollsAnswer,PollsQuestion,PollsResult
+from master.models import Notification
 
 # Serializers define the API representation.
 class EmployeeSerializer(serializers.HyperlinkedModelSerializer):
@@ -204,40 +205,66 @@ class LiveTelecastSerializer(serializers.ModelSerializer):
         model = Livetelecast
         fields = ('id', 'livetelecast_url')
 
-class PollsSerializer(serializers.ModelSerializer):   
-    answer = serializers.SerializerMethodField('get_field_detail')
+# class PollsSerializer(serializers.ModelSerializer):   
+#     answer = serializers.SerializerMethodField('get_field_detail',many=True)
 
-    def get_field_detail(self,obj):
-        import json
-        # from django.core import serializers
-        queryset_data = PollsQuestion.objects.filter(active_status=1)
-        # print queryset
-        # return queryset
-        # test = serializers.serialize("json", {'data': queryset})
-        # return HttpResponse(test, content_type='application/json')
-        test_json = {}
-        for q in queryset_data:
-            # print q.id
-            # print q.question
-            # print "loop"
-            test = PollsAnswer.objects.filter(answer_questions=q.id)
-            print test
-            data = {}
-            for tests in test:
-                data['ans_id'] = tests.id
-                data['ans'] = tests.answer
-                # print 'data'+json.dumps(data)
-                test_json['data'] =  data
-            # print test
-            # print q.id
-            # return {
-            # "id":q.id
-            # }
-            print test_json
-            return test_json
-            # test = PollsAnswer.objects.filter(answer_questions=q.id)
-            # print test
+#     def get_field_detail(self,obj):
+#         import json
+#         # from django.core import serializers
+#         queryset_data = PollsQuestion.objects.filter(active_status=1)
+#         # print queryset
+#         # return queryset
+#         # test = serializers.serialize("json", {'data': queryset})
+#         # return HttpResponse(test, content_type='application/json')
+#         test_json = {}
+#         for q in queryset_data:
+#             # print q.id
+#             # print q.question
+#             # print "loop"
+#             test = PollsAnswer.objects.filter(answer_questions=q.id)
+#             print test
+#             data = {}
+#             for tests in test:
+#                 data['ans_id'] = tests.id
+#                 data['ans'] = tests.answer
+#                 # print 'data'+json.dumps(data)
+#                 test_json['data'] =  data
+#             # print test
+#             # print q.id
+#             # return {
+#             # "id":q.id
+#             # }
+#             print test_json
+#             return test_json
+#             # test = PollsAnswer.objects.filter(answer_questions=q.id)
+#             # print test
 
+#     class Meta:
+#         model = PollsQuestion
+#         fields = ('id', 'question','answer')
+class PollsAnswerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PollsAnswer
+        fields = ('id', 'answer')
+
+class PollsSerializer(serializers.ModelSerializer):
+    answers = PollsAnswerSerializer(many=True, read_only=True)
     class Meta:
         model = PollsQuestion
-        fields = ('id', 'question','answer')
+        fields = ('id', 'question','answers')
+
+class PollsPostResultSerializer(serializers.ModelSerializer): 
+    class Meta:
+        model = PollsResult
+        fields = ('id','pollsresult_question','pollsresult_answer','pollsresult_employee')
+
+class NotificationListSerializer(serializers.ModelSerializer):
+    notification_cateogry = serializers.ReadOnlyField()
+    notification_cateogry_id = serializers.ReadOnlyField()
+    notification_message = serializers.ReadOnlyField()
+    notification_read_status = serializers.ReadOnlyField()
+    notification_created_date = serializers.ReadOnlyField()
+    
+    class Meta:
+        model = Notification
+        fields = ('id', 'notification_cateogry','notification_cateogry_id','notification_message','notification_employee','notification_read_status','notification_created_date')

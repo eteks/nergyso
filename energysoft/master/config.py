@@ -12,6 +12,10 @@ FEEDBACK_CATEGORY = (
 NOTIFICATION_CATEGORY = (
 	('events', 'Events'),
 	('news', 'News'),
-	('shoutout', 'Shoutout')
+	('shoutout', 'Shoutout'),
+	('livetelecast', 'Livetelecast'),
+	('birthday', 'Birthday'),
+	('anniversary', 'Anniversary'),
+	('ceo', 'CEO'),
 )
 
