@@ -7,12 +7,20 @@ from .search_indexes import EventsIndex
 from rest_framework.authtoken.models import Token
 from feedback.models import Feedback
 from shoutout.models import Shoutout
+from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm
+from django.conf import settings
 from push_notifications.models import APNSDevice, GCMDevice
+from banner.models import Banner
+from gallery.models import Gallery
+from livetelecast.models import Livetelecast
+from polls.models import PollsAnswer,PollsQuestion,PollsResult
+from master.models import Notification
 
 # Serializers define the API representation.
 class EmployeeSerializer(serializers.HyperlinkedModelSerializer):
     employee_department_name = serializers.CharField(source='employee_department.department_name')
     employee_photo = serializers.SerializerMethodField()
+    employee_email = serializers.CharField(source='user_ptr.email')
 
     def get_employee_photo(self, instance):
         # returning image url if there is an image else blank string
@@ -25,10 +33,16 @@ class EmployeeSerializer(serializers.HyperlinkedModelSerializer):
         # extra_kwargs = {
         #     'department_name': {'lookup_field': 'department_name'}
         # }
-        fields = ('id','employee_id','employee_name', 'employee_dob','employee_mobile',
+        fields = ('id','employee_id','employee_name', 'employee_dob','employee_mobile','employee_email',
                   'employee_doj','employee_designation','employee_photo','employee_bloodgroup',
                   'employee_address','employee_experience_in_years',
                   'employee_device_id','employee_department_name','created_date')
+
+class EmployeeParticularSerializer(serializers.HyperlinkedModelSerializer):   
+    class Meta:
+        model = Employee
+        fields = ('id','employee_name','employee_photo','employee_dob','employee_doj')
+
 #Commented because of haystack not working properly while indexing
 # class EventsSerializer(HaystackSerializer):
 #     # id = serializers.CharField(allow_blank=False, write_only=True)
@@ -95,18 +109,162 @@ class TokenSerializer(serializers.ModelSerializer):
         model = Token
         fields = ('key', 'user','username','email')
 
-class FeedbackSerializer(serializers.HyperlinkedModelSerializer):    
+class FeedbackSerializer(serializers.ModelSerializer):   
     class Meta:
         model = Feedback
-        fields = ('id','feedback_description','feedback_queries','feedback_employee', 'feedback_category', 'feedback_rating_count')
+        fields = ('id','feedback_description','feedback_queries','feedback_employee', 'feedback_rating_count')
 
-class ShoutoutSerializer(serializers.HyperlinkedModelSerializer):    
+# class ShoutoutPostSerializer(serializers.ModelSerializer): 
+#     class Meta:
+#         model = Shoutout
+#         fields = ('id','shoutout_description','shoutout_employee_from','shoutout_employee_to')
+
+class ShoutoutSerializer(serializers.ModelSerializer): 
+    employee_from_name = serializers.ReadOnlyField(source='shoutout_employee_from.employee_name')
+    employee_to_name = serializers.ReadOnlyField(source='shoutout_employee_to.employee_name')
+    employee_from_profile = serializers.CharField(source='shoutout_employee_from.employee_photo',read_only=True)
+    employee_to_profile = serializers.CharField(source='shoutout_employee_to.employee_photo',read_only=True)
     class Meta:
         model = Shoutout
-        fields = ('id','shoutout_description','shoutout_employee')
+        fields = ('id','shoutout_description','shoutout_employee_from','shoutout_employee_to','employee_from_name','employee_to_name','employee_from_profile','employee_to_profile')
+
+class GallerySerializer(serializers.HyperlinkedModelSerializer):  
+    gallery_image = serializers.CharField()  
+    class Meta:
+        model = Gallery
+        fields = ('id','gallery_title','gallery_image')
+
+#Override the inbuild password change serializer to add our custom fields(id) in serialization
+class PasswordChangeSerializer(serializers.Serializer):
+    old_password = serializers.CharField(max_length=128)
+    new_password1 = serializers.CharField(max_length=128)
+    new_password2 = serializers.CharField(max_length=128)
+    id = serializers.CharField(max_length=128)
+
+    set_password_form_class = SetPasswordForm
+
+    def __init__(self, *args, **kwargs):
+        self.old_password_field_enabled = getattr(
+            settings, 'OLD_PASSWORD_FIELD_ENABLED', False
+        )
+        self.logout_on_password_change = getattr(
+            settings, 'LOGOUT_ON_PASSWORD_CHANGE', False
+        )
+        super(PasswordChangeSerializer, self).__init__(*args, **kwargs)
+
+        if not self.old_password_field_enabled:
+            self.fields.pop('old_password')
+
+        self.request = self.context.get('request')
+        self.user = getattr(self.request, 'user', None)
+
+    def validate_old_password(self, value):
+        invalid_password_conditions = (
+            self.old_password_field_enabled,
+            self.user,
+            not self.user.check_password(value)
+        )
+
+        if all(invalid_password_conditions):
+            raise serializers.ValidationError('Invalid password')
+        return value
+
+    def validate(self, attrs):
+        self.set_password_form = self.set_password_form_class(
+            user=self.user, data=attrs
+        )
+
+        if not self.set_password_form.is_valid():
+            raise serializers.ValidationError(self.set_password_form.errors)
+        return attrs
+
+    def save(self):
+        self.set_password_form.save()
+        if not self.logout_on_password_change:
+            from django.contrib.auth import update_session_auth_hash
+            update_session_auth_hash(self.request, self.user)
 
 class NotificationSerializer(serializers.HyperlinkedModelSerializer):    
     class Meta:
         model = GCMDevice
         # fields = '__all__'
         fields = ('id','registration_id','cloud_message_type')
+
+class BannerSerializer(serializers.HyperlinkedModelSerializer):    
+    banner_image = serializers.SerializerMethodField()
+    def get_banner_image(self, instance):
+        # returning image url if there is an image else blank string
+        return instance.banner_image.url if instance.banner_image else ''
+    class Meta:
+        model = Banner
+        # fields = '__all__'
+        fields = ('id','banner_image')
+
+class LiveTelecastSerializer(serializers.ModelSerializer):   
+    class Meta:
+        model = Livetelecast
+        fields = ('id', 'livetelecast_url')
+
+# class PollsSerializer(serializers.ModelSerializer):   
+#     answer = serializers.SerializerMethodField('get_field_detail',many=True)
+
+#     def get_field_detail(self,obj):
+#         import json
+#         # from django.core import serializers
+#         queryset_data = PollsQuestion.objects.filter(active_status=1)
+#         # print queryset
+#         # return queryset
+#         # test = serializers.serialize("json", {'data': queryset})
+#         # return HttpResponse(test, content_type='application/json')
+#         test_json = {}
+#         for q in queryset_data:
+#             # print q.id
+#             # print q.question
+#             # print "loop"
+#             test = PollsAnswer.objects.filter(answer_questions=q.id)
+#             print test
+#             data = {}
+#             for tests in test:
+#                 data['ans_id'] = tests.id
+#                 data['ans'] = tests.answer
+#                 # print 'data'+json.dumps(data)
+#                 test_json['data'] =  data
+#             # print test
+#             # print q.id
+#             # return {
+#             # "id":q.id
+#             # }
+#             print test_json
+#             return test_json
+#             # test = PollsAnswer.objects.filter(answer_questions=q.id)
+#             # print test
+
+#     class Meta:
+#         model = PollsQuestion
+#         fields = ('id', 'question','answer')
+class PollsAnswerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PollsAnswer
+        fields = ('id', 'answer')
+
+class PollsSerializer(serializers.ModelSerializer):
+    answers = PollsAnswerSerializer(many=True, read_only=True)
+    class Meta:
+        model = PollsQuestion
+        fields = ('id', 'question','answers')
+
+class PollsPostResultSerializer(serializers.ModelSerializer): 
+    class Meta:
+        model = PollsResult
+        fields = ('id','pollsresult_question','pollsresult_answer','pollsresult_employee')
+
+class NotificationListSerializer(serializers.ModelSerializer):
+    notification_cateogry = serializers.ReadOnlyField()
+    notification_cateogry_id = serializers.ReadOnlyField()
+    notification_message = serializers.ReadOnlyField()
+    notification_read_status = serializers.ReadOnlyField()
+    notification_created_date = serializers.ReadOnlyField()
+    
+    class Meta:
+        model = Notification
+        fields = ('id', 'notification_cateogry','notification_cateogry_id','notification_message','notification_employee','notification_read_status','notification_created_date')
