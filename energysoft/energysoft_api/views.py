@@ -260,20 +260,23 @@ class PollsResultPostSet(viewsets.ModelViewSet):
 	queryset = PollsResult.objects.all()
 	serializer_class = PollsPostResultSerializer
 
-	def create(self, validated_data):
+	def create(self, request, *args, **kwargs):
+		serializer = self.get_serializer(data=request.data)
+		serializer.is_valid(raise_exception=False)
+		print serializer.data
 		pollsresult,created = PollsResult.objects.get_or_create( 
-			pollsresult_question=PollsQuestion.objects.get(id=1), 
-			pollsresult_employee=Employee.objects.get(user_ptr_id=2), 
+			pollsresult_question=PollsQuestion.objects.get(id=serializer.data['pollsresult_question']), 
+			pollsresult_employee=Employee.objects.get(user_ptr_id=serializer.data['pollsresult_employee']), 
 			defaults={
-			'pollsresult_answer': PollsAnswer.objects.get(id=2), 
+			'pollsresult_answer': PollsAnswer.objects.get(id=serializer.data['pollsresult_answer']), 
 			}
 		)
 		if created:
 			return Response({"success": "Polls Result posted successfully"})
 		else:
-			pollsresult.pollsresult_question = PollsQuestion.objects.get(id=1)
-			pollsresult.pollsresult_employee = Employee.objects.get(user_ptr_id=2)
-			pollsresult.pollsresult_answer = PollsAnswer.objects.get(id=2)
+			pollsresult.pollsresult_question = PollsQuestion.objects.get(id=serializer.data['pollsresult_question'])
+			pollsresult.pollsresult_employee = Employee.objects.get(user_ptr_id=serializer.data['pollsresult_employee'])
+			pollsresult.pollsresult_answer = PollsAnswer.objects.get(id=serializer.data['pollsresult_answer'])
 			pollsresult.save()
 			return Response({"success": "Polls Result Updated successfully"})
 
@@ -282,7 +285,7 @@ class PollsResultPostSet(viewsets.ModelViewSet):
 		serializer.is_valid(raise_exception=False)
 		# print serializer.data
 		# print "data"+serializer.data['pollsresult_question']
-		pollsresult = PollsResult.objects.get( 
+		pollsresult = PollsResult.objects.filter( 
 			pollsresult_question=PollsQuestion.objects.get(id=serializer.data['pollsresult_question']), 
 			pollsresult_employee=Employee.objects.get(user_ptr_id=serializer.data['pollsresult_employee']))
 		if pollsresult:
