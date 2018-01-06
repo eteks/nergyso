@@ -40,7 +40,7 @@ class EmployeeSerializer(serializers.HyperlinkedModelSerializer):
 class EmployeeParticularSerializer(serializers.HyperlinkedModelSerializer):   
     class Meta:
         model = Employee
-        fields = ('id','employee_name','employee_photo','employee_dob')
+        fields = ('id','employee_name','employee_photo','employee_dob','employee_doj')
 
 #Commented because of haystack not working properly while indexing
 # class EventsSerializer(HaystackSerializer):
