@@ -3,9 +3,9 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render,get_object_or_404
 # from oauth2_provider.views.generic import ProtectedResourceView
-from django.http import HttpResponse
+from django.http import HttpResponse,JsonResponse
 from rest_framework import viewsets
-from energysoft_api.serializers import EmployeeSerializer, EventsSerializer,NewsSerializer, FeedbackSerializer,ShoutoutSerializer,PasswordChangeSerializer,NotificationSerializer,BannerSerializer,GallerySerializer,EmployeeParticularSerializer,LiveTelecastSerializer,PollsSerializer
+from energysoft_api.serializers import EmployeeSerializer, EventsSerializer,NewsSerializer, FeedbackSerializer,ShoutoutSerializer,PasswordChangeSerializer,NotificationSerializer,BannerSerializer,GallerySerializer,EmployeeParticularSerializer,LiveTelecastSerializer,PollsSerializer,PollsPostResultSerializer,NotificationListSerializer
 from employee.models import Employee
 from events.models import Events
 from employee.models import Employee
@@ -30,7 +30,10 @@ from banner.models import Banner
 from gallery.models import Gallery
 from livetelecast.models import Livetelecast
 import datetime
-from polls.models import PollsAnswer
+from polls.models import PollsAnswer,PollsQuestion,PollsResult
+from master.models import Notification
+import json
+from django.core.serializers.json import DjangoJSONEncoder
 
 sensitive_post_parameters_m = method_decorator(
     sensitive_post_parameters(
@@ -245,6 +248,57 @@ class LiveTelecastSet(viewsets.ModelViewSet):
 	pagination_class = StandardResultsSetPagination
 
 class PollsSet(viewsets.ModelViewSet):
-	queryset = PollsAnswer.objects.all()
+	queryset = PollsQuestion.objects.filter(active_status=1)
 	serializer_class = PollsSerializer
 	# pagination_class = StandardResultsSetPagination
+
+	# @list_route()
+	# def get_queryset(self, *args, **kwargs):
+	# 	return Response(PollsSerializer(many=True).data)
+
+class PollsResultPostSet(viewsets.ModelViewSet):
+	queryset = PollsResult.objects.all()
+	serializer_class = PollsPostResultSerializer
+
+	def create(self, validated_data):
+		pollsresult,created = PollsResult.objects.get_or_create( 
+			pollsresult_question=PollsQuestion.objects.get(id=1), 
+			pollsresult_employee=Employee.objects.get(user_ptr_id=2), 
+			defaults={
+			'pollsresult_answer': PollsAnswer.objects.get(id=2), 
+			}
+		)
+		if created:
+			return Response({"success": "Polls Result posted successfully"})
+		else:
+			pollsresult.pollsresult_question = PollsQuestion.objects.get(id=1)
+			pollsresult.pollsresult_employee = Employee.objects.get(user_ptr_id=2)
+			pollsresult.pollsresult_answer = PollsAnswer.objects.get(id=2)
+			pollsresult.save()
+			return Response({"success": "Polls Result Updated successfully"})
+
+	def retrieve(self, request, pk=None):
+		serializer = self.get_serializer(data=request.data)
+		serializer.is_valid(raise_exception=False)
+		# print serializer.data
+		# print "data"+serializer.data['pollsresult_question']
+		pollsresult = PollsResult.objects.get( 
+			pollsresult_question=PollsQuestion.objects.get(id=serializer.data['pollsresult_question']), 
+			pollsresult_employee=Employee.objects.get(user_ptr_id=serializer.data['pollsresult_employee']))
+		if pollsresult:
+			return Response({"exists": "1","answer_id":serializer.data['pollsresult_answer']})
+		else:
+			return Response({"exists": "0"})
+
+class NotificationListSet(viewsets.ModelViewSet):
+	queryset = Notification.objects.all()
+	serializer_class = NotificationListSerializer
+	pagination_class = StandardResultsSetPagination
+
+	def retrieve(self, request, pk=None):
+		serializer = self.get_serializer(data=request.data)
+		serializer.is_valid(raise_exception=False)
+		notification_result = Notification.objects.filter( 
+				notification_employee=Employee.objects.get(user_ptr_id=serializer.data['notification_employee'])
+		).order_by('-notification_created_date')
+		return Response(NotificationListSerializer(notification_result,many=True).data)
