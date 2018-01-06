@@ -137,7 +137,7 @@ class EventsSet(viewsets.ModelViewSet):
 	# @list_route(methods=['post'])
 	@list_route()
 	def recent_events(self, request):
-		queryset = Events.objects.filter(active_status=1).order_by('-id')[:10]
+		queryset = Events.objects.filter(active_status=1).order_by('-id')[:3]
 		# for querysets in queryset:
 		# 	print querysets.events_title
 		# events = get_object_or_404(queryset, pk=pk)
@@ -166,7 +166,7 @@ class NewsSet(viewsets.ModelViewSet):
 
 	@list_route()
 	def recent_news(self, request):
-		queryset = News.objects.filter(active_status=1).order_by('-id')[:10]
+		queryset = News.objects.filter(active_status=1).order_by('-id')[:3]
 		return Response(NewsSerializer(queryset,many=True).data)
 
 class FeedbackSet(viewsets.ModelViewSet):
