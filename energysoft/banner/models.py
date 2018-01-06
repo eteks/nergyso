@@ -20,9 +20,17 @@ def update_image(instance, filename):
 class Banner(AbstractDefault):
 	banner_image = models.FileField(verbose_name = 'Banner Image',upload_to = update_image)
 
+	def __str__(self):
+		return self.banner_image
+
 	def ban_image(self):
 		return '<img src="'+settings.SITE_URL+'%s" width="100px"/>' % self.banner_image
-		ban_image.allow_tags = True
-		ban_image.short_description = 'Image'
+	ban_image.allow_tags = True
+	ban_image.short_description = 'Image'
+
+	class Meta:
+		verbose_name = "Banner"
+        verbose_name_plural = "Banners"
+        ordering = ['id']	
 # def __str__(self):
 # 	return self.id
