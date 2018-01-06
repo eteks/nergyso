@@ -6,6 +6,7 @@ from embed_video.fields import EmbedVideoField
 from forms import EventFileForm
 from django.conf import settings
 from master.models import AbstractDefault,Department
+from energysoft.action import emp_id
 
 # Create your models here.
 def update_image(instance, filename):

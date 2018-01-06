@@ -6,6 +6,7 @@ from embed_video.admin import AdminVideoMixin
 from .models import Events
 from multiupload.admin import MultiUploadAdmin
 from forms import EventFileForm
+from energysoft.action import export_as_csv_action
 
 # Register your models here.
 # class EventsAdmin(AdminVideoMixin, admin.ModelAdmin):
@@ -17,6 +18,8 @@ class EventsAdmin(MultiUploadAdmin):
     form= EventFileForm
     list_display = ('events_title','events_venue','events_date')
     list_filter = ('events_title','events_date',)
+    search_fields = ('events_title','events_venue',)
+    actions = [export_as_csv_action("CSV Export", fields=['events_title','events_venue','events_date','events_description'])]
     change_form_template = 'multiupload/change_form.html'
     change_list_template = 'multiupload/change_list.html'
     multiupload_template = 'multiupload/upload.html'

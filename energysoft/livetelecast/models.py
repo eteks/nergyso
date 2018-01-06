@@ -16,4 +16,3 @@ class Livetelecast(AbstractDefault):
 		verbose_name = "Livetelecast"
         verbose_name_plural = "Livetelecasts"
         ordering = ['id']
-

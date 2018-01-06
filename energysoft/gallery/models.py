@@ -10,7 +10,8 @@ from django.conf import settings
 def update_image(instance, filename):
 	image_path = settings.IMAGES_ROOT
 	image_root=image_path+"gallery_"+filename
-	print image_root
+	files = filename
+	print "hi"+files
 	return image_root
 	
 # Create your models here.
