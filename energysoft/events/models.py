@@ -6,8 +6,9 @@ from embed_video.fields import EmbedVideoField
 from forms import EventFileForm
 from django.conf import settings
 from master.models import AbstractDefault,Department
-from energysoft.action import emp_id
-
+from employee.models import Employee
+from master.models import Notification
+from django.db.models.signals import post_save
 # Create your models here.
 def update_image(instance, filename):
 	image_path = settings.IMAGES_ROOT
@@ -48,3 +49,20 @@ class Events(AbstractDefault):
 		verbose_name = "Event"
         verbose_name_plural = "Events"
         ordering = ['id']
+
+def save_events(sender, instance, **kwargs):
+	emp_id = Employee.objects.all().values_list('user_ptr_id', flat=True)
+	# print(emp_id)
+	cateogry = "Events"
+	cateogry_id=Notification.objects.filter(notification_cateogry=cateogry,notification_cateogry_id=instance.id).exists()
+	# print event_id
+	if cateogry_id:   
+		pass
+	else:
+		for p in emp_id:
+			note = Notification(notification_cateogry=cateogry,notification_cateogry_id=instance.id,notification_delivery_status=0,notification_read_status=0,notification_created_date=instance.created_date,notification_employee_id=p)
+			# print note
+			note.save()
+		# print(p)
+
+post_save.connect(save_events, sender=Events)

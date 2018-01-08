@@ -38,7 +38,6 @@
 #     return export_as_csv
 import csv
 from django.http import HttpResponse
-from employee.models import Employee
 
 def export_as_csv_action(description="Export selected objects as CSV file",
                          fields=None, exclude=None, header=True):
@@ -74,6 +73,3 @@ def export_as_csv_action(description="Export selected objects as CSV file",
     return export_as_csv
 
 
-def emp_id():
-    emp_id = Employee.objects.all().values_list('employee_id', flat=True)
-    return emp_id
