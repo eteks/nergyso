@@ -5,7 +5,7 @@ from django.shortcuts import render,get_object_or_404
 # from oauth2_provider.views.generic import ProtectedResourceView
 from django.http import HttpResponse,JsonResponse
 from rest_framework import viewsets
-from energysoft_api.serializers import EmployeeSerializer, EventsSerializer,NewsSerializer, FeedbackSerializer,ShoutoutSerializer,PasswordChangeSerializer,NotificationSerializer,BannerSerializer,GallerySerializer,EmployeeParticularSerializer,LiveTelecastSerializer,PollsSerializer,PollsPostResultSerializer,NotificationListSerializer
+from energysoft_api.serializers import EmployeeSerializer, EventsSerializer,NewsSerializer, FeedbackSerializer,ShoutoutSerializer,PasswordChangeSerializer,NotificationSerializer,BannerSerializer,GallerySerializer,EmployeeParticularSerializer,LiveTelecastSerializer,PollsSerializer,PollsPostResultSerializer,NotificationListSerializer,CEOMessageSerializer
 from employee.models import Employee
 from events.models import Events
 from employee.models import Employee
@@ -31,7 +31,7 @@ from gallery.models import Gallery
 from livetelecast.models import Livetelecast
 import datetime
 from polls.models import PollsAnswer,PollsQuestion,PollsResult
-from master.models import Notification
+from master.models import Notification,CEOMessage
 import json
 from django.core.serializers.json import DjangoJSONEncoder
 
@@ -303,5 +303,33 @@ class NotificationListSet(viewsets.ModelViewSet):
 		serializer.is_valid(raise_exception=False)
 		notification_result = Notification.objects.filter( 
 				notification_employee=Employee.objects.get(user_ptr_id=serializer.data['notification_employee'])
-		).order_by('-notification_created_date')
+		).order_by('-notification_created_date')[:50]
 		return Response(NotificationListSerializer(notification_result,many=True).data)
+
+	@list_route()
+	def notification_status(self, request, pk=None):
+		try:
+			notification_status = Notification.objects.get(pk=pk)
+		except Notification.DoesNotExist:
+			notification_status = None
+		print notification_status
+		if notification_status:
+			if notification_status.notification_read_status is False:
+				notification_status.notification_read_status = True
+				notification_status.save()
+				return Response({"success": "Notification read status has been active"})
+		else:
+			return Response({"error": "ID not found"})
+		return Response({"success": "Notification read status has been already active"})
+		
+class CEOMessageSet(viewsets.ModelViewSet):
+	queryset = CEOMessage.objects.filter(active_status=1).order_by('-created_date')
+	serializer_class = CEOMessageSerializer
+
+	# def create(self, request, *args, **kwargs):
+	# 	serializer = self.get_serializer(data=request.data)
+	# 	serializer.is_valid(raise_exception=True)
+	# 	self.perform_create(serializer)
+	# 	headers = self.get_success_headers(serializer.data)
+	# 	return Response({"success": "Shoutout posted successfully"}, status=status.HTTP_201_CREATED, headers=headers)
+
