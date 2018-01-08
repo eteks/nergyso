@@ -5,7 +5,9 @@ from master.models import AbstractDefault
 from django.conf import settings
 from forms import FileFieldForm
 from django.core.exceptions import ValidationError
-
+from employee.models import Employee
+from master.models import Notification
+from django.db.models.signals import post_save
 # print current_site_url()
 
 def update_image(instance, filename):
@@ -49,3 +51,20 @@ class News(AbstractDefault):
 		verbose_name = "New"
 		verbose_name_plural = "News"
 		ordering = ['id']
+
+def save_news(sender, instance, **kwargs):
+	emp_id = Employee.objects.all().values_list('user_ptr_id', flat=True)
+	# print(emp_id)
+	cateogry = "News"
+	cateogry_id=Notification.objects.filter(notification_cateogry=cateogry,notification_cateogry_id=instance.id).exists()
+	# print event_id
+	if cateogry_id:   
+		pass
+	else:
+		for p in emp_id:
+			note = Notification(notification_cateogry=cateogry,notification_cateogry_id=instance.id,notification_delivery_status=0,notification_read_status=0,notification_created_date=instance.created_date,notification_employee_id=p)
+			# print note
+			note.save()
+		# print(p)
+
+post_save.connect(save_news, sender=News)

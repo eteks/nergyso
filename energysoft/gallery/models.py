@@ -10,7 +10,8 @@ from django.conf import settings
 def update_image(instance, filename):
 	image_path = settings.IMAGES_ROOT
 	image_root=image_path+"gallery_"+filename
-	print image_root
+	files = filename
+	print "hi"+files
 	return image_root
 	
 # Create your models here.
@@ -24,8 +25,8 @@ class Gallery(AbstractDefault):
 
 	def gal_image(self):
 		return '<img src="'+settings.SITE_URL+'%s" width="100px"/>' % self.gallery_image
-    	gal_image.allow_tags = True
-    	gal_image.short_description = 'Image'
+	gal_image.allow_tags = True
+	gal_image.short_description = 'Image'
 
 	class Meta:
 		verbose_name = "Gallery"

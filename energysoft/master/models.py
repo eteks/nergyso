@@ -23,7 +23,7 @@ class Department(AbstractDefault):
 class Notification(models.Model):
 	from employee.models import Employee
 	notification_cateogry = models.CharField(max_length=50,verbose_name = 'Notification Category',choices=NOTIFICATION_CATEGORY)
-	notification_cateogry_id = models.IntegerField(verbose_name = 'Notification Category Id') #It may be map the id from events or news or shoutout
+	notification_cateogry_id = models.IntegerField(verbose_name = 'Notification Category Id',null=True) #It may be map the id from events or news or shoutout
 	notification_employee = models.ForeignKey(Employee,verbose_name='Employee')
 	# notification_message = models.CharField(max_length=200,verbose_name='Notification message',help_text='It will be used only for CEO',blank=True)
 	notification_delivery_status = models.BooleanField(verbose_name = 'Notification Delivery Status', default = False)

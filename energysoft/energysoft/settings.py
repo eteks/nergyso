@@ -82,7 +82,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         # 'DIRS': [],
         'DIRS': [os.path.join(BASE_DIR,'templates/'),],
-        'APP_DIRS': True,
+        # 'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -91,6 +91,10 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'loaders': [
+                'django.template.loaders.filesystem.Loader',
+                'django.template.loaders.app_directories.Loader',
+            ]  
         },
         # 'LOADERS': {'django.template.loaders.filesystem.Loader',}
     },
@@ -98,11 +102,11 @@ TEMPLATES = [
 # import os.path
 # print "os_path"+os.path.join(BASE_DIR,'templates/')
 # print os.path.exists('/home/deepak/django_projects/nergyso_web/energysoft/energysoft/templates/search/indexes/events/events_text.txt')
-TEMPLATE_LOADERS = (
-  'django.template.loaders.filesystem.Loader',
-  'django.template.loaders.app_directories.Loader',
-#   'django.template.loaders.eggs.Loader',
-)
+# TEMPLATE_LOADERS = (
+#   'django.template.loaders.filesystem.Loader',
+#   'django.template.loaders.app_directories.Loader',
+# #   'django.template.loaders.eggs.Loader',
+# )
 
 WSGI_APPLICATION = 'energysoft.wsgi.application'
 
@@ -115,7 +119,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'vdart', 
         'USER': 'root',
-        'PASSWORD': 'root',
+        'PASSWORD': '',
         'HOST': '127.0.0.1',
         'PORT': '3306',
     }
