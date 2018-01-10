@@ -273,9 +273,10 @@ class NotificationListSerializer(serializers.ModelSerializer):
 
 class CEOMessageSerializer(serializers.ModelSerializer):
     ceo_employee = serializers.SlugRelatedField(queryset=Employee.objects.filter(employee_designation__icontains='ceo'), slug_field='id') 
+    ceo_employee_photo = serializers.CharField(source='ceo_employee.employee_photo') 
     class Meta:
         model = CEOMessage
-        fields = ('id','ceo_message','ceo_employee')
+        fields = ('id','ceo_message','ceo_employee','ceo_employee_photo')
 
 class ChoicesField(serializers.Field):
     def __init__(self, choices, **kwargs):

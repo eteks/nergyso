@@ -21,6 +21,8 @@ router.register(r'device/gcm', GCMDeviceAuthorizedViewSet)
 router.register(r'gallery', GalleryListSet, base_name="gallery")
 router.register(r'livetelecast', LiveTelecastSet, base_name="livetelecast")
 router.register(r'polls', PollsSet, base_name="polls")
+router.register(r'shoutout_list', ShoutoutListSet, base_name="shoutout_list")
+router.register(r'ceo_message_list', CEOMessageSet, base_name="ceo_message_list")
 
 # OAuth2 provider endpoints
 # oauth2_endpoint_views = [
@@ -61,7 +63,7 @@ urlpatterns = [
     url(r'^news/recent_news/', NewsSet.as_view({"get": "list"}), name="recent_news"),
     url(r'^feedback/', FeedbackSet.as_view({"post": "create"})),
     url(r'^shoutout_post/', ShoutoutPostSet.as_view({"post": "create"})),
-    url(r'^shoutout_list/', ShoutoutListSet.as_view({"get": "list"})),
+    # url(r'^shoutout_list/', ShoutoutListSet.as_view({"get": "list"})),
     url(r'^send_notification/', NotificationSet.as_view({"get": "list"}), name="send_notification"),
     url(r'^gallery_list/', GalleryListSet.as_view({"get": "list"})),
     url(r'^banner/', BannerSet.as_view({"get": "list"}), name="banners"),
@@ -75,7 +77,7 @@ urlpatterns = [
     url(r'^notification/notification_list_by_employee', NotificationListSet.as_view({"post": "retrieve"}), name="notification_list"),
     url(r'^notification/notification_status/(?P<pk>\d+)', NotificationListSet.as_view({"get": "notification_status"}), name="notification_status"),
     url(r'^ceo_message_post/', CEOMessageSet.as_view({"post": "create"})),
-    url(r'^ceo_message_list/', CEOMessageSet.as_view({"get": "list"})),
+    # url(r'^ceo_message_list/', CEOMessageSet.as_view({"get": "list"})),
     url(r'^search/', SearchSet.as_view({"post": "retrieve"}), name="search_result"),
 
     # Haystack and Elasticsearch
