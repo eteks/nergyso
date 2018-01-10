@@ -19,3 +19,9 @@ NOTIFICATION_CATEGORY = (
 	('ceo', 'CEO'),
 )
 
+SEARCH_OPTIONS = (
+	('events', 'Events'),
+	('news', 'News'),
+	('shoutout', 'Shoutout'),
+)
+
