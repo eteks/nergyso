@@ -14,7 +14,7 @@ from banner.models import Banner
 from gallery.models import Gallery
 from livetelecast.models import Livetelecast
 from polls.models import PollsAnswer,PollsQuestion,PollsResult
-from master.models import Notification
+from master.models import Notification,CEOMessage
 
 # Serializers define the API representation.
 class EmployeeSerializer(serializers.HyperlinkedModelSerializer):
@@ -268,3 +268,9 @@ class NotificationListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notification
         fields = ('id', 'notification_cateogry','notification_cateogry_id','notification_message','notification_employee','notification_read_status','notification_created_date')
+
+class CEOMessageSerializer(serializers.ModelSerializer):
+    ceo_employee = serializers.SlugRelatedField(queryset=Employee.objects.filter(employee_designation__icontains='ceo'), slug_field='id') 
+    class Meta:
+        model = CEOMessage
+        fields = ('id','ceo_message','ceo_employee')
