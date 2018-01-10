@@ -43,3 +43,6 @@ dev_settings.py
 production_settings.py
 install.tar.gz
 media
+**/migrations/**
+!**/migrations
+!**/migrations/__init__.py
