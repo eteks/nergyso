@@ -2,16 +2,44 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
-
 from models import Gallery
 from forms import GalleryFileForm
 from energysoft.action import export_as_csv_action
+from django.conf import settings
+import os
+from django.core.files.uploadedfile import SimpleUploadedFile
 
 # Register your models here.
+def handle_uploaded_file(f):
+	filename, file_ext = os.path.splitext(f.name)
+	suf = SimpleUploadedFile(filename + file_ext,f.read())
+	Gallery().gallery_image.save(filename + file_ext, suf, save=False)
+	# print gallery_image.name
+
 class GalleryAdmin(admin.ModelAdmin):
 	model = Gallery
 	form= GalleryFileForm
+	list_display = ('gallery_title','created_date','gal_image',)
 	search_fields = ('gallery_title',)
 	actions = [export_as_csv_action("CSV Export", fields=['id','gallery_title','created_date'])]
+	def save_model(self,request,obj,form,change,*args, **kwargs):
+		count=len(request.FILES.getlist("gallery_image"))		
+		# print count
+		filer=''
+		files = request.FILES.getlist('gallery_image')
+		for x in files:
+			count=count-1
+			if count==0:
+				filer = filer + settings.IMAGES_ROOT + 'gallery_'+ str(x)
+			else:
+				filer = filer + settings.IMAGES_ROOT + 'gallery_'+ str(x) + ','
+			handle_uploaded_file(x)
+
+		# print filer
+		# print self.gallery_image
+		obj.gallery_image = filer
+		super(Gallery, obj).save(*args, **kwargs)
+		# Gallery.objects.filter(created_date=obj.created_date,gallery_title=obj.gallery_title).update(gallery_image=filer)
+
 
 admin.site.register(Gallery, GalleryAdmin)

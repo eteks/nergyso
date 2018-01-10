@@ -13,17 +13,14 @@ def validate_image(gallery_image):
     if file_size > settings.MAX_UPLOAD_SIZE:
         raise ValidationError("Image file size should be less than 2 mb")
 
+
 class GalleryFileForm(forms.ModelForm):
     # events_document = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}))
-    gallery_image = forms.ImageField(widget=forms.ClearableFileInput(attrs={'multiple': True}),validators=[validate_image])
+    gallery_image = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}),validators=[validate_image])
+    
 
-    def post(self, request, *args, **kwargs):
-		form_class = self.get_form_class()
-		form = self.get_form(form_class)
-		files = request.FILES.getlist('gallery_image')
-		if form.is_valid():
-		    for f in files:
-		        print f
-		    return self.form_valid(form)
-		else:
-			return self.form_invalid(form)
+def post(self, request, *args, **kwargs):
+    print "fgfdkgkjdf"
+    files = request.FILES.getlist('gallery_image')
+    for f in fies:
+        print f 

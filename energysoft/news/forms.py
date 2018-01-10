@@ -33,7 +33,7 @@ def validate_document(news_document):
 
 class FileFieldForm(forms.ModelForm):
     # news_document = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}))
-    news_image = forms.ImageField(validators=[validate_image])
+    news_image = forms.ImageField(widget=forms.ClearableFileInput(attrs={'multiple': True}),validators=[validate_image])
     news_video = forms.FileField(validators=[validate_video],required=False)    
     news_document = forms.FileField(validators=[validate_document],required=False)
     # news_document = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}))

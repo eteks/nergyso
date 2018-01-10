@@ -33,6 +33,6 @@ def validate_document(events_document):
 
 class EventFileForm(forms.ModelForm):
     # events_document = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}))
-    events_image = forms.ImageField(validators=[validate_image])
+    events_image = forms.ImageField(widget=forms.ClearableFileInput(attrs={'multiple': True}),validators=[validate_image])
     events_video = forms.FileField(validators=[validate_video],required=False)    
     events_document = forms.FileField(validators=[validate_document],required=False)
