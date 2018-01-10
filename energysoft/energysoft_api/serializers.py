@@ -15,6 +15,7 @@ from gallery.models import Gallery
 from livetelecast.models import Livetelecast
 from polls.models import PollsAnswer,PollsQuestion,PollsResult
 from master.models import Notification,CEOMessage
+from master.config import SEARCH_OPTIONS
 
 # Serializers define the API representation.
 class EmployeeSerializer(serializers.HyperlinkedModelSerializer):
@@ -254,6 +255,7 @@ class PollsSerializer(serializers.ModelSerializer):
         fields = ('id', 'question','answers')
 
 class PollsPostResultSerializer(serializers.ModelSerializer): 
+    pollsresult_answer = serializers.CharField(required=False)
     class Meta:
         model = PollsResult
         fields = ('id','pollsresult_question','pollsresult_answer','pollsresult_employee')
@@ -274,3 +276,24 @@ class CEOMessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = CEOMessage
         fields = ('id','ceo_message','ceo_employee')
+
+class ChoicesField(serializers.Field):
+    def __init__(self, choices, **kwargs):
+        self._choices = choices
+        super(ChoicesField, self).__init__(**kwargs)
+
+    def to_representation(self, obj):
+        return self._choices[obj]
+
+    def to_internal_value(self, data):
+        return getattr(self._choices, data)
+
+class SearchSerializer(serializers.ModelSerializer):
+    keyword = serializers.CharField(max_length=200)
+    search_options = ChoicesField(choices=SEARCH_OPTIONS)
+    events = EventsSerializer(many=True)
+    shoutout = ShoutoutSerializer(many=True)
+
+    class Meta:
+        model = News
+        fields = ('keyword','search_options','events','shoutout')

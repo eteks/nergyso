@@ -5,7 +5,7 @@ from django.shortcuts import render,get_object_or_404
 # from oauth2_provider.views.generic import ProtectedResourceView
 from django.http import HttpResponse,JsonResponse
 from rest_framework import viewsets
-from energysoft_api.serializers import EmployeeSerializer, EventsSerializer,NewsSerializer, FeedbackSerializer,ShoutoutSerializer,PasswordChangeSerializer,NotificationSerializer,BannerSerializer,GallerySerializer,EmployeeParticularSerializer,LiveTelecastSerializer,PollsSerializer,PollsPostResultSerializer,NotificationListSerializer,CEOMessageSerializer
+from energysoft_api.serializers import EmployeeSerializer, EventsSerializer,NewsSerializer, FeedbackSerializer,ShoutoutSerializer,PasswordChangeSerializer,NotificationSerializer,BannerSerializer,GallerySerializer,EmployeeParticularSerializer,LiveTelecastSerializer,PollsSerializer,PollsPostResultSerializer,NotificationListSerializer,CEOMessageSerializer,SearchSerializer
 from employee.models import Employee
 from events.models import Events
 from employee.models import Employee
@@ -285,11 +285,16 @@ class PollsResultPostSet(viewsets.ModelViewSet):
 		serializer.is_valid(raise_exception=False)
 		# print serializer.data
 		# print "data"+serializer.data['pollsresult_question']
-		pollsresult = PollsResult.objects.filter( 
-			pollsresult_question=PollsQuestion.objects.get(id=serializer.data['pollsresult_question']), 
-			pollsresult_employee=Employee.objects.get(user_ptr_id=serializer.data['pollsresult_employee']))
-		if pollsresult:
-			return Response({"exists": "1","answer_id":serializer.data['pollsresult_answer']})
+		try:
+			pollsresult = PollsResult.objects.values('pollsresult_answer').get( 
+				pollsresult_question=PollsQuestion.objects.get(id=serializer.data['pollsresult_question']), 
+				pollsresult_employee=Employee.objects.get(user_ptr_id=serializer.data['pollsresult_employee'])
+			)
+			# print pollsresult['pollsresult_answer']
+		except PollsResult.DoesNotExist:
+			pollsresult = None
+		if pollsresult:		
+			return Response({"exists": "1","answer_id":pollsresult['pollsresult_answer']})
 		else:
 			return Response({"exists": "0"})
 
@@ -333,3 +338,6 @@ class CEOMessageSet(viewsets.ModelViewSet):
 	# 	headers = self.get_success_headers(serializer.data)
 	# 	return Response({"success": "Shoutout posted successfully"}, status=status.HTTP_201_CREATED, headers=headers)
 
+class SearchSet(viewsets.ModelViewSet):
+	# queryset = News.objects.all()
+	serializer_class = SearchSerializer

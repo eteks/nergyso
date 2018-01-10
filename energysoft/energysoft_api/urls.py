@@ -4,7 +4,7 @@ from django.conf import settings
 # from .views import ApiEndpoint
 
 from rest_framework import routers
-from .views import EmployeeSet,EventsSet,NewsSet,FeedbackSet,ShoutoutPostSet,PasswordChangeView,NotificationSet,BannerSet,ShoutoutListSet,GalleryListSet,LiveTelecastSet,PollsSet,PollsResultPostSet,NotificationListSet,CEOMessageSet
+from .views import EmployeeSet,EventsSet,NewsSet,FeedbackSet,ShoutoutPostSet,PasswordChangeView,NotificationSet,BannerSet,ShoutoutListSet,GalleryListSet,LiveTelecastSet,PollsSet,PollsResultPostSet,NotificationListSet,CEOMessageSet,SearchSet
 from rest_framework.authtoken.views import obtain_auth_token
 from fcm_django.api.rest_framework import FCMDeviceAuthorizedViewSet
 from push_notifications.api.rest_framework import APNSDeviceAuthorizedViewSet, GCMDeviceAuthorizedViewSet
@@ -76,6 +76,7 @@ urlpatterns = [
     url(r'^notification/notification_status/(?P<pk>\d+)', NotificationListSet.as_view({"get": "notification_status"}), name="notification_status"),
     url(r'^ceo_message_post/', CEOMessageSet.as_view({"post": "create"})),
     url(r'^ceo_message_list/', CEOMessageSet.as_view({"get": "list"})),
+    url(r'^search/', SearchSet.as_view({"post": "retrieve"}), name="search_result"),
 
     # Haystack and Elasticsearch
     # url(r'^events', EventsSet.as_view()),  # an example resource endpoint
