@@ -20,7 +20,7 @@ from master.config import SEARCH_OPTIONS
 # Serializers define the API representation.
 class EmployeeSerializer(serializers.HyperlinkedModelSerializer):
     employee_department_name = serializers.CharField(source='employee_department.department_name')
-    employee_photo = serializers.SerializerMethodField()
+    employee_photo = serializers.CharField()
     employee_email = serializers.CharField(source='user_ptr.email')
 
     def get_employee_photo(self, instance):
@@ -70,7 +70,7 @@ class EmployeeParticularSerializer(serializers.HyperlinkedModelSerializer):
 #     #     return [i.object for i in queryset]
 
 class EventsSerializer(serializers.HyperlinkedModelSerializer):
-    events_image = serializers.SerializerMethodField()
+    events_image = serializers.CharField()
     events_video = serializers.SerializerMethodField()
     events_document = serializers.SerializerMethodField()
 
@@ -87,7 +87,7 @@ class EventsSerializer(serializers.HyperlinkedModelSerializer):
                 'events_date','events_image','events_video','events_document','created_date')
 
 class NewsSerializer(serializers.HyperlinkedModelSerializer):
-    news_image = serializers.SerializerMethodField()
+    news_image = serializers.CharField()
     news_video = serializers.SerializerMethodField()
     news_document = serializers.SerializerMethodField()
 
