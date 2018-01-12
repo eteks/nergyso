@@ -119,7 +119,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'vdart', 
         'USER': 'root',
-        'PASSWORD': 'root',
+        'PASSWORD': '',
         'HOST': '127.0.0.1',
         'PORT': '3306',
     }
@@ -225,7 +225,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR)
 SITE_ID = 1
 import socket
 SIR=socket.gethostbyname(socket.gethostname())
-SITE_URL='http://132.148.68.181:8000/'
+SITE_URL='http://127.0.0.1:8000/'
 # SITE_URL=socket.gethostbyname(socket.gethostname())
 # -*- coding: utf-8 -*-
 IMAGE_TYPES = ['.jpg','.png','.jpeg']
