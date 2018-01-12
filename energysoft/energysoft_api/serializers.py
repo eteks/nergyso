@@ -15,11 +15,12 @@ from gallery.models import Gallery
 from livetelecast.models import Livetelecast
 from polls.models import PollsAnswer,PollsQuestion,PollsResult
 from master.models import Notification,CEOMessage
+from master.config import SEARCH_OPTIONS
 
 # Serializers define the API representation.
 class EmployeeSerializer(serializers.HyperlinkedModelSerializer):
     employee_department_name = serializers.CharField(source='employee_department.department_name')
-    employee_photo = serializers.SerializerMethodField()
+    employee_photo = serializers.CharField()
     employee_email = serializers.CharField(source='user_ptr.email')
 
     def get_employee_photo(self, instance):
@@ -69,7 +70,7 @@ class EmployeeParticularSerializer(serializers.HyperlinkedModelSerializer):
 #     #     return [i.object for i in queryset]
 
 class EventsSerializer(serializers.HyperlinkedModelSerializer):
-    events_image = serializers.SerializerMethodField()
+    events_image = serializers.CharField()
     events_video = serializers.SerializerMethodField()
     events_document = serializers.SerializerMethodField()
 
@@ -86,7 +87,7 @@ class EventsSerializer(serializers.HyperlinkedModelSerializer):
                 'events_date','events_image','events_video','events_document','created_date')
 
 class NewsSerializer(serializers.HyperlinkedModelSerializer):
-    news_image = serializers.SerializerMethodField()
+    news_image = serializers.CharField()
     news_video = serializers.SerializerMethodField()
     news_document = serializers.SerializerMethodField()
 
@@ -254,6 +255,7 @@ class PollsSerializer(serializers.ModelSerializer):
         fields = ('id', 'question','answers')
 
 class PollsPostResultSerializer(serializers.ModelSerializer): 
+    pollsresult_answer = serializers.CharField(required=False)
     class Meta:
         model = PollsResult
         fields = ('id','pollsresult_question','pollsresult_answer','pollsresult_employee')
@@ -271,6 +273,28 @@ class NotificationListSerializer(serializers.ModelSerializer):
 
 class CEOMessageSerializer(serializers.ModelSerializer):
     ceo_employee = serializers.SlugRelatedField(queryset=Employee.objects.filter(employee_designation__icontains='ceo'), slug_field='id') 
+    ceo_employee_photo = serializers.CharField(source='ceo_employee.employee_photo') 
     class Meta:
         model = CEOMessage
-        fields = ('id','ceo_message','ceo_employee')
+        fields = ('id','ceo_message','ceo_employee','ceo_employee_photo')
+
+class ChoicesField(serializers.Field):
+    def __init__(self, choices, **kwargs):
+        self._choices = choices
+        super(ChoicesField, self).__init__(**kwargs)
+
+    def to_representation(self, obj):
+        return self._choices[obj]
+
+    def to_internal_value(self, data):
+        return getattr(self._choices, data)
+
+class SearchSerializer(serializers.ModelSerializer):
+    keyword = serializers.CharField(max_length=200)
+    search_options = ChoicesField(choices=SEARCH_OPTIONS)
+    events = EventsSerializer(many=True)
+    shoutout = ShoutoutSerializer(many=True)
+
+    class Meta:
+        model = News
+        fields = ('keyword','search_options','events','shoutout')
