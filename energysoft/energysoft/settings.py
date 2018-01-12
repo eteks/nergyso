@@ -223,7 +223,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR)
 
 
 SITE_ID = 1
-SITE_URL='http://127.0.0.1:8000/'
+SITE_URL='http://132.148.68.181:8000/'
 # -*- coding: utf-8 -*-
 IMAGE_TYPES = ['.jpg','.png','.jpeg']
 DOCUMENT_TYPES=['.doc', '.docx', '.pdf']
