@@ -15,9 +15,9 @@ def update_image(request, filename):
 # Create your models here.
 class Gallery(AbstractDefault):
 	gallery_title = models.CharField(verbose_name = 'Title', max_length = 255,help_text="Ex:Office")
-	gallery_image = models.FileField(verbose_name = 'Images',upload_to = update_image,help_text="A unique title for this thing")
+	gallery_image = models.FileField(verbose_name = 'Images',upload_to = update_image,help_text="Supports Only jpg/png/jpeg format.")
 	# gallery_category = models.CharField(verbose_name = 'Gallery Category', choices=GALLERY_CATEGORY,max_length=50)
-
+	
 	def __str__(self):
 		return self.gallery_title
 

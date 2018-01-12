@@ -31,9 +31,9 @@ class NewsManager(models.Manager):
 		return super(NewsManager, self).get_queryset().order_by('-id')
 
 class News(AbstractDefault):
-	news_title = models.CharField(verbose_name = 'Title', max_length = 255)
-	news_description = models.TextField(verbose_name = 'Description', max_length = 1000)
-	news_image = models.ImageField(verbose_name = 'Images',upload_to = update_image)
+	news_title = models.CharField(verbose_name = 'Title', max_length = 255,help_text="Ex:Report")
+	news_description = models.TextField(verbose_name = 'Description', max_length = 1000,help_text="Ex:News description")
+	news_image = models.ImageField(verbose_name = 'Images',upload_to = update_image,help_text="Ex:Supports Only jpg/png/jpeg format.")
 	news_video = models.FileField(verbose_name = 'Video',upload_to = update_video) 
 	news_document = models.FileField(verbose_name = 'Document',upload_to = update_file)
 
