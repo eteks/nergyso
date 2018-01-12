@@ -19,11 +19,13 @@ def handle_uploaded_file(f):
 class GalleryAdmin(admin.ModelAdmin):
 	model = Gallery
 	form= GalleryFileForm
-	list_display = ('gallery_title','created_date','gal_image',)
+	list_display = ('gallery_title','created_date',)
+	list_filter = ('gallery_title','created_date',)
 	search_fields = ('gallery_title',)
 	actions = [export_as_csv_action("CSV Export", fields=['id','gallery_title','created_date'])]
 	def save_model(self,request,obj,form,change,*args, **kwargs):
-		count=len(request.FILES.getlist("gallery_image"))		
+		counts=len(request.FILES.getlist("gallery_image"))
+		count=counts		
 		# print count
 		filer=''
 		files = request.FILES.getlist('gallery_image')
@@ -37,8 +39,10 @@ class GalleryAdmin(admin.ModelAdmin):
 
 		# print filer
 		# print self.gallery_image
-		obj.gallery_image = filer
+		if counts!=0:
+			obj.gallery_image = filer
 		super(Gallery, obj).save(*args, **kwargs)
+
 		# Gallery.objects.filter(created_date=obj.created_date,gallery_title=obj.gallery_title).update(gallery_image=filer)
 
 

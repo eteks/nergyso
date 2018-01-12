@@ -26,7 +26,8 @@ class NewsAdmin(AdminVideoMixin, admin.ModelAdmin):
 	actions = [export_as_csv_action("CSV Export", fields=['id','news_title','news_description','created_date'])]
 
 	def save_model(self,request,obj,form,change,*args,**kwargs):
-		count=len(request.FILES.getlist("news_image"))       
+		counts=len(request.FILES.getlist("news_image"))
+		count=counts 
         # print count
 		filer=''
 		files = request.FILES.getlist('news_image')
@@ -37,8 +38,8 @@ class NewsAdmin(AdminVideoMixin, admin.ModelAdmin):
 			else:
 				filer = filer + settings.IMAGES_ROOT + 'news_'+ str(x) + ','
 			handle_uploaded_file(x)
-
-		obj.news_image = filer
+		if counts!=0:	
+			obj.news_image = filer
 		super(News, obj).save(*args,**kwargs)
 
 admin.site.register(News, NewsAdmin)

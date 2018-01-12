@@ -29,7 +29,8 @@ class EventsAdmin(admin.ModelAdmin):
     actions = [export_as_csv_action("CSV Export", fields=['events_title','events_venue','events_date','events_description'])]
 
     def save_model(self,request,obj,form,change,*args,**kwargs):
-        count=len(request.FILES.getlist("events_image"))       
+        counts=len(request.FILES.getlist("events_image"))
+        count=counts
         # print count
         filer=''
         files = request.FILES.getlist('events_image')
@@ -40,8 +41,8 @@ class EventsAdmin(admin.ModelAdmin):
             else:
                 filer = filer + settings.IMAGES_ROOT + 'events_'+ str(x) + ','
             handle_uploaded_file(x)
-
-        obj.events_image = filer
+        if counts!=0:
+            obj.events_image = filer
         super(Events, obj).save(*args,**kwargs)
     
 
