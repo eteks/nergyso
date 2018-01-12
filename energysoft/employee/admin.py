@@ -12,7 +12,10 @@ class EmployeeAdmin(admin.ModelAdmin):
 	model = Employee
 	form= EmpFileForm
 	#updated by kalai
-	exclude = ('password','first_name','last_name','is_superuser','is_active','last_login','date_joined','groups','user_permissions','email','employee_aadhar_id','is_staff','employee_device_id')
+
+	exclude = ('password','is_superuser','is_active','last_login','date_joined','groups','user_permissions','employee_aadhar_id','is_staff','employee_device_id')
+	# exclude = ('password','first_name','last_name','is_superuser','is_active','last_login','date_joined','groups','user_permissions','email','employee_aadhar_id','is_staff','employee_device_id')
+
 	list_display = ('employee_id','employee_name','employee_mobile','employee_designation')
 	list_filter = ('employee_id',)
 	search_fields = ('employee_id','employee_name','employee_mobile','employee_designation',)

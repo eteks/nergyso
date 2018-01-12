@@ -9,8 +9,8 @@ from master.models import Notification
 from django.db.models.signals import post_save
 # Create your models here.
 class Livetelecast(AbstractDefault):
-	livetelecast_title = models.CharField(verbose_name = 'Title', max_length = 255)
-	livetelecast_url = EmbedVideoField(verbose_name = 'Embed Livecast URL')
+	livetelecast_title = models.CharField(verbose_name = 'Title', max_length = 255,help_text="Ex:Promotion Live")
+	livetelecast_url = EmbedVideoField(verbose_name = 'Embed Livecast URL',help_text="Ex:https://youtu.be/SKo2B8Vf53M")
 	
 	def __str__(self):
 		return self.livetelecast_url

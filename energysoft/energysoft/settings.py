@@ -223,7 +223,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR)
 
 
 SITE_ID = 1
+import socket
+SIR=socket.gethostbyname(socket.gethostname())
 SITE_URL='http://132.148.68.181:8000/'
+# SITE_URL=socket.gethostbyname(socket.gethostname())
 # -*- coding: utf-8 -*-
 IMAGE_TYPES = ['.jpg','.png','.jpeg']
 DOCUMENT_TYPES=['.doc', '.docx', '.pdf']

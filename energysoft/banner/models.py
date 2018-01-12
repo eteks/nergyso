@@ -18,7 +18,7 @@ def update_image(instance, filename):
 	return image_root
 
 class Banner(AbstractDefault):
-	banner_image = models.FileField(verbose_name = 'Banner Image',upload_to = update_image)
+	banner_image = models.FileField(verbose_name = 'Banner Image',upload_to = update_image,help_text="Supports Only jpg/png/jpeg format.")
 
 	
 	def ban_image(self):
