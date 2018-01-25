@@ -65,7 +65,7 @@ class EmployeeSet(viewsets.ModelViewSet):
 	def employee_today_birthday(self, request):
 		today = datetime.date.today()
 		print today
-		queryset = Employee.objects.filter(employee_dob__year=today.year,employee_dob__month=today.month,
+		queryset = Employee.objects.filter(employee_dob__month=today.month,
 			employee_dob__day=today.day).order_by('-id')
 		# queryset = Employee.objects.filter(employee_dob=today).order_by('-id')
 		print queryset
@@ -85,7 +85,7 @@ class EmployeeSet(viewsets.ModelViewSet):
 	def employee_today_anniversary(self, request):
 		today = datetime.date.today()
 		print today
-		queryset = Employee.objects.filter(employee_doj__year=today.year,employee_doj__month=today.month,
+		queryset = Employee.objects.filter(employee_doj__month=today.month,
 			employee_doj__day=today.day).order_by('-id')
 		# queryset = Employee.objects.filter(employee_dob=today).order_by('-id')
 		print queryset
