@@ -83,6 +83,7 @@ urlpatterns = [
     # url(r'^ceo_message_list/', CEOMessageSet.as_view({"get": "list"})),
     url(r'^search/', SearchSet.as_view({"post": "retrieve"}), name="search_result"),
     url(r'^push_notification/create_device', NotificationSet.as_view({"post": "create"})),
+    url(r'^push_notification/send_notification/', NotificationSet.as_view({"get": "send_notification"}), name="send_notification"),
 
     # Haystack and Elasticsearch
     # url(r'^events', EventsSet.as_view()),  # an example resource endpoint

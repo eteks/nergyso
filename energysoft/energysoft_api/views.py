@@ -241,40 +241,36 @@ class PasswordChangeView(GenericAPIView):
         serializer.save()
         return Response({"detail": _("New password has been saved.")})
 
-class NotificationSet(viewsets.ModelViewSet):	
+class NotificationSet(viewsets.ModelViewSet):
 	serializer_class = NotificationSerializer	
 
 	def create(self, request, *args, **kwargs):
 		serializer = self.get_serializer(data=request.data)
 		serializer.is_valid(raise_exception=False)
-		print serializer.data
-		check_exists = Notification.objects.get_or_create(notification_employee=serializer.data['user'])
+		# print serializer.data		
+		try:
+			check_exists = GCMDevice.objects.get(user_id=serializer.data['user'])
+		except check_exists.DoesNotExist:
+			check_exists = GCMDevice()
+			check_exists.user_id = serializer.data['user']
+		check_exists.name = serializer.data['name']
 		check_exists.registration_id = serializer.data['registration_id']
 		check_exists.application_id = serializer.data['application_id']
 		check_exists.device_id = serializer.data['device_id']
+		check_exists.cloud_message_type = "FCM"
 		check_exists.save()
-		# if check_exists:
-		# 	check_exists.registration_id = serializer.data['registration_id']
-		# 	check_exists.application_id = serializer.data['application_id']
-		# 	check_exists.device_id = serializer.data['device_id']
-		# 	check_exists.save()
-		# else:
-		# 	# Notification.objects.create( 
-		# 	# 	registration_id=serializer.data['registration_id'], 
-		# 	# 	application_id=serializer.data['application_id'], 
-		# 	# 	device_id=serializer.data['device_id']
-		# 	# )
-		# 	check_exists.registration_id = serializer.data['registration_id']
-		# 	check_exists.application_id = serializer.data['application_id']
-		# 	check_exists.device_id = serializer.data['device_id']
-		# 	check_exists.save()
 		return Response({"success": "Device data stored successfully"})
 
-
 	@list_route()
-	def get_queryset(self, *args, **kwargs):
-		queryset = GCMDevice.objects.all()
-		queryset.send_message("This is a test message", title="Test Notification")
+	def send_notification(self, *args, **kwargs):
+		print "send_notification"
+		devices = GCMDevice.objects.all()
+		print devices
+		for q in devices:
+			print q.application_id
+			print q.registration_id
+			# q.application_id = "test"
+			q.send_message("This is a test message after checked", title="Test Notification")
 		# serializer = self.get_serializer()
 		# serializer.is_valid(raise_exception=True)
 		# self.perform_create(serializer)
