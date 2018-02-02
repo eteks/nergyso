@@ -8,6 +8,7 @@ from django.core.exceptions import ValidationError
 from employee.models import Employee
 from master.models import Notification
 from django.db.models.signals import post_save
+from push_notifications.models import APNSDevice, GCMDevice
 # print current_site_url()
 
 def update_image(instance, filename):
@@ -65,6 +66,9 @@ def save_news(sender, instance, **kwargs):
 			note = Notification(notification_cateogry=cateogry,notification_cateogry_id=instance.id,notification_delivery_status=0,notification_read_status=0,notification_created_date=instance.created_date,notification_employee_id=p)
 			# print note
 			note.save()
+			devices = GCMDevice.objects.all()
+			for q in devices:
+				q.send_message(instance.news_title, title="News posted",extra={"news_id": instance.id,"category":"news"})
 		# print(p)
 
 post_save.connect(save_news, sender=News)

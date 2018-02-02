@@ -250,7 +250,7 @@ class NotificationSet(viewsets.ModelViewSet):
 		# print serializer.data		
 		try:
 			check_exists = GCMDevice.objects.get(user_id=serializer.data['user'])
-		except check_exists.DoesNotExist:
+		except GCMDevice.DoesNotExist:
 			check_exists = GCMDevice()
 			check_exists.user_id = serializer.data['user']
 		check_exists.name = serializer.data['name']
