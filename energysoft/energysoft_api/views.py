@@ -373,12 +373,15 @@ class CEOMessageSet(viewsets.ModelViewSet):
 	queryset = CEOMessage.objects.filter(active_status=1).order_by('-created_date')
 	serializer_class = CEOMessageSerializer
 
-	# def create(self, request, *args, **kwargs):
-	# 	serializer = self.get_serializer(data=request.data)
-	# 	serializer.is_valid(raise_exception=True)
-	# 	self.perform_create(serializer)
-	# 	headers = self.get_success_headers(serializer.data)
-	# 	return Response({"success": "Shoutout posted successfully"}, status=status.HTTP_201_CREATED, headers=headers)
+	def create(self, request, *args, **kwargs):
+		serializer = self.get_serializer(data=request.data)
+		serializer.is_valid(raise_exception=True)
+		self.perform_create(serializer)
+		headers = self.get_success_headers(serializer.data)
+		devices = GCMDevice.objects.all()
+		for q in devices:
+			q.send_message(serializer.data['ceo_message'],title="New message got from CEO",extra={"category":"ceo"})
+		return Response({"success": "CEO message posted successfully"}, status=status.HTTP_201_CREATED, headers=headers)
 
 class SearchSet(viewsets.ModelViewSet):
 	# queryset = News.objects.all()
