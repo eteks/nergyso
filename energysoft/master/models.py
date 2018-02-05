@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from django.db import models
 from master.config import NOTIFICATION_CATEGORY
 from push_notifications.models import APNSDevice, GCMDevice
+from django.db.models.signals import post_save
 
 #Master model to use in throughout website
 class AbstractDefault(models.Model):
@@ -45,3 +46,24 @@ class CEOMessage(models.Model):
 		
 	def __str__(self):
 		return self.ceo_message
+
+def save_ceomessage(sender, instance, **kwargs):
+	from employee.models import Employee
+	emp_id = Employee.objects.all().values_list('user_ptr_id', flat=True)
+	# print(emp_id)
+	cateogry = "ceo"
+	cateogry_id=Notification.objects.filter(notification_cateogry=cateogry,notification_cateogry_id=instance.id).exists()
+	# print event_id
+	if cateogry_id:   
+		pass
+	else:
+		for p in emp_id:
+			note = Notification(notification_cateogry=cateogry,notification_cateogry_id=instance.id,notification_delivery_status=0,notification_read_status=0,notification_created_date=instance.created_date,notification_employee_id=p)
+			# print note
+			note.save()
+			devices = GCMDevice.objects.all()
+			for q in devices:
+				q.send_message(instance.ceo_message, title="New message got from CEO",extra={"ceomessage_id": instance.id,"category":"ceo"})
+		# print(p)
+
+post_save.connect(save_ceomessage, sender=CEOMessage)

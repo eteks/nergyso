@@ -211,7 +211,7 @@ class BannerSerializer(serializers.HyperlinkedModelSerializer):
 class LiveTelecastSerializer(serializers.ModelSerializer):   
     class Meta:
         model = Livetelecast
-        fields = ('id', 'livetelecast_url')
+        fields = ('id', 'livetelecast_url','livetelecast_title')
 
 # class PollsSerializer(serializers.ModelSerializer):   
 #     answer = serializers.SerializerMethodField('get_field_detail',many=True)
