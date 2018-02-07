@@ -61,9 +61,9 @@ def save_ceomessage(sender, instance, **kwargs):
 			note = Notification(notification_cateogry=cateogry,notification_cateogry_id=instance.id,notification_delivery_status=0,notification_read_status=0,notification_created_date=instance.created_date,notification_employee_id=p)
 			# print note
 			note.save()
-			devices = GCMDevice.objects.all()
-			for q in devices:
-				q.send_message(instance.ceo_message, title="New message got from CEO",extra={"ceomessage_id": instance.id,"category":"ceo"})
+		devices = GCMDevice.objects.all()
+		for q in devices:
+			q.send_message(instance.ceo_message, title="New message got from CEO",extra={"ceomessage_id": instance.id,"category":"ceo"})
 		# print(p)
 
 post_save.connect(save_ceomessage, sender=CEOMessage)
