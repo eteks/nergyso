@@ -7,6 +7,7 @@ from embed_video.fields import EmbedVideoField
 from employee.models import Employee
 from master.models import Notification
 from django.db.models.signals import post_save
+from push_notifications.models import APNSDevice, GCMDevice
 # Create your models here.
 class Livetelecast(AbstractDefault):
 	livetelecast_title = models.CharField(verbose_name = 'Title', max_length = 255,help_text="Ex:Promotion Live")
@@ -33,6 +34,9 @@ def save_livetelecast(sender, instance, **kwargs):
 			note = Notification(notification_cateogry=cateogry,notification_cateogry_id=instance.id,notification_delivery_status=0,notification_read_status=0,notification_created_date=instance.created_date,notification_employee_id=p)
 			# print note
 			note.save()
+			devices = GCMDevice.objects.all()
+			for q in devices:
+				q.send_message(instance.livetelecast_title, title="New Live Telecast posted",extra={"live_id": instance.id,"category":"livetelecast"})
 		# print(p)
 
 post_save.connect(save_livetelecast, sender=Livetelecast)

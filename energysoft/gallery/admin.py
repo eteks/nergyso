@@ -48,5 +48,4 @@ class GalleryAdmin(admin.ModelAdmin):
 
 		# Gallery.objects.filter(created_date=obj.created_date,gallery_title=obj.gallery_title).update(gallery_image=filer)
 
-
 admin.site.register(Gallery, GalleryAdmin)

@@ -59,10 +59,13 @@ urlpatterns = [
     url(r'^rest-auth/password/change/$', PasswordChangeView.as_view(),name='rest_password_change'),
     url(r'^rest-auth/', include('rest_auth.urls')),
     url(r'^events/recent_events/', EventsSet.as_view({"get": "list"}), name="recent_events"),
+    url(r'^events/search_events/(?P<search_string>.*)/', EventsSet.as_view({"get": "search_events"}), name="search_events"),
     url(r'^events/similar_events/(?P<pk>\d+)/', EventsSet.as_view({"get": "list"}), name="similar_events"),
     url(r'^news/recent_news/', NewsSet.as_view({"get": "list"}), name="recent_news"),
+    url(r'^news/search_news/(?P<search_string>.*)/', NewsSet.as_view({"get": "search_news"}), name="search_news"),
     url(r'^feedback/', FeedbackSet.as_view({"post": "create"})),
     url(r'^shoutout_post/', ShoutoutPostSet.as_view({"post": "create"})),
+    url(r'^shoutout/search_shoutout/(?P<search_string>.*)/', ShoutoutListSet.as_view({"get": "search_shoutout"}), name="search_shoutout"),
     # url(r'^shoutout_list/', ShoutoutListSet.as_view({"get": "list"})),
     url(r'^send_notification/', NotificationSet.as_view({"get": "list"}), name="send_notification"),
     url(r'^gallery_list/', GalleryListSet.as_view({"get": "list"})),
@@ -79,6 +82,8 @@ urlpatterns = [
     url(r'^ceo_message_post/', CEOMessageSet.as_view({"post": "create"})),
     # url(r'^ceo_message_list/', CEOMessageSet.as_view({"get": "list"})),
     url(r'^search/', SearchSet.as_view({"post": "retrieve"}), name="search_result"),
+    url(r'^push_notification/create_device', NotificationSet.as_view({"post": "create"})),
+    url(r'^push_notification/send_notification/', NotificationSet.as_view({"get": "send_notification"}), name="send_notification"),
 
     # Haystack and Elasticsearch
     # url(r'^events', EventsSet.as_view()),  # an example resource endpoint

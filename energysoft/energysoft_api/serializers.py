@@ -16,6 +16,12 @@ from livetelecast.models import Livetelecast
 from polls.models import PollsAnswer,PollsQuestion,PollsResult
 from master.models import Notification,CEOMessage
 from master.config import SEARCH_OPTIONS
+from django.contrib.auth.models import User
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'username')
 
 # Serializers define the API representation.
 class EmployeeSerializer(serializers.HyperlinkedModelSerializer):
@@ -185,11 +191,12 @@ class PasswordChangeSerializer(serializers.Serializer):
             from django.contrib.auth import update_session_auth_hash
             update_session_auth_hash(self.request, self.user)
 
-class NotificationSerializer(serializers.HyperlinkedModelSerializer):    
+class NotificationSerializer(serializers.ModelSerializer):    
+    # notification_employee = serializers.CharField(Null=False)
     class Meta:
         model = GCMDevice
-        # fields = '__all__'
-        fields = ('id','registration_id','cloud_message_type')
+        fields = '__all__'
+        # extra_kwargs = {'notification_employee': {'required': True}}
 
 class BannerSerializer(serializers.HyperlinkedModelSerializer):    
     banner_image = serializers.SerializerMethodField()
@@ -204,7 +211,7 @@ class BannerSerializer(serializers.HyperlinkedModelSerializer):
 class LiveTelecastSerializer(serializers.ModelSerializer):   
     class Meta:
         model = Livetelecast
-        fields = ('id', 'livetelecast_url')
+        fields = ('id', 'livetelecast_url','livetelecast_title')
 
 # class PollsSerializer(serializers.ModelSerializer):   
 #     answer = serializers.SerializerMethodField('get_field_detail',many=True)
@@ -273,7 +280,7 @@ class NotificationListSerializer(serializers.ModelSerializer):
 
 class CEOMessageSerializer(serializers.ModelSerializer):
     ceo_employee = serializers.SlugRelatedField(queryset=Employee.objects.filter(employee_designation__icontains='ceo'), slug_field='id') 
-    ceo_employee_photo = serializers.CharField(source='ceo_employee.employee_photo') 
+    ceo_employee_photo = serializers.CharField(source='ceo_employee.employee_photo',read_only=True) 
     class Meta:
         model = CEOMessage
         fields = ('id','ceo_message','ceo_employee','ceo_employee_photo')

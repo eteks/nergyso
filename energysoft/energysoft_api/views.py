@@ -34,6 +34,7 @@ from polls.models import PollsAnswer,PollsQuestion,PollsResult
 from master.models import Notification,CEOMessage
 import json
 from django.core.serializers.json import DjangoJSONEncoder
+from django.db.models import Q
 
 sensitive_post_parameters_m = method_decorator(
     sensitive_post_parameters(
@@ -64,7 +65,7 @@ class EmployeeSet(viewsets.ModelViewSet):
 	def employee_today_birthday(self, request):
 		today = datetime.date.today()
 		print today
-		queryset = Employee.objects.filter(employee_dob__year=today.year,employee_dob__month=today.month,
+		queryset = Employee.objects.filter(employee_dob__month=today.month,
 			employee_dob__day=today.day).order_by('-id')
 		# queryset = Employee.objects.filter(employee_dob=today).order_by('-id')
 		print queryset
@@ -74,8 +75,8 @@ class EmployeeSet(viewsets.ModelViewSet):
 	def employee_upcoming_birthday(self, request):
 		today = datetime.date.today()
 		print today
-		queryset = Employee.objects.filter(employee_dob__year__gte=today.year,employee_dob__month__gte=today.month,
-			employee_dob__day__gt=today.day).order_by('employee_dob','id')[:30]
+		queryset = Employee.objects.filter(Q(employee_dob__month__gt=today.month)|
+			(Q(employee_dob__month=today.month)&Q(employee_dob__day__gt=today.day))).order_by('employee_dob','id')[:30]
 		# queryset = Employee.objects.filter(employee_dob=today).order_by('-id')
 		print queryset
 		return Response(EmployeeParticularSerializer(queryset,many=True).data)
@@ -84,7 +85,7 @@ class EmployeeSet(viewsets.ModelViewSet):
 	def employee_today_anniversary(self, request):
 		today = datetime.date.today()
 		print today
-		queryset = Employee.objects.filter(employee_doj__year=today.year,employee_doj__month=today.month,
+		queryset = Employee.objects.filter(employee_doj__month=today.month,
 			employee_doj__day=today.day).order_by('-id')
 		# queryset = Employee.objects.filter(employee_dob=today).order_by('-id')
 		print queryset
@@ -94,8 +95,8 @@ class EmployeeSet(viewsets.ModelViewSet):
 	def employee_upcoming_anniversary(self, request):
 		today = datetime.date.today()
 		print today
-		queryset = Employee.objects.filter(employee_doj__year__gte=today.year,employee_doj__month__gte=today.month,
-			employee_doj__day__gt=today.day).order_by('employee_dob','id')[:30]
+		queryset = Employee.objects.filter(Q(employee_doj__month__gt=today.month)|
+			(Q(employee_doj__month=today.month)&Q(employee_doj__day__gt=today.day))).order_by('employee_doj','id')[:30]
 		# queryset = Employee.objects.filter(employee_dob=today).order_by('-id')
 		print queryset
 		return Response(EmployeeParticularSerializer(queryset,many=True).data)
@@ -147,6 +148,13 @@ class EventsSet(viewsets.ModelViewSet):
 		# events = get_object_or_404(queryset)
 		# serializer = EventsSerializer(queryset)
 		# return Response(serializer.data)
+		return Response(EventsSerializer(queryset,many=True).data)  
+
+	@list_route()
+	def search_events(self, request, search_string):
+		print "search_string"
+		print search_string
+		queryset = Events.objects.filter((Q(events_title__contains=search_string)|Q(events_description__contains=search_string))&Q(active_status=1)).order_by('-id')
 		return Response(EventsSerializer(queryset,many=True).data)
 
 	# @list_route()
@@ -170,6 +178,11 @@ class NewsSet(viewsets.ModelViewSet):
 	@list_route()
 	def recent_news(self, request):
 		queryset = News.objects.filter(active_status=1).order_by('-id')[:3]
+		return Response(NewsSerializer(queryset,many=True).data)
+
+	@list_route()
+	def search_news(self, request, search_string):
+		queryset = News.objects.filter((Q(news_title__contains=search_string)|Q(news_description__contains=search_string))&Q(active_status=1)).order_by('-id')
 		return Response(NewsSerializer(queryset,many=True).data)
 
 class FeedbackSet(viewsets.ModelViewSet):
@@ -198,6 +211,11 @@ class ShoutoutListSet(viewsets.ModelViewSet):
 	serializer_class = ShoutoutSerializer
 	pagination_class = StandardResultsSetPagination
 
+	@list_route()
+	def search_shoutout(self, request, search_string):
+		queryset = Shoutout.objects.filter(Q(shoutout_description__contains=search_string)&Q(shoutout_approval_status=1)).order_by('-id')
+		return Response(ShoutoutSerializer(queryset,many=True).data)
+
 class GalleryListSet(viewsets.ModelViewSet):
 	queryset = Gallery.objects.filter(active_status=1).order_by('-id')
 	serializer_class = GallerySerializer
@@ -223,12 +241,36 @@ class PasswordChangeView(GenericAPIView):
         serializer.save()
         return Response({"detail": _("New password has been saved.")})
 
-class NotificationSet(viewsets.ModelViewSet):	
+class NotificationSet(viewsets.ModelViewSet):
 	serializer_class = NotificationSerializer	
+
+	def create(self, request, *args, **kwargs):
+		serializer = self.get_serializer(data=request.data)
+		serializer.is_valid(raise_exception=False)
+		# print serializer.data		
+		try:
+			check_exists = GCMDevice.objects.get(user_id=serializer.data['user'])
+		except GCMDevice.DoesNotExist:
+			check_exists = GCMDevice()
+			check_exists.user_id = serializer.data['user']
+		check_exists.name = serializer.data['name']
+		check_exists.registration_id = serializer.data['registration_id']
+		check_exists.application_id = serializer.data['application_id']
+		check_exists.device_id = serializer.data['device_id']
+		check_exists.cloud_message_type = "FCM"
+		check_exists.save()
+		return Response({"success": "Device data stored successfully"})
+
 	@list_route()
-	def get_queryset(self, *args, **kwargs):
-		queryset = GCMDevice.objects.all()
-		queryset.send_message("This is a test message", title="Test Notification")
+	def send_notification(self, *args, **kwargs):
+		print "send_notification"
+		devices = GCMDevice.objects.all()
+		print devices
+		for q in devices:
+			print q.application_id
+			print q.registration_id
+			# q.application_id = "test"
+			q.send_message("This is a test message after checked", title="Test Notification")
 		# serializer = self.get_serializer()
 		# serializer.is_valid(raise_exception=True)
 		# self.perform_create(serializer)
@@ -331,12 +373,15 @@ class CEOMessageSet(viewsets.ModelViewSet):
 	queryset = CEOMessage.objects.filter(active_status=1).order_by('-created_date')
 	serializer_class = CEOMessageSerializer
 
-	# def create(self, request, *args, **kwargs):
-	# 	serializer = self.get_serializer(data=request.data)
-	# 	serializer.is_valid(raise_exception=True)
-	# 	self.perform_create(serializer)
-	# 	headers = self.get_success_headers(serializer.data)
-	# 	return Response({"success": "Shoutout posted successfully"}, status=status.HTTP_201_CREATED, headers=headers)
+	def create(self, request, *args, **kwargs):
+		serializer = self.get_serializer(data=request.data)
+		serializer.is_valid(raise_exception=True)
+		self.perform_create(serializer)
+		headers = self.get_success_headers(serializer.data)
+		devices = GCMDevice.objects.all()
+		for q in devices:
+			q.send_message(serializer.data['ceo_message'],title="New message got from CEO",extra={"category":"ceo"})
+		return Response({"success": "CEO message posted successfully"}, status=status.HTTP_201_CREATED, headers=headers)
 
 class SearchSet(viewsets.ModelViewSet):
 	# queryset = News.objects.all()

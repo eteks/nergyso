@@ -28,7 +28,7 @@ SECRET_KEY = 'w7+!$ej12yys+=d!ohstg5gggwx3c=a@+)hrw7a^k24p_42iz4'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['10.0.0.15','127.0.0.1','localhost','192.168.1.9','132.148.68.181','10.0.0.12','10.0.0.9']
+ALLOWED_HOSTS = ['10.0.0.15','127.0.0.1','localhost','192.168.1.9','132.148.68.181','10.0.0.12','10.0.0.9','10.0.0.7','182.72.238.164']
 
 
 # Application definition
@@ -119,7 +119,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'vdart', 
         'USER': 'root',
-        'PASSWORD': '',
+        'PASSWORD': 'root',
         'HOST': '127.0.0.1',
         'PORT': '3306',
     }
@@ -281,14 +281,30 @@ REST_AUTH_SERIALIZERS = {
 # }
 
 PUSH_NOTIFICATIONS_SETTINGS = {
-        "FCM_API_KEY": "AIzaSyCgwNfe-kisOtP0Xd0CLAl4rLS-ciAAEXQ",
+        "FCM_API_KEY": "AIzaSyBiH5jDUJ4k1prm7RiEgq5r7_bTCvEVvO4",
         # "GCM_API_KEY": "[your api key]",
         # "APNS_CERTIFICATE": "/path/to/your/certificate.pem",
         # "APNS_TOPIC": "com.example.push_test",
         # "WNS_PACKAGE_SECURITY_ID": "[your package security id, e.g: 'ms-app://e-3-4-6234...']",
         # "WNS_SECRET_KEY": "[your app secret key, e.g.: 'KDiejnLKDUWodsjmewuSZkk']",
+        # "USE_FCM_NOTIFICATIONS": False,
+        "FCM_ERROR_TIMEOUT": float("0.5"),
+        # Load and process all PUSH_NOTIFICATIONS_SETTINGS using the AppConfig manager.
+        # "CONFIG": "push_notifications.conf.AppConfig",
+        # "APPLICATIONS": {
+        #     "vdart-android-app": {
+        #       # PLATFORM (required) determines what additional settings are required.
+        #       "PLATFORM": "FCM",
+        #       "API_KEY": "AIzaSyBiH5jDUJ4k1prm7RiEgq5r7_bTCvEVvO4",      
+        #       # "FCM_ERROR_TIMEOUT": "None",
+        #       "POST_URL": "https://fcm.googleapis.com/fcm/send",
+        #       # "APPLICATION_ID": "271284960175"
+        #     },
+        # }
 }
 
 # REST_SESSION_LOGIN = False
 
 CSRF_COOKIE_SECURE = True
+
+# use_fcm_notifications = False
