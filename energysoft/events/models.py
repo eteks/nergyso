@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
@@ -75,8 +76,8 @@ def save_events(sender, instance, **kwargs):
 			note = Notification(notification_cateogry=cateogry,notification_cateogry_id=instance.id,notification_delivery_status=0,notification_read_status=0,notification_created_date=instance.created_date,notification_employee_id=p)
 			# print note
 			note.save()
-			devices = GCMDevice.objects.all()
-			for q in devices:
-				q.send_message(instance.events_title, title="New Events posted",extra={"events_id": instance.id,"category":"events"})
+		devices = GCMDevice.objects.all()
+		for q in devices:
+			q.send_message(instance.events_title, title="New Events posted",extra={"events_id": instance.id,"category":"events"})
 		# print(p)
 post_save.connect(save_events, sender=Events)
