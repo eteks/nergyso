@@ -20,6 +20,8 @@ class NewsAdmin(AdminVideoMixin, admin.ModelAdmin):
 	# pass
 	model = News
 	form= FileFieldForm
+	fields = ('active_status','delete_status','news_title','news_description','news_image','gal_image',)
+	readonly_fields = ['gal_image']
 	list_display = ('news_title','created_date','modified_date')
 	list_filter = ('news_title',)
 	search_fields = ('news_title',)

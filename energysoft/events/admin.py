@@ -23,6 +23,8 @@ class EventsAdmin(admin.ModelAdmin):
     # default value of all parameters:
     model = Events
     form= EventFileForm
+    fields = ('active_status','delete_status','events_title','events_description','events_location_for_map','events_venue','events_date','events_image','gal_image',)
+    readonly_fields = ['gal_image']
     list_display = ('events_title','events_venue','events_date')
     list_filter = ('events_title','events_date',)
     search_fields = ('events_title','events_venue',)

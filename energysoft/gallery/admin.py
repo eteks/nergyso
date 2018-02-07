@@ -19,6 +19,8 @@ def handle_uploaded_file(f):
 class GalleryAdmin(admin.ModelAdmin):
 	model = Gallery
 	form= GalleryFileForm
+	fields = ('gallery_title','gallery_image','gal_image',)
+	readonly_fields = ['gal_image']
 	list_display = ('gallery_title','created_date',)
 	list_filter = ('gallery_title','created_date',)
 	search_fields = ('gallery_title',)
@@ -29,6 +31,7 @@ class GalleryAdmin(admin.ModelAdmin):
 		# print count
 		filer=''
 		files = request.FILES.getlist('gallery_image')
+		print files
 		for x in files:
 			count=count-1
 			if count==0:

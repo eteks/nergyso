@@ -42,10 +42,14 @@ class News(AbstractDefault):
 	def __str__(self):
 		return self.news_title
 
-	def admin_image(self):
-		return '<img src="'+settings.SITE_URL+'%s" width="100px"/>' % self.news_image
-    	admin_image.allow_tags = True
-    	admin_image.short_description = 'News Image'
+	def gal_image(self):
+		files = str(self.news_image).split(',')
+		filer=''
+		for x in files:
+			filer = filer + '<img src="'+settings.SITE_URL+'%s" width="100px"/>' % str(x) + '&nbsp;'
+		return filer
+	gal_image.allow_tags = True
+	gal_image.short_description = 'Image'
 
 	class Meta:
 		verbose_name = "New"

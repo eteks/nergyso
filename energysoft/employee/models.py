@@ -40,7 +40,10 @@ class Employee(User,AbstractDefault):
 	def __str__(self):
 		return self.user_ptr_id
 
-
+	def gal_image(self):
+		return '<img src="'+settings.SITE_URL+'%s" width="100px"/>' % self.employee_photo
+	gal_image.allow_tags = True
+	gal_image.short_description = 'Image'
 	# def save(self):
 	# 	user=User.objects.get(username=self.username)
 	# 	user.email=self.employee_email

@@ -22,7 +22,11 @@ class Gallery(AbstractDefault):
 		return self.gallery_title
 
 	def gal_image(self):
-		return '<img src="'+settings.SITE_URL+'%s" width="100px"/>' % self.gallery_image
+		files = str(self.gallery_image).split(',')
+		filer=''
+		for x in files:
+			filer = filer + '<img src="'+settings.SITE_URL+'%s" width="100px"/>' % str(x) + '&nbsp;'
+		return filer
 	gal_image.allow_tags = True
 	gal_image.short_description = 'Image'
 

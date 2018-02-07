@@ -45,6 +45,17 @@ class Events(AbstractDefault):
 	def __str__(self):
 		return self.events_title
 
+	def gal_image(self):
+		files = str(self.events_image).split(',')
+		# count=len(files)
+		filer=''
+		# if count!=0:
+		for x in files:
+			filer = filer + '<img src="'+settings.SITE_URL+'%s" width="100px"/>' % str(x) + '&nbsp;'
+		return filer		
+	gal_image.allow_tags = True
+	gal_image.short_description = 'Image'
+
 	class Meta:
 		verbose_name = "Event"
         verbose_name_plural = "Events"
