@@ -48,12 +48,14 @@ class Events(AbstractDefault):
 
 	def gal_image(self):
 		files = str(self.events_image).split(',')
-		# count=len(files)
+		count=len(files)
 		filer=''
-		# if count!=0:
-		for x in files:
-			filer = filer + '<img src="'+settings.SITE_URL+'%s" width="100px"/>' % str(x) + '&nbsp;'
-		return filer		
+		if count > 1:
+			for x in files:
+				filer = filer + '<img src="'+settings.SITE_URL+'%s" width="100px"/>' % str(x) + '&nbsp;'
+			return filer
+		else:
+			return 'None'	
 	gal_image.allow_tags = True
 	gal_image.short_description = 'Image'
 

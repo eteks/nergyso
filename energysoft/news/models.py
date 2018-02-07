@@ -46,9 +46,12 @@ class News(AbstractDefault):
 	def gal_image(self):
 		files = str(self.news_image).split(',')
 		filer=''
-		for x in files:
-			filer = filer + '<img src="'+settings.SITE_URL+'%s" width="100px"/>' % str(x) + '&nbsp;'
-		return filer
+		if count > 1:
+			for x in files:
+				filer = filer + '<img src="'+settings.SITE_URL+'%s" width="100px"/>' % str(x) + '&nbsp;'
+			return filer
+		else:
+			return 'None'
 	gal_image.allow_tags = True
 	gal_image.short_description = 'Image'
 

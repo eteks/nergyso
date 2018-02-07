@@ -41,7 +41,13 @@ class Employee(User,AbstractDefault):
 		return self.user_ptr_id
 
 	def gal_image(self):
-		return '<img src="'+settings.SITE_URL+'%s" width="100px"/>' % self.employee_photo
+		count=len(str(self.employee_photo))
+		filer=''
+		if count > 0:
+			return '<img src="'+settings.SITE_URL+'%s" width="100px"/>' % self.employee_photo
+		else:
+			return 'none'	
+		
 	gal_image.allow_tags = True
 	gal_image.short_description = 'Image'
 	# def save(self):
