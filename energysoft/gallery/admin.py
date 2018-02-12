@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.contrib import admin
 from models import Gallery
 from forms import GalleryFileForm
-from energysoft.action import export_as_csv_action
+from energysoft.action import export_as_csv_action,file_cleanup
 from django.conf import settings
 import os
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -33,6 +33,7 @@ class GalleryAdmin(admin.ModelAdmin):
 		files = request.FILES.getlist('gallery_image')
 		print files
 		for x in files:
+			# post_delete.connect(file_cleanup, sender=Image, dispatch_uid="gallery.image.file_cleanup")
 			count=count-1
 			if count==0:
 				filer = filer + settings.IMAGES_ROOT + 'gallery_'+ str(x)
