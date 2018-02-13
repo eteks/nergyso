@@ -19,7 +19,7 @@ def handle_uploaded_file(f):
 class GalleryAdmin(admin.ModelAdmin):
 	model = Gallery
 	form= GalleryFileForm
-	fields = ('gallery_title','gallery_image','gal_image',)
+	fields = ('gallery_title','gallery_image','gal_image','active_status','delete_status')
 	readonly_fields = ['gal_image']
 	list_display = ('gallery_title','created_date',)
 	list_filter = ('gallery_title','created_date',)

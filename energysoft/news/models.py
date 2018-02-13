@@ -45,6 +45,7 @@ class News(AbstractDefault):
 
 	def gal_image(self):
 		files = str(self.news_image).split(',')
+		count=len(files)
 		filer=''
 		if count > 1:
 			for x in files:
