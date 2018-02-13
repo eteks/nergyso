@@ -18,11 +18,16 @@ def update_image(instance, filename):
 	return image_root
 
 class Banner(AbstractDefault):
-	banner_image = models.FileField(verbose_name = 'Banner Image',upload_to = update_image,help_text="Supports Only jpg/png/jpeg format.")
+	banner_image = models.FileField(verbose_name = 'Banner Image',upload_to = update_image,help_text="Supports Only jpg/png/jpeg format.(size 790px * 350px)")
 
 	
 	def ban_image(self):
-		return '<img src="'+settings.SITE_URL+'%s" width="100px"/>' % self.banner_image
+		count=len(str(self.banner_image))
+		filer=''
+		if count > 0:
+			return '<img src="'+settings.SITE_URL+'%s" width="100px"/>' % self.banner_image
+		else:
+			return 'none'
 	ban_image.allow_tags = True
 	ban_image.short_description = 'Image'
 

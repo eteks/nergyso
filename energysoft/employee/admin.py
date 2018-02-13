@@ -2,10 +2,20 @@
 from __future__ import unicode_literals
 from django.contrib import admin
 from forms import EmpFileForm
-from models import Employee
+from models import Employee,User
 from energysoft.action import export_as_csv_action
 # from django.contrib.auth.models import User
 # from django.contrib.auth.models import Group
+
+class UserAdmin(admin.ModelAdmin):
+	# pass
+	model = User
+	#updated by kalai
+	# exclude = ('password','is_superuser','is_active','last_login','date_joined','groups','user_permissions','employee_aadhar_id','is_staff','active_status','delete_status','employee_device_id')
+	# exclude = ('groups','')
+	fields = ('username','first_name','last_name','email','last_login','date_joined','is_active','is_staff','is_superuser',)
+admin.site.unregister(User)	
+admin.site.register(User, UserAdmin)
 
 class EmployeeAdmin(admin.ModelAdmin):
 	# pass
