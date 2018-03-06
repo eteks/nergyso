@@ -154,7 +154,7 @@ class EventsSet(viewsets.ModelViewSet):
 	def search_events(self, request, search_string):
 		print "search_string"
 		print search_string
-		queryset = Events.objects.filter((Q(events_title__contains=search_string)|Q(events_description__contains=search_string))&Q(active_status=1)).order_by('-id')
+		queryset = Events.objects.filter((Q(events_title__icontains=search_string)|Q(events_description__icontains=search_string))&Q(active_status=1)).order_by('-id')
 		return Response(EventsSerializer(queryset,many=True).data)
 
 	# @list_route()
@@ -182,7 +182,7 @@ class NewsSet(viewsets.ModelViewSet):
 
 	@list_route()
 	def search_news(self, request, search_string):
-		queryset = News.objects.filter((Q(news_title__contains=search_string)|Q(news_description__contains=search_string))&Q(active_status=1)).order_by('-id')
+		queryset = News.objects.filter((Q(news_title__icontains=search_string)|Q(news_description__icontains=search_string))&Q(active_status=1)).order_by('-id')
 		return Response(NewsSerializer(queryset,many=True).data)
 
 class FeedbackSet(viewsets.ModelViewSet):
@@ -213,7 +213,7 @@ class ShoutoutListSet(viewsets.ModelViewSet):
 
 	@list_route()
 	def search_shoutout(self, request, search_string):
-		queryset = Shoutout.objects.filter(Q(shoutout_description__contains=search_string)&Q(shoutout_approval_status=1)).order_by('-id')
+		queryset = Shoutout.objects.filter(Q(shoutout_description__icontains=search_string)&Q(shoutout_approval_status=1)).order_by('-id')
 		return Response(ShoutoutSerializer(queryset,many=True).data)
 
 class GalleryListSet(viewsets.ModelViewSet):
