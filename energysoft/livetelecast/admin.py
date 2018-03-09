@@ -14,4 +14,7 @@ class LivetelecastAdmin(admin.ModelAdmin):
 	search_fields = ('livetelecast_url',)
 	actions = [export_as_csv_action("CSV Export", fields=['id','livetelecast_url','created_date'])]
 
+	def delete_model(self,request,obj,*args,**kwargs):
+		Notification.objects.filter(notification_category_id=obj.id,notification_category__icontains="livetelecast").delete()
+
 admin.site.register(Livetelecast, LivetelecastAdmin)

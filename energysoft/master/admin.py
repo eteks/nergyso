@@ -13,7 +13,8 @@ class NotificationAdmin(admin.ModelAdmin):
 	pass
 
 class CEOMessageAdmin(admin.ModelAdmin):
-	pass
+	def delete_model(self,request,obj,*args,**kwargs):
+		Notification.objects.filter(notification_category_id=obj.id,notification_category__icontains="ceo").delete()
 
 admin.site.register(Department, DepartmentAdmin)
 admin.site.register(Notification, NotificationAdmin)
