@@ -369,6 +369,18 @@ class NotificationListSet(viewsets.ModelViewSet):
 			return Response({"error": "ID not found"})
 		return Response({"success": "Notification read status has been already active"})
 		
+class NotificationCountSet(viewsets.ModelViewSet):
+	queryset = Notification.objects.all()
+	serializer_class = NotificationListSerializer
+	# pagination_class = StandardResultsSetPagination
+
+	def retrieve(self, request, pk=None):
+		serializer = self.get_serializer(data=request.data)
+		serializer.is_valid(raise_exception=False)
+		print serializer.data['notification_employee']
+		notification_count = Notification.objects.filter(notification_employee_id=serializer.data['notification_employee'],notification_read_status=0).count()
+		return Response({"unread": notification_count})
+
 class CEOMessageSet(viewsets.ModelViewSet):
 	queryset = CEOMessage.objects.filter(active_status=1).order_by('-created_date')
 	serializer_class = CEOMessageSerializer
