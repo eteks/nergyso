@@ -17,4 +17,7 @@ class ShoutoutAdmin(admin.ModelAdmin):
 	def has_add_permission(self, request):
 		return False
 
+	def delete_model(self,request,obj,*args,**kwargs):
+		Notification.objects.filter(notification_category_id=obj.id,notification_category__icontains="shoutout").delete()
+
 admin.site.register(Shoutout, ShoutoutAdmin)

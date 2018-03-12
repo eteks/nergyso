@@ -47,4 +47,7 @@ class EventsAdmin(admin.ModelAdmin):
             obj.events_image = filer
         super(Events, obj).save(*args,**kwargs)
     
+    def delete_model(self,request,obj,*args,**kwargs):
+        Notification.objects.filter(notification_category_id=obj.id,notification_category__icontains="events").delete()
+
 admin.site.register(Events, EventsAdmin)

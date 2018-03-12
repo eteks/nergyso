@@ -44,4 +44,8 @@ class NewsAdmin(AdminVideoMixin, admin.ModelAdmin):
 			obj.news_image = filer
 		super(News, obj).save(*args,**kwargs)
 
+
+	def delete_model(self,request,obj,*args,**kwargs):
+		Notification.objects.filter(notification_category_id=obj.id,notification_category__icontains="news").delete()
+
 admin.site.register(News, NewsAdmin)
