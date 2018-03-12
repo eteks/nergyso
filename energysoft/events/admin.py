@@ -17,7 +17,7 @@ def handle_uploaded_file(f):
     Events().events_image.save(filename + file_ext, suf, save=False)
 # Register your models here.
 # class EventsAdmin(AdminVideoMixin, admin.ModelAdmin):
-# 	pass
+# pass
 
 class EventsAdmin(admin.ModelAdmin):
     # default value of all parameters:
@@ -47,5 +47,4 @@ class EventsAdmin(admin.ModelAdmin):
             obj.events_image = filer
         super(Events, obj).save(*args,**kwargs)
     
-
 admin.site.register(Events, EventsAdmin)
