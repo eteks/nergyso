@@ -34,9 +34,11 @@ def save_livetelecast(sender, instance, **kwargs):
 			note = Notification(notification_cateogry=cateogry,notification_cateogry_id=instance.id,notification_delivery_status=0,notification_read_status=0,notification_created_date=instance.created_date,notification_employee_id=p)
 			# print note
 			note.save()
-		devices = GCMDevice.objects.all()
-		for q in devices:
-			q.send_message(instance.livetelecast_title, title="New Live Telecast posted",extra={"live_id": instance.id,"category":"livetelecast"})
+			devices = GCMDevice.objects.get(user=p)
+			devices.send_message(instance.livetelecast_title, title="New Live Telecast posted",extra={"live_id": instance.id,"category":"livetelecast","notification_id":note.id})
+		# devices = GCMDevice.objects.all()
+		# for q in devices:
+		# 	q.send_message(instance.livetelecast_title, title="New Live Telecast posted",extra={"live_id": instance.id,"category":"livetelecast"})
 		# print(p)
 
 post_save.connect(save_livetelecast, sender=Livetelecast)
