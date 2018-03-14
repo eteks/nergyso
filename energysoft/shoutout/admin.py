@@ -5,6 +5,7 @@ from django.contrib import admin
 
 from models import Shoutout
 from energysoft.action import export_as_csv_action
+from master.models import Notification
 # Register your models here.
 
 class ShoutoutAdmin(admin.ModelAdmin):
@@ -18,6 +19,6 @@ class ShoutoutAdmin(admin.ModelAdmin):
 		return False
 
 	def delete_model(self,request,obj,*args,**kwargs):
-		Notification.objects.filter(notification_category_id=obj.id,notification_category__icontains="shoutout").delete()
+		Notification.objects.filter(notification_cateogry_id=obj.id,notification_cateogry__icontains="shoutout").delete()
 
 admin.site.register(Shoutout, ShoutoutAdmin)

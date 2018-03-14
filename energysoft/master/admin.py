@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from django.contrib import admin
 
 from models import Department,Notification,CEOMessage
+from master.models import Notification
 # Register your models here.
 
 class DepartmentAdmin(admin.ModelAdmin):
@@ -14,7 +15,7 @@ class NotificationAdmin(admin.ModelAdmin):
 
 class CEOMessageAdmin(admin.ModelAdmin):
 	def delete_model(self,request,obj,*args,**kwargs):
-		Notification.objects.filter(notification_category_id=obj.id,notification_category__icontains="ceo").delete()
+		Notification.objects.filter(notification_cateogry_id=obj.id,notification_cateogry__icontains="ceo").delete()
 
 admin.site.register(Department, DepartmentAdmin)
 admin.site.register(Notification, NotificationAdmin)

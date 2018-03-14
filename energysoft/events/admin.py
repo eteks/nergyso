@@ -9,6 +9,7 @@ from energysoft.action import export_as_csv_action
 from django.conf import settings
 import os
 from django.core.files.uploadedfile import SimpleUploadedFile
+from master.models import Notification
 
 # Register your models here.
 def handle_uploaded_file(f):
@@ -48,6 +49,6 @@ class EventsAdmin(admin.ModelAdmin):
         super(Events, obj).save(*args,**kwargs)
     
     def delete_model(self,request,obj,*args,**kwargs):
-        Notification.objects.filter(notification_category_id=obj.id,notification_category__icontains="events").delete()
+        Notification.objects.filter(notification_cateogry_id=obj.id,notification_cateogry__icontains="events").delete()
 
 admin.site.register(Events, EventsAdmin)
