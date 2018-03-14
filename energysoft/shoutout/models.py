@@ -50,8 +50,11 @@ def save_shoutout(sender, instance, **kwargs):
 			# print note
 			note.save()
 			print shoutout_approval_status
-			devices = GCMDevice.objects.get(user=p)
-			devices.send_message(instance.shoutout_employee_from.username+" is posted Shoutout for "+instance.shoutout_employee_to.username,title="New Shoutout posted",extra={"shoutout_id": instance.id,"category":"shoutout","notification_id":note.id})
+			try:
+				devices = GCMDevice.objects.get(user=p)
+				devices.send_message(instance.shoutout_employee_from.username+" is posted Shoutout for "+instance.shoutout_employee_to.username,title="New Shoutout posted",extra={"shoutout_id": instance.id,"category":"shoutout","notification_id":note.id})
+			except GCMDevice.DoesNotExist:
+				pass	
 		# devices = GCMDevice.objects.all()
 		# for q in devices:
 		# 	q.send_message(instance.shoutout_employee_from.username+" is posted Shoutout for "+instance.shoutout_employee_to.username,title="New Shoutout posted",extra={"shoutout_id": instance.id,"category":"shoutout"})
