@@ -17,5 +17,6 @@ class LivetelecastAdmin(admin.ModelAdmin):
 
 	def delete_model(self,request,obj,*args,**kwargs):
 		Notification.objects.filter(notification_cateogry_id=obj.id,notification_cateogry__icontains="livetelecast").delete()
-
+		obj.delete()
+		
 admin.site.register(Livetelecast, LivetelecastAdmin)

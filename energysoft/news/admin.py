@@ -12,6 +12,8 @@ from django.conf import settings
 import os
 from django.core.files.uploadedfile import SimpleUploadedFile
 from master.models import Notification
+from django.contrib.admin.actions import delete_selected
+
 def handle_uploaded_file(f):
     filename, file_ext = os.path.splitext(f.name)
     suf = SimpleUploadedFile(filename + file_ext,f.read())
@@ -26,7 +28,7 @@ class NewsAdmin(AdminVideoMixin, admin.ModelAdmin):
 	list_display = ('news_title','created_date','modified_date')
 	list_filter = ('news_title',)
 	search_fields = ('news_title',)
-	actions = [export_as_csv_action("CSV Export", fields=['id','news_title','news_description','created_date'])]
+	actions = [export_as_csv_action("CSV Export", fields=['id','news_title','news_description','created_date']),'delete_selected']
 
 	def save_model(self,request,obj,form,change,*args,**kwargs):
 		counts=len(request.FILES.getlist("news_image"))
@@ -48,5 +50,15 @@ class NewsAdmin(AdminVideoMixin, admin.ModelAdmin):
 
 	def delete_model(self,request,obj,*args,**kwargs):
 		Notification.objects.filter(notification_cateogry_id=obj.id,notification_cateogry__icontains="news").delete()
+		obj.delete()
+		
+	def delete_selected(self, request, obj):
+	    print "delete_selected"
+	    print self
+	    print request
+	    # print obj.id
+	    Notification.objects.filter(notification_cateogry_id=13,notification_cateogry__icontains="news").delete()
+
+delete_selected.short_description = "Delete selected objects"
 
 admin.site.register(News, NewsAdmin)
