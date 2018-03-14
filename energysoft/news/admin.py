@@ -11,6 +11,7 @@ from forms import FileFieldForm
 from django.conf import settings
 import os
 from django.core.files.uploadedfile import SimpleUploadedFile
+from master.models import Notification
 def handle_uploaded_file(f):
     filename, file_ext = os.path.splitext(f.name)
     suf = SimpleUploadedFile(filename + file_ext,f.read())
@@ -46,6 +47,6 @@ class NewsAdmin(AdminVideoMixin, admin.ModelAdmin):
 
 
 	def delete_model(self,request,obj,*args,**kwargs):
-		Notification.objects.filter(notification_category_id=obj.id,notification_category__icontains="news").delete()
+		Notification.objects.filter(notification_cateogry_id=obj.id,notification_cateogry__icontains="news").delete()
 
 admin.site.register(News, NewsAdmin)
