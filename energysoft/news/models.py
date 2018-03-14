@@ -74,8 +74,12 @@ def save_news(sender, instance, **kwargs):
 			note = Notification(notification_cateogry=cateogry,notification_cateogry_id=instance.id,notification_delivery_status=0,notification_read_status=0,notification_created_date=instance.created_date,notification_employee_id=p)
 			# print note
 			note.save()
-			devices = GCMDevice.objects.get(user=p)
-			devices.send_message(instance.news_title, title="News posted",extra={"news_id": instance.id,"category":"news","notification_id":note.id})
+			try:
+				devices = GCMDevice.objects.get(user=p)
+				devices.send_message(instance.news_title, title="News posted",extra={"news_id": instance.id,"category":"news","notification_id":note.id})
+			except GCMDevice.DoesNotExist:
+				pass
+			
 
 # def save_news(sender, instance, **kwargs):
 # 	emp_id = Employee.objects.all().values_list('user_ptr_id', flat=True)
