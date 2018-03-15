@@ -7,6 +7,7 @@ from energysoft.action import export_as_csv_action
 # from django.shortcuts import redirect, render
 # from django.shortcuts import render_to_response
 from .models import News
+from .models import Notification
 from forms import FileFieldForm
 from django.conf import settings
 import os
@@ -46,6 +47,7 @@ class NewsAdmin(AdminVideoMixin, admin.ModelAdmin):
 
 
 	def delete_model(self,request,obj,*args,**kwargs):
-		Notification.objects.filter(notification_category_id=obj.id,notification_category__icontains="news").delete()
+		print obj.id
+		Notification.objects.filter(notification_category_id=obj.id,notification_category__icontains="News").delete()
 
 admin.site.register(News, NewsAdmin)
