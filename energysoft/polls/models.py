@@ -21,8 +21,8 @@ class PollsAnswer(models.Model):
 		# get_questions.allow_tags = True
 		# get_questions.short_description = 'quest'
 		
-	# def __str__(self):
-	# 	return self.answer
+	def __str__(self):
+		return self.answer
 
 class PollsResult(models.Model):
 	pollsresult_employee = models.ForeignKey(Employee,verbose_name = 'Employee')

@@ -32,7 +32,7 @@ class EventsManager(models.Manager):
 		return super(EventsManager, self).get_queryset().order_by('-id')
 
 class Events(AbstractDefault):
-	events_title = models.CharField(verbose_name = 'Title', max_length = 255,help_text="Ex:Celebration")
+	events_title = models.CharField(verbose_name = 'Title', max_length = 255,help_text="Ex:Celebration",unique=True)
 	events_description = models.TextField(verbose_name = 'Description', max_length = 1000,help_text="Details about Event")
 	events_location_for_map = models.CharField(verbose_name = 'Location', max_length = 255,help_text="Ex:Chennai")
 	events_venue = models.CharField(verbose_name = 'Venue', max_length = 255,help_text="Ex:Hilton")

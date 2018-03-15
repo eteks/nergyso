@@ -17,7 +17,7 @@ class AbstractDefault(models.Model):
 		abstract = True
 
 class Department(AbstractDefault):
-	department_name = models.CharField(verbose_name = 'Department Name',max_length=50)
+	department_name = models.CharField(verbose_name = 'Department Name',max_length=50,unique=True)
 
 	def __str__(self):
 		return self.department_name

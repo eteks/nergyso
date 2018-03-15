@@ -17,12 +17,14 @@ class PollsQuestionAdmin(admin.ModelAdmin):
 	actions = [export_as_csv_action("CSV Export", fields=['id','question','created_date'])]
 
 class PollsResultAdmin(admin.ModelAdmin):
-	model = PollsQuestion
-	list_display = ('question','created_date',)
-	list_filter = ('created_date',)
+	model = PollsResult
+	list_display = ('pollsresult_employee','pollsresult_question','pollsresult_answer')
+	list_filter = ('created_date','pollsresult_employee','pollsresult_question','pollsresult_answer')
+	def has_add_permission(self, request):
+		return False
 	# search_fields = ('question',)
 	# actions = [export_as_csv_action("CSV Export", fields=['id','question','created_date'])]
 
 admin.site.register(PollsAnswer,PollsAnswerAdmin)	
 admin.site.register(PollsQuestion,PollsQuestionAdmin)
-admin.site.register(PollsResult)
+admin.site.register(PollsResult,PollsResultAdmin)
