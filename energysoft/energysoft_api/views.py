@@ -34,6 +34,7 @@ from polls.models import PollsAnswer,PollsQuestion,PollsResult
 from master.models import Notification,CEOMessage
 import json
 from django.core.serializers.json import DjangoJSONEncoder
+from django.db.models import Q
 
 sensitive_post_parameters_m = method_decorator(
     sensitive_post_parameters(
@@ -74,8 +75,8 @@ class EmployeeSet(viewsets.ModelViewSet):
 	def employee_upcoming_birthday(self, request):
 		today = datetime.date.today()
 		print today
-		queryset = Employee.objects.filter(employee_dob__year__gte=today.year,employee_dob__month__gte=today.month,
-			employee_dob__day__gt=today.day).order_by('employee_dob','id')[:30]
+		queryset = Employee.objects.filter(Q(employee_dob__month__gt=today.month)|
+			(Q(employee_dob__month=today.month)&Q(employee_dob__day__gt=today.day))).order_by('employee_dob','id')[:30]
 		# queryset = Employee.objects.filter(employee_dob=today).order_by('-id')
 		print queryset
 		return Response(EmployeeParticularSerializer(queryset,many=True).data)
@@ -94,8 +95,8 @@ class EmployeeSet(viewsets.ModelViewSet):
 	def employee_upcoming_anniversary(self, request):
 		today = datetime.date.today()
 		print today
-		queryset = Employee.objects.filter(employee_doj__year__gte=today.year,employee_doj__month__gte=today.month,
-			employee_doj__day__gt=today.day).order_by('employee_dob','id')[:30]
+		queryset = Employee.objects.filter(Q(employee_doj__month__gt=today.month)|
+			(Q(employee_doj__month=today.month)&Q(employee_doj__day__gt=today.day))).order_by('employee_doj','id')[:30]
 		# queryset = Employee.objects.filter(employee_dob=today).order_by('-id')
 		print queryset
 		return Response(EmployeeParticularSerializer(queryset,many=True).data)
