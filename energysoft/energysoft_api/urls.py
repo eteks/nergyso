@@ -59,6 +59,7 @@ urlpatterns = [
     url(r'^rest-auth/password/change/$', PasswordChangeView.as_view(),name='rest_password_change'),
     url(r'^rest-auth/', include('rest_auth.urls')),
     url(r'^events/recent_events/', EventsSet.as_view({"get": "list"}), name="recent_events"),
+    url(r'^events/search_events/(?P<search_string>.*)/', EventsSet.as_view({"get": "search_events"}), name="search_events"),
     url(r'^events/similar_events/(?P<pk>\d+)/', EventsSet.as_view({"get": "list"}), name="similar_events"),
     url(r'^news/recent_news/', NewsSet.as_view({"get": "list"}), name="recent_news"),
     url(r'^feedback/', FeedbackSet.as_view({"post": "create"})),

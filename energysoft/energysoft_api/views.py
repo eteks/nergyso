@@ -148,6 +148,20 @@ class EventsSet(viewsets.ModelViewSet):
 		# events = get_object_or_404(queryset)
 		# serializer = EventsSerializer(queryset)
 		# return Response(serializer.data)
+		return Response(EventsSerializer(queryset,many=True).data)  
+
+	@list_route()
+	def search_events(self, request, search_string):
+		print "search_string"
+		print search_string
+		queryset = Events.objects.filter((Q(events_title__contains=search_string)|Q(events_description__contains=search_string))&Q(active_status=1)).order_by('-id')
+		# queryset = Events.objects.filter((Q(events_title__icontains=search_string)|Q(events_description__icontains=search_string))&(active_status=1)).order_by('-id')[:3]
+		# for querysets in queryset:
+		# 	print querysets.events_title
+		# events = get_object_or_404(queryset, pk=pk)
+		# events = get_object_or_404(queryset)
+		# serializer = EventsSerializer(queryset)
+		# return Response(serializer.data)
 		return Response(EventsSerializer(queryset,many=True).data)
 
 	# @list_route()
