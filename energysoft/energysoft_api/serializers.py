@@ -16,6 +16,12 @@ from livetelecast.models import Livetelecast
 from polls.models import PollsAnswer,PollsQuestion,PollsResult
 from master.models import Notification,CEOMessage
 from master.config import SEARCH_OPTIONS
+from django.contrib.auth.models import User
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'username')
 
 # Serializers define the API representation.
 class EmployeeSerializer(serializers.HyperlinkedModelSerializer):
@@ -185,11 +191,12 @@ class PasswordChangeSerializer(serializers.Serializer):
             from django.contrib.auth import update_session_auth_hash
             update_session_auth_hash(self.request, self.user)
 
-class NotificationSerializer(serializers.HyperlinkedModelSerializer):    
+class NotificationSerializer(serializers.ModelSerializer):    
+    # notification_employee = serializers.CharField(Null=False)
     class Meta:
         model = GCMDevice
-        # fields = '__all__'
-        fields = ('id','registration_id','cloud_message_type')
+        fields = '__all__'
+        # extra_kwargs = {'notification_employee': {'required': True}}
 
 class BannerSerializer(serializers.HyperlinkedModelSerializer):    
     banner_image = serializers.SerializerMethodField()

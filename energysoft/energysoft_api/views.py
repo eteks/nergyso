@@ -155,13 +155,6 @@ class EventsSet(viewsets.ModelViewSet):
 		print "search_string"
 		print search_string
 		queryset = Events.objects.filter((Q(events_title__contains=search_string)|Q(events_description__contains=search_string))&Q(active_status=1)).order_by('-id')
-		# queryset = Events.objects.filter((Q(events_title__icontains=search_string)|Q(events_description__icontains=search_string))&(active_status=1)).order_by('-id')[:3]
-		# for querysets in queryset:
-		# 	print querysets.events_title
-		# events = get_object_or_404(queryset, pk=pk)
-		# events = get_object_or_404(queryset)
-		# serializer = EventsSerializer(queryset)
-		# return Response(serializer.data)
 		return Response(EventsSerializer(queryset,many=True).data)
 
 	# @list_route()
@@ -185,6 +178,11 @@ class NewsSet(viewsets.ModelViewSet):
 	@list_route()
 	def recent_news(self, request):
 		queryset = News.objects.filter(active_status=1).order_by('-id')[:3]
+		return Response(NewsSerializer(queryset,many=True).data)
+
+	@list_route()
+	def search_news(self, request, search_string):
+		queryset = News.objects.filter((Q(news_title__contains=search_string)|Q(news_description__contains=search_string))&Q(active_status=1)).order_by('-id')
 		return Response(NewsSerializer(queryset,many=True).data)
 
 class FeedbackSet(viewsets.ModelViewSet):
@@ -213,6 +211,11 @@ class ShoutoutListSet(viewsets.ModelViewSet):
 	serializer_class = ShoutoutSerializer
 	pagination_class = StandardResultsSetPagination
 
+	@list_route()
+	def search_shoutout(self, request, search_string):
+		queryset = Shoutout.objects.filter(Q(shoutout_description__contains=search_string)&Q(shoutout_approval_status=1)).order_by('-id')
+		return Response(ShoutoutSerializer(queryset,many=True).data)
+
 class GalleryListSet(viewsets.ModelViewSet):
 	queryset = Gallery.objects.filter(active_status=1).order_by('-id')
 	serializer_class = GallerySerializer
@@ -240,6 +243,34 @@ class PasswordChangeView(GenericAPIView):
 
 class NotificationSet(viewsets.ModelViewSet):	
 	serializer_class = NotificationSerializer	
+
+	def create(self, request, *args, **kwargs):
+		serializer = self.get_serializer(data=request.data)
+		serializer.is_valid(raise_exception=False)
+		print serializer.data
+		check_exists = Notification.objects.get_or_create(notification_employee=serializer.data['user'])
+		check_exists.registration_id = serializer.data['registration_id']
+		check_exists.application_id = serializer.data['application_id']
+		check_exists.device_id = serializer.data['device_id']
+		check_exists.save()
+		# if check_exists:
+		# 	check_exists.registration_id = serializer.data['registration_id']
+		# 	check_exists.application_id = serializer.data['application_id']
+		# 	check_exists.device_id = serializer.data['device_id']
+		# 	check_exists.save()
+		# else:
+		# 	# Notification.objects.create( 
+		# 	# 	registration_id=serializer.data['registration_id'], 
+		# 	# 	application_id=serializer.data['application_id'], 
+		# 	# 	device_id=serializer.data['device_id']
+		# 	# )
+		# 	check_exists.registration_id = serializer.data['registration_id']
+		# 	check_exists.application_id = serializer.data['application_id']
+		# 	check_exists.device_id = serializer.data['device_id']
+		# 	check_exists.save()
+		return Response({"success": "Device data stored successfully"})
+
+
 	@list_route()
 	def get_queryset(self, *args, **kwargs):
 		queryset = GCMDevice.objects.all()
